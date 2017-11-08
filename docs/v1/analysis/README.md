@@ -1,4 +1,3 @@
-# Donation Application
-	- Collect donation from periodic donars
-	- Manage Donor details
-	- Manage Expenses
+# Analysis
+- Requirements
+- Analysis & Conversion of requirement into high level modules & features
