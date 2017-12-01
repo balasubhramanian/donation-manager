@@ -1,0 +1,359 @@
+<html>
+
+<head>
+    <title>Donation Manager</title>
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <style>
+
+    </style>
+</head>
+<script>
+    document.write('<script src="http://localhost:35729/livereload.js?snipver=1"></' + 'script>')
+</script>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a class="site_title">
+                            <span>Donation Manager</span>
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <!-- <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2>John Doe</h2>
+                        </div>
+                    </div> -->
+                    <!-- /menu profile quick info -->
+
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <!-- <h3>General</h3> -->
+                            <ul class="nav side-menu">
+                                <li><a><i class="fa fa-home"></i> Fundraising <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="index.html">All Fundraising</a></li>
+                                        <li><a href="index2.html">Add New </a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-edit"></i> Donors <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="form.html">All Donors</a></li>
+                                        <li><a href="form_advanced.html">Add New</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-desktop"></i>Settings <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="user.html">User</a></li>
+                                        <li><a href="roles.html">Roles & Permission</a></li>
+                                        <li><a href="media_gallery.html">Config</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+
+
+                    </div>
+                    <!-- /sidebar menu -->
+
+                    <!-- /menu footer buttons -->
+                    <!-- <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">
+                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div> -->
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <!-- <img src="images/img.jpg" alt="">  -->
+                                    Abdullah
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="javascript:;"> Profile</a></li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="badge bg-red pull-right">50%</span>
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="javascript:;">Help</a></li>
+                                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                </ul>
+                            </li>
+
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Manage Roles & Permission</h3>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2 class="">Roles & Permission</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class=""><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+
+
+                                <div class="x_content">
+                                    <div style=" margin-bottom: 20px;">
+
+                                        <h4>Admin</h4>
+                                        <div class="ln_solid"></div>
+                                        <div class="row" style=" margin: 10px 0px;">
+                                            <div class="col-md-3">
+                                                Fundraising
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="label label-default">Create Fundraising</label>
+                                                <label class="label label-default">Delete Fundraising</label>
+                                                <label class="label label-default">Update Collection</label>
+                                                <label class="label label-default">Delete Collection</label>
+                                            </div>
+                                        </div>
+                                        <div class="row" style=" margin: 10px 0px;">
+                                            <div class="col-md-3">
+                                                Admin
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="label label-default">Create User</label>
+                                                <label class="label label-default">Update User</label>
+                                                <label class="label label-default">Delete User</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style=" margin-bottom: 20px;">
+
+                                        <h5>Admin</h5>
+                                        <div class="ln_solid"></div>
+                                        <div class="row" style=" margin: 10px 0px;">
+                                            <div class="col-md-3">
+                                                Fundraising
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="label label-default">Create Fundraising</label>
+                                                <label class="label label-default">Delete Fundraising</label>
+                                                <label class="label label-default">Update Collection</label>
+                                                <label class="label label-default">Delete Collection</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                    <div style=" display:block">
+
+                                        <h5>Field Collector</h5>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                Fundraising
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="label label-default">Collect Funds</label>
+                                                <label class="label label-default">Sync Funds</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2 class="">Roles</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class=""><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="x_content">
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped jambo_table">
+                                        <thead>
+                                            <tr class="headings">
+                                                <th class="column-title">Id </th>
+                                                <th class="column-title">Name </th>
+                                                <th class="column-title">Description </th>
+                                                <th class="column-title no-link last"><span class="nobr">Action</span>
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr class="even pointer">
+                                                <td class=" ">1</td>
+                                                <td class=" ">Admin</td>
+                                                <td class=" ">Super User</td>
+                                                <td class=" last">
+                                                    <a href="#">Edit</a> | <a href="#">Disable</a>
+                                                </td>
+                                            </tr>
+                                            <tr class="even pointer">
+                                                <td class=" ">1</td>
+                                                <td class=" ">Funds Collector</td>
+                                                <td class=" ">Field Agent to collect funds</td>
+                                                <td class=" last">
+                                                    <a href="#">Edit</a> | <a href="#">Permission</a> | <a href="#">Disable</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                    <h4>Admin Permissions</h4>
+                                    <div class="ln_solid"></div>
+                                    <div class="permission-selector">
+                                        <h5>Fund Raising</h5>
+                                        <label>
+                                            <input type="checkbox"/>Create Fund Raising</label>
+                                        <label>
+                                                    <input type="checkbox">Delete Fund Raising</input></label>
+                                    </div>
+                                    <div class="permission-selector">
+                                        <h5>Donor</h5>
+                                        <label>
+                                                    <input type="checkbox">Create Donor</input></label>
+                                        <label>
+                                                            <input type="checkbox">Update Donor</label>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-md-offset-3">
+                                            <button id="send" type="submit" class="btn btn-success">Submit</button>
+                                            <button id="send" type="submit" class="btn btn-default">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2 class="">Permission</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class=""><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="x_content">
+                                <div class="table-responsive">
+                                    <table class="table table-striped jambo_table">
+                                        <thead>
+                                            <tr class="headings">
+                                                <th class="column-title">Id </th>
+                                                <th class="column-title">Module </th>
+                                                <th class="column-title">Name </th>
+                                                <th class="column-title">Description </th>
+                                                <th class="column-title no-link last"><span class="nobr">Action</span>
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr class="even pointer">
+                                                <td class=" ">1</td>
+                                                <td class=" ">Funding Rising</td>
+                                                <td class=" ">CREATE_NEW_FUNDRISING</td>
+                                                <td class=" ">Create new fundraising</td>
+                                                <td class=" last">
+                                                    <a href="#">Edit</a> | <a href="#">Disable</a>
+                                                </td>
+                                            </tr>
+                                            <tr class="even pointer">
+                                                <td class=" ">1</td>
+                                                <td class=" ">Funding Rising</td>
+                                                <td class=" ">DELETE_FUNDRISING</td>
+                                                <td class=" ">Delete fundraising created by others</td>
+                                                <td class=" last">
+                                                    <a href="#">Edit</a> | <a href="#">Disable</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="vendor/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
