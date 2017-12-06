@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css" />
 
-    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/main.css" />
     <style>
 
@@ -138,7 +138,7 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>Add Users</h3>
+                            <h3>Create Fundraising</h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -151,34 +151,12 @@
                                 </div> -->
 
                                 <div class="x_content">
-                                    <h4>Login Details</h4>
-                                    <div class="ln_solid"></div>
                                     <form class="form-horizontal form-label-left" novalidate="">
 
-
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                Username <span class="required"></span>
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                    Password <span class="required"></span>
-                                                </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <h4>Personal Details</h4>
                                         <div class="ln_solid"></div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                    Firstname <span class="required"></span>
+                                                    Name <span class="required"></span>
                                                 </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
@@ -187,7 +165,31 @@
                                         </div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                    Lastname <span class="required"></span>
+                                                    Description <span class="required"></span>
+                                                </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <textarea id="name" class="form-control col-md-7 col-xs-12" name="name"></textarea>
+                                            </div>
+                                            <div class="alert"></div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+                                                                Type <span class="required"></span>
+                                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select id="name" class="form-control col-md-7 col-xs-12">
+                                                        <option>Monthly</option>
+                                                        <option>Yearly</option>
+                                                        <option>Once</option>
+                                                        <option>Custom</option>
+                                                        </select>
+
+                                            </div>
+                                            <div class="alert"></div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+                                                    Start Date <span class="required"></span>
                                                 </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
@@ -196,72 +198,8 @@
                                         </div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                    Phone <span class="required"></span>
+                                                    End Date <span class="required"></span>
                                                 </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                    Email <span class="required"></span>
-                                                </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <h4>Address</h4>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                            Door No <span class="required"></span>
-                                                        </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                        Street <span class="required"></span>
-                                                    </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                        Area <span class="required"></span>
-                                                    </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                        City <span class="required"></span>
-                                                    </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                        State <span class="required"></span>
-                                                    </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                            Country <span class="required"></span>
-                                                        </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input id="name" class="form-control col-md-7 col-xs-12" name="name" type="text">
                                             </div>
@@ -269,38 +207,7 @@
                                         </div>
 
 
-                                        <h4>Roles</h4>
-                                        <div class="ln_solid"></div>
-                                        <div>
-                                            <span class="badge">Admin <small>x</small></span>
-                                            <span class="badge">Fund Collector</span>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                        Roles <span class="required"></span>
-                                                    </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <select class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                                            <option>Admin</option>
-                                                            <option>Fund Collector</option>
-                                                            </select>
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div>
-                                        <!--
-                                        <div class="ln_solid"></div>
-                                         <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                        Status <span class="required"></span>
-                                                    </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <select class="form-control col-md-7 col-xs-12" name="name" type="text">
-                                                            <option>Active</option>
-                                                            <option>Disabled</option>
-                                                            </select>
-                                            </div>
-                                            <div class="alert"></div>
-                                        </div> -->
+
                                         <div class="ln_solid"></div>
                                         <div class="form-group">
                                             <div class="col-md-6 col-md-offset-3">

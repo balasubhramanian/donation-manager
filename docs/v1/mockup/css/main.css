@@ -35,3 +35,20 @@
 .permission-selector label {
     font-weight: normal;
 }
+
+ul.name-list {
+    padding: 0
+}
+
+ul.name-list li {
+    background: #f3f3f3;
+    border-radius: 3px;
+    position: relative;
+    padding: 10px;
+    margin-bottom: 5px;
+    list-style: none
+}
+
+ul.name-list p {
+    margin: 0
+}
