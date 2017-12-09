@@ -98,13 +98,13 @@ form:after {
 
 .login_content h1:after {
     background: #7e7e7e;
-    background: linear-gradient(left, #7e7e7e 0%, #fff 100%);
+    background: linear-gradient(to left, #7e7e7e 0%, #fff 100%);
     right: 0;
 }
 
 .login_content h1:before {
     background: #7e7e7e;
-    background: linear-gradient(right, #7e7e7e 0%, #fff 100%);
+    background: linear-gradient(to right, #7e7e7e 0%, #fff 100%);
     left: 0;
 }
 
@@ -119,13 +119,13 @@ form:after {
 
 .login_content h1:after {
     background: #7e7e7e;
-    background: linear-gradient(left, #7e7e7e 0%, #fff 100%);
+    background: linear-gradient(to left, #7e7e7e 0%, #fff 100%);
     right: 0;
 }
 
 .login_content h1:before {
     background: #7e7e7e;
-    background: linear-gradient(right, #7e7e7e 0%, #fff 100%);
+    background: linear-gradient(to right, #7e7e7e 0%, #fff 100%);
     left: 0;
 }
 
