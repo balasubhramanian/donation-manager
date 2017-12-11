@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import "./login.css";
 
 class Login extends Component {
+
+  onLogin(){
+    window.isLoggedIn = true;
+  }
   render() {
     return (
       <div className="login">
@@ -28,7 +32,7 @@ class Login extends Component {
                   />
                 </div>
                 <div>
-                  <Link to="/user" className="btn btn-default submit" >
+                  <Link onClick={()=>{this.onLogin()}} to="/user" className="btn btn-default submit" >
                     Log in
                   </Link>
                 </div>
