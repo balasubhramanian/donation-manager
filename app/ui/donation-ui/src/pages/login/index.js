@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "./login.css";
 
 class Login extends Component {
@@ -27,9 +28,9 @@ class Login extends Component {
                   />
                 </div>
                 <div>
-                  <a className="btn btn-default submit" href="index.html">
+                  <Link to="/user" className="btn btn-default submit" >
                     Log in
-                  </a>
+                  </Link>
                 </div>
 
                 <div className="clearfix" />
