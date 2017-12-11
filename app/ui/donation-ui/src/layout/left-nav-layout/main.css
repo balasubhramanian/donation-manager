@@ -1,0 +1,54 @@
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+    font-size: 14px;
+}
+
+.panel_toolbox {
+    width: auto;
+    min-width: 0;
+}
+
+.x_title h2 {
+    font-size: 18px;
+}
+
+.title_left {
+    margin-bottom: 15px;
+}
+
+.label {
+    font-size: 85%
+}
+
+.permission-selector {
+    padding-left: 5px;
+}
+
+.permission-selector input {
+    margin: 0px 5px 10px 20px;
+}
+
+.permission-selector label {
+    font-weight: normal;
+}
+
+ul.name-list {
+    padding: 0
+}
+
+ul.name-list li {
+    background: #f3f3f3;
+    border-radius: 3px;
+    position: relative;
+    padding: 10px;
+    margin-bottom: 5px;
+    list-style: none
+}
+
+ul.name-list p {
+    margin: 0
+}
