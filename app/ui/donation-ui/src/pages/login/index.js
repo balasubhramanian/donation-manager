@@ -4,16 +4,16 @@ import "./login.css";
 class Login extends Component {
   render() {
     return (
-      <div class="login">
-        <div class="login_wrapper">
-          <div class="animate form login_form">
-            <section class="login_content">
+      <div className="login">
+        <div className="login_wrapper">
+          <div className="animate form login_form">
+            <section className="login_content">
               <form>
                 <h1>Donation Manager</h1>
                 <div>
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Username"
                     required=""
                   />
@@ -21,18 +21,18 @@ class Login extends Component {
                 <div>
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Password"
                     required=""
                   />
                 </div>
                 <div>
-                  <a class="btn btn-default submit" href="index.html">
+                  <a className="btn btn-default submit" href="index.html">
                     Log in
                   </a>
                 </div>
 
-                <div class="clearfix" />
+                <div className="clearfix" />
               </form>
             </section>
           </div>
