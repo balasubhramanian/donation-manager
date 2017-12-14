@@ -1,6 +1,86 @@
 import React, { Component } from "react";
 import $ from "jquery";
 
+const Menus = [
+  {
+    title: "Fundraising",
+    icon: "fa-money",
+    children: [
+      {
+        title: "All Fundrising"
+      },
+      {
+        title: "Add New"
+      }
+    ]
+  },
+  {
+    title: "Donors",
+    icon: "fa-user-o",
+    children: [
+      {
+        title: "All Donor"
+      },
+      {
+        title: "Add New"
+      }
+    ]
+  },
+  {
+    title: "Settings",
+    icon: "fa-gear",
+    children: [
+      {
+        title: "User"
+      },
+      {
+        title: "Role & Permission"
+      },
+      {
+        title: "Settings"
+      }
+    ]
+  }
+];
+const SubMenu = props => {
+  if (!props.items) {
+    return <span />;
+  }
+
+  return (
+    <ul className="nav child_menu">
+      {props.items.map(item => {
+        return (
+          <li>
+            <a href="#">{item.title}</a>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+const Menu = props => {
+  return (
+    <ul className="nav side-menu">
+      {props.items.map(item => {
+        return (
+          <li>
+            <a>
+              <i className={"fa " + item.icon} /> {item.title}
+              {item.children ? (
+                <span className="fa fa-chevron-down" />
+              ) : (
+                <span />
+              )}
+            </a>
+            <SubMenu items={item.children} />
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+
 export default class Sidebar extends Component {
   bindMenuHandlers() {
     var $SIDEBAR_MENU = $("#sidebar-menu");
@@ -48,53 +128,7 @@ export default class Sidebar extends Component {
             className="main_menu_side hidden-print main_menu"
           >
             <div className="menu_section">
-              <ul className="nav side-menu">
-                <li>
-                  <a>
-                    <i className="fa fa-home" /> Fundraising{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="index.html">All Fundraising</a>
-                    </li>
-                    <li>
-                      <a href="index2.html">Add New </a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-edit" /> Donors{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="form.html">All Donors</a>
-                    </li>
-                    <li>
-                      <a href="form_advanced.html">Add New</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-desktop" />Settings{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="user.html">User</a>
-                    </li>
-                    <li>
-                      <a href="roles.html">Roles & Permission</a>
-                    </li>
-                    <li>
-                      <a href="media_gallery.html">Config</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <Menu items = {Menus}/>
             </div>
           </div>
         </div>
