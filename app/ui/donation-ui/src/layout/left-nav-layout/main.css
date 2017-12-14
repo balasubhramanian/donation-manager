@@ -52,3 +52,20 @@ ul.name-list li {
 ul.name-list p {
     margin: 0
 }
+
+.alert,
+.alert-danger,
+.alert-error {
+    text-shadow: none;
+    color: white;
+    border-radius: 0;
+    text-align: center;
+}
+
+.login .help-block {
+    position: relative;
+    top: -14px;
+    left: 0px;
+    text-align: left;
+    color: #b51a1a;
+}

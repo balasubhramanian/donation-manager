@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import $ from "jquery";
-export default class TopNav extends Component {
+import { connect } from "react-redux";
+import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
+
+class TopNav extends Component {
   componentDidMount() {
     var $BODY = $("#root-container"),
       $SIDEBAR_MENU = $("#sidebar-menu"),
@@ -8,11 +11,11 @@ export default class TopNav extends Component {
 
     $MENU_TOGGLE.on("click", function() {
       if ($BODY.hasClass("nav-md")) {
-            $SIDEBAR_MENU.find("li.active ul").hide();
-            $SIDEBAR_MENU
-            .find("li.active")
-            .addClass("active-sm")
-            .removeClass("active");
+        $SIDEBAR_MENU.find("li.active ul").hide();
+        $SIDEBAR_MENU
+          .find("li.active")
+          .addClass("active-sm")
+          .removeClass("active");
       } else {
         $SIDEBAR_MENU.find("li.active-sm ul").show();
         $SIDEBAR_MENU
@@ -34,38 +37,17 @@ export default class TopNav extends Component {
                 <i className="fa fa-bars" />
               </a>
             </div>
-
             <ul className="nav navbar-nav navbar-right">
-              <li className="">
-                <a
-                  href="javascript:;"
-                  className="user-profile dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
+              <NavDropdown eventKey={3} title={this.props.user} className="">
+                <MenuItem
+                  eventKey={3.1}
+                  onClick={() => {
+                    this.props.logout();
+                  }}
                 >
-                  Abdullah
-                  <span className=" fa fa-angle-down" />
-                </a>
-                <ul className="dropdown-menu dropdown-usermenu pull-right">
-                  <li>
-                    <a href="javascript:;"> Profile</a>
-                  </li>
-                  <li>
-                    <a href="javascript:;">
-                      <span className="badge bg-red pull-right">50%</span>
-                      <span>Settings</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="javascript:;">Help</a>
-                  </li>
-                  <li>
-                    <a href="login.html">
-                      <i className="fa fa-sign-out pull-right" /> Log Out
-                    </a>
-                  </li>
-                </ul>
-              </li>
+                  Logout
+                </MenuItem>
+              </NavDropdown>
             </ul>
           </nav>
         </div>
@@ -73,3 +55,11 @@ export default class TopNav extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return { ...state.auth };
+};
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch({ type: "LOGOUT" })
+});
+export default connect(mapStateToProps, mapDispatchToProps)(TopNav);
