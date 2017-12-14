@@ -14,6 +14,11 @@ const initialState = {
 
   }
 }
+
+if(localStorage.getItem('user')){
+  initialState.auth = JSON.parse(localStorage.getItem('user'));
+}
+
 const enhancers = []
 const middleware = [
   logger,
