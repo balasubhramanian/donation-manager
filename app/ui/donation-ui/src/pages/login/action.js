@@ -16,14 +16,14 @@ export function login(username, password) {
   };
 }
 
+export function loginFailed(error) {
+  return { type: type.LOGIN_FAILED, error: error };
+}
 function loginStart() {
   return { type: type.LOGIN };
 }
 
 function loginSuccess(data) {
-  return { type: type.LOGIN_SUCCESSFUL, user: data };
+  return { type: type.LOGIN_SUCCESSFUL, data: data };
 }
 
-function loginFailed(error) {
-  return { type: type.LOGIN_FAILED, error: error };
-}

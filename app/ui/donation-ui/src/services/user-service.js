@@ -8,7 +8,7 @@ class UserService extends BaseService {
     let q = new Promise((resolve, reject) => {
       setTimeout(() => {
         if (username === "admin") {
-          resolve({ user: "admin" });
+          resolve({data :{ user: "admin" , token : 'AUTH_TOKEN' }});
         } else {
           reject({ msg: "Invalid username or password" });
         }
