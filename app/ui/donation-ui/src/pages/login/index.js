@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import "./login.css";
-
+import * as actions from "./action";
+import { Alert } from "components/alert";
 class Login extends Component {
-
-  onLogin(){
-    window.isLoggedIn = true;
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.onLogin(this.refs.username.value, this.refs.password.value);
   }
   render() {
     return (
@@ -15,12 +16,14 @@ class Login extends Component {
             <section className="login_content">
               <form>
                 <h1>Donation Manager</h1>
+                <Alert type="danger" message={this.props.errorMessage} />
                 <div>
                   <input
                     type="text"
                     className="form-control"
                     placeholder="Username"
                     required=""
+                    ref="username"
                   />
                 </div>
                 <div>
@@ -29,12 +32,18 @@ class Login extends Component {
                     className="form-control"
                     placeholder="Password"
                     required=""
+                    ref="password"
                   />
                 </div>
                 <div>
-                  <Link onClick={()=>{this.onLogin()}} to="/user" className="btn btn-default submit" >
-                    Log in
-                  </Link>
+                  <button
+                    onClick={e => {
+                      this.onSubmit(e);
+                    }}
+                    className="btn btn-default submit"
+                  >
+                    {this.props.isLoading ? "Loading..." : "Log in"}
+                  </button>
                 </div>
 
                 <div className="clearfix" />
@@ -47,4 +56,10 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({ ...state.auth });
+
+const mapDispatchToProps = dispatch => ({
+  onLogin: (username, password) => dispatch(actions.login(username, password))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
