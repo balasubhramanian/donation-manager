@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
 import $ from "jquery";
 
 const Menus = [
@@ -7,10 +9,12 @@ const Menus = [
     icon: "fa-money",
     children: [
       {
-        title: "All Fundrising"
+        title: "All Fundrising",
+        path: "/fundraising"
       },
       {
-        title: "Add New"
+        title: "Add New",
+        path: "/fundraising/new"
       }
     ]
   },
@@ -19,10 +23,12 @@ const Menus = [
     icon: "fa-user-o",
     children: [
       {
-        title: "All Donor"
+        title: "All Donor",
+        path: "/donor"
       },
       {
-        title: "Add New"
+        title: "Add New",
+        path: "/donor/new"
       }
     ]
   },
@@ -31,7 +37,8 @@ const Menus = [
     icon: "fa-gear",
     children: [
       {
-        title: "User"
+        title: "User",
+        path: "/user"
       },
       {
         title: "Role & Permission"
@@ -52,7 +59,11 @@ const SubMenu = props => {
       {props.items.map(item => {
         return (
           <li>
-            <a href="#">{item.title}</a>
+            {item.path ? (
+              <Link to={item.path}>{item.title}</Link>
+            ) : (
+              <a>{item.title}</a>
+            )}
           </li>
         );
       })}
@@ -128,7 +139,7 @@ export default class Sidebar extends Component {
             className="main_menu_side hidden-print main_menu"
           >
             <div className="menu_section">
-              <Menu items = {Menus}/>
+              <Menu items={Menus} />
             </div>
           </div>
         </div>

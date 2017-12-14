@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import $ from "jquery";
 import { connect } from "react-redux";
-import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
+import { NavDropdown, MenuItem } from "react-bootstrap";
 
 class TopNav extends Component {
   componentDidMount() {
