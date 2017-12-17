@@ -69,3 +69,22 @@ ul.name-list p {
     text-align: left;
     color: #b51a1a;
 }
+
+.ReactTable {
+    font-size: 14px;
+}
+
+.rt-thead {
+    background: rgba(52, 73, 94, 0.94);
+    color: #ECF0F1;
+}
+
+.rt-tbody .rt-td,
+.rt-thead .rt-th {
+    padding: 8px !important;
+    text-align: left
+}
+
+a {
+    cursor: pointer;
+}

@@ -38,7 +38,7 @@ class TopNav extends Component {
               </a>
             </div>
             <ul className="nav navbar-nav navbar-right">
-              <NavDropdown eventKey={3} title={this.props.user} className="">
+              <NavDropdown id="user-dp" eventKey={3} title={this.props.user} className="">
                 <MenuItem
                   eventKey={3.1}
                   onClick={() => {

@@ -58,7 +58,7 @@ const SubMenu = props => {
     <ul className="nav child_menu">
       {props.items.map(item => {
         return (
-          <li>
+          <li key={item.title}>
             {item.path ? (
               <Link to={item.path}>{item.title}</Link>
             ) : (
@@ -75,7 +75,7 @@ const Menu = props => {
     <ul className="nav side-menu">
       {props.items.map(item => {
         return (
-          <li>
+          <li key={item.title}>
             <a>
               <i className={"fa " + item.icon} /> {item.title}
               {item.children ? (
@@ -84,7 +84,7 @@ const Menu = props => {
                 <span />
               )}
             </a>
-            <SubMenu items={item.children} />
+            <SubMenu key={item.title} items={item.children} />
           </li>
         );
       })}
