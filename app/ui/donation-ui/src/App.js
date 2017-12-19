@@ -6,6 +6,7 @@ import { ConnectedRouter } from "react-router-redux";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
+import "react-table/react-table.css";
 
 import LoginPage from "pages/login";
 import AppLayout from "layout/left-nav-layout";
