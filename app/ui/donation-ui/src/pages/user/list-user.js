@@ -1,19 +1,26 @@
 import React, { Component } from "react";
 import { Modal, Button, Collapse } from "react-bootstrap";
 import ReactTable from "react-table";
-import "react-table/react-table.css";
+import CollapsablePanel from "components/collapsable-panel";
 
 export default class ListUser extends Component {
   constructor(props) {
     super(props);
+    
+    this.state = { data: [],isLoading:true ,showModal: false ,pages : 1};
+    setTimeout(()=>{this.fetchData()},2000);
+  }
+
+  fetchData(){
     let arr = [];
     for (let i = 0; i < 100; i++) {
       arr.push(this.buildTest(i));
     }
-    this.state = { data: arr, showModal: false, searchShow: false };
+    this.setState({data : arr,isLoading:false})
   }
 
-  buildTest(counter) {
+  buildTest() {
+    let counter = (Math.random()*100).toFixed(0);
     const statusChance = Math.random();
     return {
       firstName: "User" + counter,
@@ -32,142 +39,123 @@ export default class ListUser extends Component {
     this.setState({ showModal: !this.state.showModal, selectedRow: row });
   }
 
+  renderSearchBox() {
+    return (
+      <CollapsablePanel title="Search">
+        <form className="form-horizontal form-label-left" noValidate="">
+          <div className="item form-group">
+            <label
+              className="control-label col-md-3 col-sm-3 col-xs-12"
+              htmlFor="name"
+            >
+              Id <span className="required" />
+            </label>
+            <div className="col-md-6 col-sm-6 col-xs-12">
+              <input
+                id="name"
+                className="form-control col-md-7 col-xs-12"
+                name="name"
+                type="text"
+              />
+            </div>
+            <div className="alert" />
+          </div>
+          <div className="item form-group">
+            <label
+              className="control-label col-md-3 col-sm-3 col-xs-12"
+              htmlFor="name"
+            >
+              Name <span className="required" />
+            </label>
+            <div className="col-md-6 col-sm-6 col-xs-12">
+              <input
+                id="name"
+                className="form-control col-md-7 col-xs-12"
+                name="name"
+                type="text"
+              />
+            </div>
+            <div className="alert" />
+          </div>
+          <div className="item form-group">
+            <label
+              className="control-label col-md-3 col-sm-3 col-xs-12"
+              htmlFor="name"
+            >
+              Phone <span className="required" />
+            </label>
+            <div className="col-md-6 col-sm-6 col-xs-12">
+              <input
+                id="name"
+                className="form-control col-md-7 col-xs-12"
+                name="name"
+                type="text"
+              />
+            </div>
+            <div className="alert" />
+          </div>
+          <div className="item form-group">
+            <label
+              className="control-label col-md-3 col-sm-3 col-xs-12"
+              htmlFor="name"
+            >
+              Street <span className="required" />
+            </label>
+            <div className="col-md-6 col-sm-6 col-xs-12">
+              <input
+                id="name"
+                className="form-control col-md-7 col-xs-12"
+                name="name"
+                type="text"
+              />
+            </div>
+            <div className="alert" />
+          </div>
+
+          <div className="ln_solid" />
+          <div className="form-group">
+            <div className="col-md-6 col-md-offset-3">
+              <button id="send" type="submit" className="btn btn-success">
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </CollapsablePanel>
+    );
+  }
+
   render() {
+
+    const Layout = (props)=>{
+      return <div><div className="page-title">
+      <div className="title_left">
+        <h3>{props.title}</h3>
+      </div>
+
+      <div className="title_right">
+        <a href="add-user.html" className="btn btn-info pull-right">
+          Add
+        </a>
+      </div>
+    </div>
+    <div className="clearfix" />
+    {props.searchBox()}
+    <div className="row">
+      <div className="col-md-12 col-sm-12 col-xs-12">
+        <div className="x_panel">
+          <div className="x_content">
+            <div className="table-responsive">{props.children}</div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+    }
     return (
       <div>
-        <div className="page-title">
-          <div className="title_left">
-            <h3>Users</h3>
-          </div>
-
-          <div className="title_right">
-            <a href="add-user.html" className="btn btn-info pull-right">
-              Add
-            </a>
-          </div>
-        </div>
-        <div className="clearfix" />
-        <div className="row">
-          <div className="col-md-12 col-sm-12 col-xs-12">
-            <div className="x_panel" style={{ height: "auto" }}>
-              <div
-                className="x_title"
-                onClick={() => {
-                  this.setState({ searchShow: !this.state.searchShow });
-                }}
-              >
-                <h2 className="collapse-link">Search</h2>
-                <ul className="nav navbar-right panel_toolbox">
-                  <li>
-                    <a className="collapse-link">
-                      <i className="fa fa-chevron-down" />
-                    </a>
-                  </li>
-                </ul>
-                <div className="clearfix" />
-              </div>
-              <Collapse in={this.state.searchShow}>
-                <div className="x_content">
-                  <form
-                    className="form-horizontal form-label-left"
-                    noValidate=""
-                  >
-                    <div className="item form-group">
-                      <label
-                        className="control-label col-md-3 col-sm-3 col-xs-12"
-                        htmlFor="name"
-                      >
-                        Id <span className="required" />
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input
-                          id="name"
-                          className="form-control col-md-7 col-xs-12"
-                          name="name"
-                          type="text"
-                        />
-                      </div>
-                      <div className="alert" />
-                    </div>
-                    <div className="item form-group">
-                      <label
-                        className="control-label col-md-3 col-sm-3 col-xs-12"
-                        htmlFor="name"
-                      >
-                        Name <span className="required" />
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input
-                          id="name"
-                          className="form-control col-md-7 col-xs-12"
-                          name="name"
-                          type="text"
-                        />
-                      </div>
-                      <div className="alert" />
-                    </div>
-                    <div className="item form-group">
-                      <label
-                        className="control-label col-md-3 col-sm-3 col-xs-12"
-                        htmlFor="name"
-                      >
-                        Phone <span className="required" />
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input
-                          id="name"
-                          className="form-control col-md-7 col-xs-12"
-                          name="name"
-                          type="text"
-                        />
-                      </div>
-                      <div className="alert" />
-                    </div>
-                    <div className="item form-group">
-                      <label
-                        className="control-label col-md-3 col-sm-3 col-xs-12"
-                        htmlFor="name"
-                      >
-                        Street <span className="required" />
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input
-                          id="name"
-                          className="form-control col-md-7 col-xs-12"
-                          name="name"
-                          type="text"
-                        />
-                      </div>
-                      <div className="alert" />
-                    </div>
-
-                    <div className="ln_solid" />
-                    <div className="form-group">
-                      <div className="col-md-6 col-md-offset-3">
-                        <button
-                          id="send"
-                          type="submit"
-                          className="btn btn-success"
-                        >
-                          Submit
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </Collapse>
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12 col-sm-12 col-xs-12">
-            <div className="x_panel">
-              <div className="x_content">
-                <div className="table-responsive">{this.render1()}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+       <Layout title="Users" searchBox={this.renderSearchBox}>
+                <div className="table-responsive">{this.renderTable()}</div>
+                </Layout>
         {this.renderModal()}
       </div>
     );
@@ -204,13 +192,23 @@ export default class ListUser extends Component {
       </Modal>
     );
   }
+  fetchData1(state, instance){
+    console.log(state.pageSize,
+      state.page,
+      state.sorted,
+      state.filtered);
 
-  render1() {
-    const { data } = this.state;
+  }
+
+  renderTable() {
+    const { data,isLoading,pages } = this.state;
     return (
       <div>
         <ReactTable
           data={data}
+          loading = {isLoading}
+          pages = {pages}
+          onFetchData={this.fetchData1}
           columns={[
             {
               Header: "First Name",
