@@ -1,9 +1,11 @@
-package com.bala.donation.init;
+package com.bala.donation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan("com.bala.donation")
 public class Application {
 
     public static void main(String[] args) {
