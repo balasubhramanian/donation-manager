@@ -88,3 +88,10 @@ ul.name-list p {
 a {
     cursor: pointer;
 }
+
+.global-msg.alert {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

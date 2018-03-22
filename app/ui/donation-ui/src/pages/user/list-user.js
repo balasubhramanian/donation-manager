@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Modal, Button, Collapse } from "react-bootstrap";
 import ReactTable from "react-table";
 import CollapsablePanel from "components/collapsable-panel";
+import { toast } from 'react-toastify';
 
 export default class ListUser extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export default class ListUser extends Component {
   }
 
   fetchData(){
+    toast.error('Fetching Data')
     let arr = [];
     for (let i = 0; i < 100; i++) {
       arr.push(this.buildTest(i));

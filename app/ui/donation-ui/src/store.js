@@ -12,6 +12,10 @@ export const history = createHistory()
 const initialState = {
   auth : {
 
+  },
+  globalMsg : {
+    type : null,
+    value : null
   }
 }
 

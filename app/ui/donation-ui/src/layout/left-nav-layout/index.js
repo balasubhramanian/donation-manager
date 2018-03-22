@@ -5,8 +5,11 @@ import Footer from "./footer";
 import "./theme.css";
 import "./main.css";
 import $ from "jquery";
+import { Alert } from "components/alert";
+import { connect } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
 
-export default class LeftNavLayout extends Component {
+class LeftNavLayout extends Component {
   setContentHeight() {
     var $BODY = $("#root-container"),
       $SIDEBAR_FOOTER = $(".sidebar-footer"),
@@ -36,10 +39,17 @@ export default class LeftNavLayout extends Component {
     return (
       <div id="root-container" className="nav-md">
         <div className="container body">
+          <ToastContainer autoClose={8000} />
           <div className="main_container">
             <Sidebar />
             <TopNav />
             <div className="right_col" role="main">
+              <Alert className="global-msg"
+                type={this.props.globalMsg ? this.props.globalMsg.type : null}
+                message={
+                  this.props.globalMsg ? this.props.globalMsg.value : null
+                }
+              />
               {this.props.children}
               <Footer />
             </div>
@@ -49,3 +59,11 @@ export default class LeftNavLayout extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  globalMsg: state.globalMsg
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeftNavLayout);
