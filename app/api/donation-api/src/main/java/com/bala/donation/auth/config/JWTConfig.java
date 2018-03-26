@@ -67,13 +67,13 @@ public class JWTConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/").permitAll().antMatchers("/console/**").permitAll()
-                .antMatchers("/swagger-ui.html").permitAll().antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/**").permitAll().antMatchers("/v2/api-docs/**").permitAll()
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/").permitAll().antMatchers("/console/**")
+                .permitAll().antMatchers("/swagger-ui.html").permitAll().antMatchers("/swagger-resources/**")
+                .permitAll().antMatchers("/webjars/**").permitAll().antMatchers("/v2/api-docs/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll().anyRequest().authenticated().and()
                 // We filter the api/login requests
-                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
-                        UsernamePasswordAuthenticationFilter.class)
+                // .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+                // UsernamePasswordAuthenticationFilter.class)
                 // And filter other requests to check the presence of JWT in header
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }

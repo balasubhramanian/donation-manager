@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bala.donation.auth.config.TokenAuthenticationService;
+import com.bala.donation.auth.model.AppUserDetails;
 import com.bala.donation.auth.model.AuthRequest;
 import com.bala.donation.auth.model.AuthResponse;
 
@@ -28,6 +29,8 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(token);
         if (authentication.isAuthenticated()) {
             AuthResponse authResponse = new AuthResponse();
+            AppUserDetails appUserDetails = (AppUserDetails) authentication.getPrincipal();
+            authResponse.setFirstname(appUserDetails.getFirstname());
             authResponse.setToken(TokenAuthenticationService.getJWTToken(request.getUsername()));
             return authResponse;
         }

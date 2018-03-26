@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import com.bala.donation.auth.model.AppUserDetails;
 import com.bala.donation.user.rest.model.PermissionModel;
 import com.bala.donation.user.rest.model.User;
 import com.bala.donation.user.service.UserService;
@@ -37,8 +38,8 @@ public class AuthService implements UserDetailsService {
             return authority;
         }).collect(Collectors.toSet());
 
-        org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
-                username, user.getPassword(), authorities);
+        AppUserDetails userDetails = new AppUserDetails(username, user.getPassword(), authorities);
+        userDetails.setFirstname(user.getFirstname());
         return userDetails;
     }
 
