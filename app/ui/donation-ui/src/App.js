@@ -11,6 +11,7 @@ import "react-table/react-table.css";
 import LoginPage from "pages/login";
 import AppLayout from "layout/left-nav-layout";
 import ListUserPage from "pages/user/list-user";
+import AddUserPage from "pages/user/add-user";
 import DonorPage from "pages/donor";
 import Fundraising from "pages/fundraising";
 
@@ -21,7 +22,8 @@ const ProtectedContainer = props => {
   return (
     <AppLayout>
       <Route exact path="/" component={Fundraising} />
-      <Route path="/user" component={ListUserPage} />
+      <Route exact path="/user" component={ListUserPage} />
+      <Route path="/user/add" component={AddUserPage} />
       <Route path="/fundraising" component={Fundraising} />
       <Route path="/donor" component={DonorPage} />
     </AppLayout>

@@ -28,7 +28,9 @@ class TopNav extends Component {
     });
   }
   render() {
+    console.log(this.props);
     return (
+      
       <div className="top_nav">
         <div className="nav_menu">
           <nav>
@@ -38,7 +40,7 @@ class TopNav extends Component {
               </a>
             </div>
             <ul className="nav navbar-nav navbar-right">
-              <NavDropdown id="user-dp" eventKey={3} title={this.props.user} className="">
+              <NavDropdown id="user-dp" eventKey={3} title={this.props.isLoggedIn ? this.props.user.firstname : ""} className="">
                 <MenuItem
                   eventKey={3.1}
                   onClick={() => {

@@ -2,27 +2,29 @@ import React, { Component } from "react";
 import { Modal, Button, Collapse } from "react-bootstrap";
 import ReactTable from "react-table";
 import CollapsablePanel from "components/collapsable-panel";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import UserService from "services/user-service";
+import { Link } from "react-router-dom";
 
 export default class ListUser extends Component {
   constructor(props) {
     super(props);
-    
-    this.state = { data: [],isLoading:true ,showModal: false ,pages : 1};
-    setTimeout(()=>{this.fetchData()},2000);
+    this.state = { data: [], isLoading: true, showModal: false, pages: 1 };
+    this.fetchData();
   }
 
-  fetchData(){
-    toast.error('Fetching Data')
-    let arr = [];
-    for (let i = 0; i < 100; i++) {
-      arr.push(this.buildTest(i));
-    }
-    this.setState({data : arr,isLoading:false})
+  fetchData() {
+    UserService.getAllUser()
+      .then(response => {
+        this.setState({ data: response.data, isLoading: false });
+      })
+      .catch(err => {
+        this.setState({ isLoading: false });
+      });
   }
 
   buildTest() {
-    let counter = (Math.random()*100).toFixed(0);
+    let counter = (Math.random() * 100).toFixed(0);
     const statusChance = Math.random();
     return {
       firstName: "User" + counter,
@@ -128,36 +130,39 @@ export default class ListUser extends Component {
   }
 
   render() {
+    const Layout = props => {
+      return (
+        <div>
+          <div className="page-title">
+            <div className="title_left">
+              <h3>{props.title}</h3>
+            </div>
 
-    const Layout = (props)=>{
-      return <div><div className="page-title">
-      <div className="title_left">
-        <h3>{props.title}</h3>
-      </div>
-
-      <div className="title_right">
-        <a href="add-user.html" className="btn btn-info pull-right">
-          Add
-        </a>
-      </div>
-    </div>
-    <div className="clearfix" />
-    {props.searchBox()}
-    <div className="row">
-      <div className="col-md-12 col-sm-12 col-xs-12">
-        <div className="x_panel">
-          <div className="x_content">
-            <div className="table-responsive">{props.children}</div>
+            <div className="title_right">
+              <Link to="/user/add" className="btn btn-info pull-right">
+                Add
+              </Link>
+            </div>
+          </div>
+          <div className="clearfix" />
+          {props.searchBox()}
+          <div className="row">
+            <div className="col-md-12 col-sm-12 col-xs-12">
+              <div className="x_panel">
+                <div className="x_content">
+                  <div className="table-responsive">{props.children}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div></div>
-    }
+      );
+    };
     return (
       <div>
-       <Layout title="Users" searchBox={this.renderSearchBox}>
-                <div className="table-responsive">{this.renderTable()}</div>
-                </Layout>
+        <Layout title="Users" searchBox={this.renderSearchBox}>
+          <div className="table-responsive">{this.renderTable()}</div>
+        </Layout>
         {this.renderModal()}
       </div>
     );
@@ -194,32 +199,41 @@ export default class ListUser extends Component {
       </Modal>
     );
   }
-  fetchData1(state, instance){
-    console.log(state.pageSize,
-      state.page,
-      state.sorted,
-      state.filtered);
-
+  fetchData1(state, instance) {
+    console.log(state.pageSize, state.page, state.sorted, state.filtered);
   }
 
   renderTable() {
-    const { data,isLoading,pages } = this.state;
+    const { data, isLoading, pages } = this.state;
     return (
       <div>
         <ReactTable
           data={data}
-          loading = {isLoading}
-          pages = {pages}
+          loading={isLoading}
+          pages={pages}
           onFetchData={this.fetchData1}
           columns={[
             {
               Header: "First Name",
-              accessor: "firstName"
+              accessor: "firstname"
             },
             {
               Header: "Last Name",
-              id: "lastName",
-              accessor: d => d.lastName,
+              accessor: "lastname"
+            },
+            {
+              Header: "Phone",
+              accessor: "phone"
+            },
+            {
+              Header: "Email",
+              accessor: "email"
+            },
+            {
+              /* {
+              Header: "Last Name",
+              id: "lastname",
+              accessor: d => d.lastname,
               Cell: rowMeta => (
                 <div>
                   <a
@@ -231,6 +245,7 @@ export default class ListUser extends Component {
                   </a>
                 </div>
               )
+            } */
             }
           ]}
           defaultPageSize={10}

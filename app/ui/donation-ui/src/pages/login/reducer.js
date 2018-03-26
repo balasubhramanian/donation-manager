@@ -12,13 +12,12 @@ export default (state = {}, action) => {
         errorMessage: null
       };
     case type.LOGIN_SUCCESSFUL:
-      const authData =  {
+      const authData = {
         isLoading: false,
         isLoggedIn: true,
-        token: action.data.token,
-        user: action.data.user
+        user: action.data
       };
-      localStorage.setItem('user',JSON.stringify(authData));
+      localStorage.setItem("user", JSON.stringify(authData));
       return authData;
     case type.LOGIN_FAILED:
       return {
@@ -27,7 +26,7 @@ export default (state = {}, action) => {
         errorMessage: action.error.msg
       };
     case type.LOGOUT:
-      localStorage.setItem('user',null);
+      localStorage.setItem("user", null);
       return {
         isLoggedIn: false
       };
