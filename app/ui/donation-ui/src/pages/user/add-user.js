@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Modal, Button, Collapse } from "react-bootstrap";
 import ReactTable from "react-table";
 import { FormGroup } from "components/form-group";
+import  {RightLayout}  from "layout/right-layout";
 import { toast } from "react-toastify";
 import UserService from "services/user-service";
 import { Link } from "react-router-dom";
@@ -18,10 +19,19 @@ const AddUserForm = props => {
     handleChange,
     handleBlur,
     handleSubmit,
-    handleReset
+    handleReset,
+    setFieldTouched
   } = props;
+  
+  let beforeSubmit = (e)=>{
+    handleSubmit(e);
+    Object.keys(props.errors).forEach((field)=>{
+      setFieldTouched(field,true);
+    })
+  }
+
   return (
-    <form className="form-horizontal form-label-left" onSubmit={handleSubmit}>
+    <form className="form-horizontal form-label-left" onSubmit={beforeSubmit}>
       {/* {JSON.stringify(props, null, 2)} */}
       <h4>Login Detailss</h4>
       <div className="ln_solid" />
@@ -242,7 +252,7 @@ const AddUserForm = props => {
             id="send"
             type="submit"
             className="btn btn-success"
-            disabled={isSubmitting}
+            disabled={!dirty || isSubmitting }
           >
             Submit
           </button>
@@ -275,10 +285,13 @@ const AddUserFormik = withFormik({
     area: Yup.string(),
     city: Yup.string().required("City is required!"),
     state: Yup.string().required("State is required!"),
-    country: Yup.string().required("State is required!"),
+    country: Yup.string().required("Country is required!"),
     status: Yup.string()
   }),
-  handleSubmit: (values, { setSubmitting }) => {
+  handleSubmit: (values, props) => {
+    let {setSubmitting} =props;
+    console.log(props)
+    alert('form submitted')
     setSubmitting(true);
     UserService.addUser(values)
       .then(res => {
@@ -297,21 +310,6 @@ export default class AddUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSubmitted: false,
-      username: "",
-      password: "",
-      firstname: "",
-      lastname: "",
-      phone: "",
-      email: "",
-      doorno: "",
-      street: "",
-      area: "",
-      city: "",
-      state: "",
-      country: "",
-      roles: [],
-      status: ""
     };
     //this.fetchData();
   }
@@ -326,36 +324,12 @@ export default class AddUser extends Component {
       });
   }
   render() {
-    const Layout = props => {
-      return (
-        <div>
-          <div className="page-title">
-            <div className="title_left">
-              <h3>{props.title}</h3>
-            </div>
-
-            <div className="title_right">
-              <Link to="/user" className="btn btn-info pull-right">
-                Manage
-              </Link>
-            </div>
-          </div>
-          <div className="clearfix" />
-          <div className="row">
-            <div className="col-md-12 col-sm-12 col-xs-12">
-              <div className="x_panel">
-                <div className="x_content">{props.children}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    };
+    
     return (
       <div>
-        <Layout title="Add User">
+        <RightLayout title="Add User" linkTo="/user" linkText="Manage User">
           <AddUserFormik />
-        </Layout>
+        </RightLayout>
       </div>
     );
   }
