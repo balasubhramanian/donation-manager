@@ -1,26 +1,27 @@
 package com.bala.donation.user.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.bala.donation.common.entity.BaseEntity;
 
 @Entity
 @Table(name = "user_login")
-public class UserEntity extends BaseEntity {
+public class UserLoginEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private String password;
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String phone;
+
+    @OneToOne(mappedBy = "userLogin", fetch = FetchType.EAGER)
+    private UserDetailsEntity userDetails;
 
     public Long getId() {
         return id;
@@ -46,36 +47,12 @@ public class UserEntity extends BaseEntity {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public UserDetailsEntity getUserDetails() {
+        return userDetails;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setUserDetails(UserDetailsEntity userDetails) {
+        this.userDetails = userDetails;
     }
 
 }

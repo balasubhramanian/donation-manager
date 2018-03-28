@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 import com.bala.donation.common.exception.AppException;
 import com.bala.donation.common.exception.UserError;
 import com.bala.donation.user.entity.RolePermissionEntity;
-import com.bala.donation.user.entity.UserEntity;
+import com.bala.donation.user.entity.UserDetailsEntity;
+import com.bala.donation.user.entity.UserLoginEntity;
 import com.bala.donation.user.mapper.UserMapper;
 import com.bala.donation.user.repo.RolePermissionRepo;
-import com.bala.donation.user.repo.UserRepo;
+import com.bala.donation.user.repo.UserDetailsRepo;
+import com.bala.donation.user.repo.UserLoginRepo;
 import com.bala.donation.user.repo.UserRoleRepo;
 import com.bala.donation.user.rest.model.PermissionModel;
 import com.bala.donation.user.rest.model.User;
@@ -26,7 +28,10 @@ public class UserService {
     UserMapper userMapper;
 
     @Autowired
-    UserRepo userRepo;
+    UserLoginRepo userLoginRepo;
+
+    @Autowired
+    UserDetailsRepo userDetailsRepo;
 
     @Autowired
     RolePermissionRepo rolePermissionRepo;
@@ -35,20 +40,23 @@ public class UserService {
     UserRoleRepo userRoleRepo;
 
     public List<User> getAllUsers() {
-        List<UserEntity> userEntities = userRepo.findAll();
+        List<UserLoginEntity> userEntities = userLoginRepo.findAll();
         List<User> users = userMapper.toUser(userEntities);
         return users;
     }
 
     @Transactional
     public void saveUser(User user) {
-        UserEntity userEntity = userMapper.toUserEntity(user);
+        UserLoginEntity userEntity = userMapper.toUserEntity(user);
         userEntity.setPassword(user.getPassword());
-        userRepo.save(userEntity);
+        UserDetailsEntity userDetailsEntity = userMapper.toUserDetailsEntity(user);
+        userDetailsEntity.setUserLogin(userEntity);
+        userLoginRepo.save(userEntity);
+        userDetailsRepo.save(userDetailsEntity);
     }
 
     public User getUserForLogin(String username) {
-        UserEntity userEntity = userRepo.findByUsername(username);
+        UserLoginEntity userEntity = userLoginRepo.findByUsername(username);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
@@ -59,7 +67,7 @@ public class UserService {
     }
 
     public User getUsers(Long id) {
-        UserEntity userEntity = userRepo.findOne(id);
+        UserLoginEntity userEntity = userLoginRepo.findOne(id);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
@@ -68,22 +76,22 @@ public class UserService {
     }
 
     public void updateUser(Long id, User user) {
-        UserEntity userEntity = userRepo.findOne(id);
+        UserLoginEntity userEntity = userLoginRepo.findOne(id);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
-        UserEntity updatedUserEntity = userMapper.toUserEntity(user);
-        userRepo.save(updatedUserEntity);
+        UserLoginEntity updatedUserEntity = userMapper.toUserEntity(user);
+        userLoginRepo.save(updatedUserEntity);
     }
 
     @Transactional
     public void deleteUser(Long id) {
-        UserEntity userEntity = userRepo.findOne(id);
+        UserLoginEntity userEntity = userLoginRepo.findOne(id);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
         userRoleRepo.deleteByUserId(id);
-        userRepo.delete(userEntity);
+        userLoginRepo.delete(userEntity);
     }
 
     public List<PermissionModel> getAllPermissionForUser(Long id) {

@@ -25,12 +25,12 @@ import com.bala.donation.common.exception.UserError;
 import com.bala.donation.user.entity.PermissionEntity;
 import com.bala.donation.user.entity.RoleEntity;
 import com.bala.donation.user.entity.RolePermissionEntity;
-import com.bala.donation.user.entity.UserEntity;
+import com.bala.donation.user.entity.UserLoginEntity;
 import com.bala.donation.user.entity.UserRoleEntity;
 import com.bala.donation.user.repo.PermisssionRepo;
 import com.bala.donation.user.repo.RolePermissionRepo;
 import com.bala.donation.user.repo.RoleRepo;
-import com.bala.donation.user.repo.UserRepo;
+import com.bala.donation.user.repo.UserLoginRepo;
 import com.bala.donation.user.repo.UserRoleRepo;
 import com.bala.donation.user.rest.model.PermissionModel;
 import com.bala.donation.user.rest.model.RoleModel;
@@ -48,7 +48,7 @@ public class UserControllerImpl implements UserController {
     UserService userService;
 
     @Autowired
-    UserRepo userRepo;
+    UserLoginRepo userRepo;
 
     @Autowired
     RoleRepo roleRepo;
@@ -226,7 +226,7 @@ public class UserControllerImpl implements UserController {
     @RequestMapping(path = "/user/{id}/role", method = RequestMethod.POST)
     public void addRoleToUser(@PathVariable("id") Long userId, @Valid @RequestBody List<RoleModel> roleModels) {
 
-        UserEntity userEntity = userRepo.findOne(userId);
+        UserLoginEntity userEntity = userRepo.findOne(userId);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
@@ -247,7 +247,7 @@ public class UserControllerImpl implements UserController {
     @RequestMapping(path = "/user/{id}/role", method = RequestMethod.DELETE)
     public void removeRoleFromUser(@PathVariable("id") Long userId, @Valid @RequestBody List<RoleModel> roleModels) {
 
-        UserEntity userEntity = userRepo.findOne(userId);
+        UserLoginEntity userEntity = userRepo.findOne(userId);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
@@ -269,7 +269,7 @@ public class UserControllerImpl implements UserController {
     @RequestMapping(path = "/user/{id}/role", method = RequestMethod.GET)
     public List<RoleModel> getAllRoleForUser(@PathVariable("id") Long userId) {
 
-        UserEntity userEntity = userRepo.findOne(userId);
+        UserLoginEntity userEntity = userRepo.findOne(userId);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }

@@ -2,70 +2,119 @@ import React, { Component } from "react";
 import { Modal, Button, Collapse } from "react-bootstrap";
 import ReactTable from "react-table";
 import { FormGroup } from "components/form-group";
-import  {RightLayout}  from "layout/right-layout";
+import { RightLayout } from "layout/right-layout";
 import { toast } from "react-toastify";
 import UserService from "services/user-service";
 import { Link } from "react-router-dom";
 import { withFormik } from "formik";
 import Yup from "yup";
 
-const AddUserForm = props => {
+const AddressDetails = props=>{
   const {
     values,
     touched,
     errors,
-    dirty,
-    isSubmitting,
     handleChange,
     handleBlur,
-    handleSubmit,
-    handleReset,
-    setFieldTouched
   } = props;
-  
-  let beforeSubmit = (e)=>{
-    handleSubmit(e);
-    Object.keys(props.errors).forEach((field)=>{
-      setFieldTouched(field,true);
-    })
-  }
+  return <div><h4>Address</h4>
+  <div className="ln_solid" />
+  <FormGroup
+    label="Door No"
+    required={true}
+    error={errors.doorno}
+    touched={touched.doorno}
+  >
+    <input
+      id="doorno"
+      value={values.doorno}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      className="form-control col-md-7 col-xs-12"
+      type="text"
+    />
+  </FormGroup>
+  <FormGroup
+    label="Street"
+    required={true}
+    error={errors.street}
+    touched={touched.street}
+  >
+    <input
+      id="street"
+      value={values.street}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      className="form-control col-md-7 col-xs-12"
+      type="text"
+    />
+  </FormGroup>
+  <FormGroup label="Area" error={errors.area} touched={touched.area}>
+    <input
+      id="area"
+      value={values.area}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      className="form-control col-md-7 col-xs-12"
+      type="text"
+    />
+  </FormGroup>
+  <FormGroup
+    label="City"
+    required={true}
+    error={errors.city}
+    touched={touched.city}
+  >
+    <input
+      id="city"
+      value={values.city}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      className="form-control col-md-7 col-xs-12"
+      type="text"
+    />
+  </FormGroup>
+  <FormGroup
+    label="State"
+    required={true}
+    error={errors.state}
+    touched={touched.state}
+  >
+    <input
+      id="state"
+      value={values.state}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      className="form-control col-md-7 col-xs-12"
+      type="text"
+    />
+  </FormGroup>
+  <FormGroup
+    label="Country"
+    required={true}
+    error={errors.country}
+    touched={touched.country}
+  >
+    <input
+      id="country"
+      value={values.country}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      className="form-control col-md-7 col-xs-12"
+      type="text"
+    />
+  </FormGroup></div>
+}
+const PersonalDetails = props=>{
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+  } = props;
 
-  return (
-    <form className="form-horizontal form-label-left" onSubmit={beforeSubmit}>
-      {/* {JSON.stringify(props, null, 2)} */}
-      <h4>Login Detailss</h4>
-      <div className="ln_solid" />
-      <FormGroup
-        label="Username"
-        required={true}
-        error={errors.username}
-        touched={touched.username}
-      >
-        <input
-          id="username"
-          value={values.username}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className="form-control col-md-7 col-xs-12"
-          type="text"
-        />
-      </FormGroup>
-      <FormGroup
-        label="Password"
-        required={true}
-        error={errors.password}
-        touched={touched.password}
-      >
-        <input
-          id="password"
-          value={values.password}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className="form-control col-md-7 col-xs-12"
-          type="text"
-        />
-      </FormGroup>
-      <h4>Personal Details</h4>
+  return <div><h4>Personal Details</h4>
       <div className="ln_solid" />
       <FormGroup
         label="Firstname"
@@ -121,17 +170,44 @@ const AddUserForm = props => {
           type="text"
         />
       </FormGroup>
-      <h4>Address</h4>
+      </div>
+}
+
+const AddUserForm = props => {
+  const {
+    values,
+    touched,
+    errors,
+    dirty,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    handleReset,
+    setFieldTouched
+  } = props;
+
+  let beforeSubmit = e => {
+    handleSubmit(e);
+    Object.keys(props.errors).forEach(field => {
+      setFieldTouched(field, true);
+    });
+  };
+
+  return (
+    <form className="form-horizontal form-label-left" onSubmit={beforeSubmit}>
+      {/* {JSON.stringify(props, null, 2)} */}
+      <h4>Login Details</h4>
       <div className="ln_solid" />
       <FormGroup
-        label="Door No"
+        label="Username"
         required={true}
-        error={errors.doorno}
-        touched={touched.doorno}
+        error={errors.username}
+        touched={touched.username}
       >
         <input
-          id="doorno"
-          value={values.doorno}
+          id="username"
+          value={values.username}
           onChange={handleChange}
           onBlur={handleBlur}
           className="form-control col-md-7 col-xs-12"
@@ -139,75 +215,22 @@ const AddUserForm = props => {
         />
       </FormGroup>
       <FormGroup
-        label="Street"
+        label="Password"
         required={true}
-        error={errors.street}
-        touched={touched.street}
+        error={errors.password}
+        touched={touched.password}
       >
         <input
-          id="street"
-          value={values.street}
+          id="password"
+          value={values.password}
           onChange={handleChange}
           onBlur={handleBlur}
           className="form-control col-md-7 col-xs-12"
           type="text"
         />
       </FormGroup>
-      <FormGroup label="Area" error={errors.area} touched={touched.area}>
-        <input
-          id="area"
-          value={values.area}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className="form-control col-md-7 col-xs-12"
-          type="text"
-        />
-      </FormGroup>
-      <FormGroup
-        label="City"
-        required={true}
-        error={errors.city}
-        touched={touched.city}
-      >
-        <input
-          id="city"
-          value={values.city}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className="form-control col-md-7 col-xs-12"
-          type="text"
-        />
-      </FormGroup>
-      <FormGroup
-        label="State"
-        required={true}
-        error={errors.state}
-        touched={touched.state}
-      >
-        <input
-          id="state"
-          value={values.state}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className="form-control col-md-7 col-xs-12"
-          type="text"
-        />
-      </FormGroup>
-      <FormGroup
-        label="Country"
-        required={true}
-        error={errors.country}
-        touched={touched.country}
-      >
-        <input
-          id="country"
-          value={values.country}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className="form-control col-md-7 col-xs-12"
-          type="text"
-        />
-      </FormGroup>
+      <PersonalDetails {...props}/>
+      <AddressDetails {...props}/>
       <h4>Roles</h4>
       <div className="ln_solid" />
       <div>
@@ -252,7 +275,7 @@ const AddUserForm = props => {
             id="send"
             type="submit"
             className="btn btn-success"
-            disabled={!dirty || isSubmitting }
+            disabled={!dirty || isSubmitting}
           >
             Submit
           </button>
@@ -289,9 +312,9 @@ const AddUserFormik = withFormik({
     status: Yup.string()
   }),
   handleSubmit: (values, props) => {
-    let {setSubmitting} =props;
-    console.log(props)
-    alert('form submitted')
+    let { setSubmitting } = props;
+    console.log(props);
+    alert("form submitted");
     setSubmitting(true);
     UserService.addUser(values)
       .then(res => {
@@ -309,8 +332,7 @@ const AddUserFormik = withFormik({
 export default class AddUser extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
     //this.fetchData();
   }
 
@@ -324,7 +346,6 @@ export default class AddUser extends Component {
       });
   }
   render() {
-    
     return (
       <div>
         <RightLayout title="Add User" linkTo="/user" linkText="Manage User">

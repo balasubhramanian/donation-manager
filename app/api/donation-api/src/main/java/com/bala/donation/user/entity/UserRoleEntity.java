@@ -20,7 +20,7 @@ public class UserRoleEntity extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private UserLoginEntity user;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -34,11 +34,11 @@ public class UserRoleEntity extends BaseEntity {
         this.id = id;
     }
 
-    public UserEntity getUser() {
+    public UserLoginEntity getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(UserLoginEntity user) {
         this.user = user;
     }
 
