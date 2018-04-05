@@ -47,6 +47,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
+    "react-select": "^1.2.1",
     "react-table": "^6.7.4",
     "react-toastify": "^3.2.1",
     "redux": "^3.7.2",
