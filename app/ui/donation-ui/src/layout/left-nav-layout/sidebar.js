@@ -28,7 +28,7 @@ const Menus = [
       },
       {
         title: "Add New",
-        path: "/donor/new"
+        path: "/donor/add"
       }
     ]
   },
@@ -40,9 +40,9 @@ const Menus = [
         title: "User",
         path: "/user"
       },
-      {
-        title: "Role & Permission"
-      },
+      // {
+      //   title: "Role & Permission"
+      // },
       {
         title: "Settings"
       }
