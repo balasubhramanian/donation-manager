@@ -14,9 +14,7 @@ import com.bala.donation.common.entity.BaseEntity;
 @Entity
 @Table(name = "user_details")
 public class UserDetailsEntity extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
     private String firstname;
     private String lastname;
     private String email;
@@ -28,9 +26,7 @@ public class UserDetailsEntity extends BaseEntity {
     private String state;
     private String country;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_login_id")
-    private UserLoginEntity userLogin;
+    @OneToOne(fetch = FetchType.LAZY) @JoinColumn(name = "user_login_id") private UserLoginEntity userLogin;
 
     public String getFirstname() {
         return firstname;
@@ -118,6 +114,14 @@ public class UserDetailsEntity extends BaseEntity {
 
     public void setUserLogin(UserLoginEntity userLogin) {
         this.userLogin = userLogin;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

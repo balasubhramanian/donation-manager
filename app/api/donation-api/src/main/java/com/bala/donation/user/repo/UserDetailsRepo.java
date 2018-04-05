@@ -6,4 +6,8 @@ import com.bala.donation.user.entity.UserDetailsEntity;
 
 public interface UserDetailsRepo extends JpaRepository<UserDetailsEntity, Long> {
 
+    void deleteByUserLoginId(Long id);
+
+    UserDetailsEntity findByUserLoginId(Long id);
+
 }

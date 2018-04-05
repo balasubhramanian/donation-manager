@@ -32,9 +32,27 @@ public class UserMapper {
         return user;
     }
 
+    public List<Donor> toUserDetails(List<UserDetailsEntity> userDetailsEntities) {
+        if (userDetailsEntities == null) {
+            return new ArrayList<>();
+        }
+
+        List<Donor> users = userDetailsEntities.stream().map(this::toUserDetails).collect(Collectors.toList());
+
+        return users;
+    }
+
+    public Donor toUserDetails(UserDetailsEntity entity) {
+        Donor donor = new Donor();
+        toUserDetails(entity, donor);
+        return donor;
+    }
+
     public void toUserDetails(UserDetailsEntity entity, Donor donor) {
         if (entity == null)
             return;
+
+        donor.setId(entity.getId());
         donor.setFirstname(entity.getFirstname());
         donor.setLastname(entity.getLastname());
 
@@ -58,6 +76,10 @@ public class UserMapper {
 
     public UserDetailsEntity toUserDetailsEntity(Donor donor) {
         UserDetailsEntity entity = new UserDetailsEntity();
+        return toUserDetailsEntity(entity, donor);
+    }
+
+    public UserDetailsEntity toUserDetailsEntity(UserDetailsEntity entity, Donor donor) {
         entity.setFirstname(donor.getFirstname());
         entity.setLastname(donor.getLastname());
 

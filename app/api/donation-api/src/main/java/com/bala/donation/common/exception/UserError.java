@@ -1,15 +1,15 @@
 package com.bala.donation.common.exception;
 
 public enum UserError implements AppError {
-    ROLE_NOT_FOUND("role.notdefined", "Role Not Found", SeverityType.NONE,
-            ErrorType.VALIDATION_FAILURE), PERMISSION_NOT_FOUND("permission.notfound", "Permission Not Found",
-                    SeverityType.NONE,
-                    ErrorType.VALIDATION_FAILURE), PERMISSION_NOT_AVAILABLE_FOR_ROLE("permission.notavailable",
-                            "Permission Not available for Role", SeverityType.NONE, ErrorType.VALIDATION_FAILURE),
+    ROLE_NOT_FOUND("role.notdefined", "Role Not Found", SeverityType.NONE, ErrorType.VALIDATION_FAILURE),
+    PERMISSION_NOT_FOUND("permission.notfound", "Permission Not Found", SeverityType.NONE,
+            ErrorType.VALIDATION_FAILURE),
+    PERMISSION_NOT_AVAILABLE_FOR_ROLE("permission.notavailable", "Permission Not available for Role", SeverityType.NONE,
+            ErrorType.VALIDATION_FAILURE),
 
-    USER_NOT_FOUND("user.notfound", "User Not Found", SeverityType.NONE,
-            ErrorType.VALIDATION_FAILURE), ROLE_NOT_AVAILABLE_FOR_USER("role.notavailable",
-                    "Role Not available for User", SeverityType.NONE, ErrorType.VALIDATION_FAILURE)
+    USER_NOT_FOUND("user.notfound", "User Not Found", SeverityType.NONE, ErrorType.VALIDATION_FAILURE),
+    ROLE_NOT_AVAILABLE_FOR_USER("role.notavailable", "Role Not available for User", SeverityType.NONE,
+            ErrorType.VALIDATION_FAILURE)
 
     ;
 
