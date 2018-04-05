@@ -1,6 +1,6 @@
 import UserService from "services/user-service";
 import { history } from "store";
-import * as type from './types'
+import * as type from "./types";
 
 export function login(username, password) {
   return dispatch => {
@@ -10,8 +10,12 @@ export function login(username, password) {
         dispatch(loginSuccess(response.data));
         history.push("/");
       })
-      .catch(error => {
-        dispatch(loginFailed(error));
+      .catch(response => {
+        if (!response.response) {
+          dispatch(loginFailed("Network Error"));
+        } else {
+          dispatch(loginFailed("Invalid username or password"));
+        }
       });
   };
 }
@@ -26,4 +30,3 @@ function loginStart() {
 function loginSuccess(data) {
   return { type: type.LOGIN_SUCCESSFUL, data: data };
 }
-

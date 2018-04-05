@@ -23,7 +23,7 @@ export default (state = {}, action) => {
       return {
         isLoading: false,
         isLoggedIn: false,
-        errorMessage: action.error.msg
+        errorMessage: action.error
       };
     case type.LOGOUT:
       localStorage.setItem("user", null);

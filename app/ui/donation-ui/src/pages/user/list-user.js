@@ -1,42 +1,77 @@
 import React, { Component } from "react";
-import { Modal, Button, Collapse } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Collapse,
+  OverlayTrigger,
+  Tooltip
+} from "react-bootstrap";
 import ReactTable from "react-table";
 import CollapsablePanel from "components/collapsable-panel";
+import Confirm from "components/confirm";
 import { toast } from "react-toastify";
 import UserService from "services/user-service";
 import { Link } from "react-router-dom";
+import { RightLayout } from "layout/right-layout";
 
 export default class ListUser extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], isLoading: true, showModal: false, pages: 1 };
+    this.state = {
+      data: [],
+      isLoading: true,
+      showModal: false,
+      pages: 1,
+      showConfirm: false,
+      idToDelete: null,
+      showFilter: false
+    };
     this.fetchData();
   }
 
   fetchData() {
     UserService.getAllUser()
       .then(response => {
-        this.setState({ data: response.data, isLoading: false });
+        let data = response.data;
+        //  let data = [];
+        //  for (let i = 0; i < 200; i++) {
+        //   data.push({
+        //     area: "khkh",
+        //     city: "khk",
+        //     country: "kjh",
+        //     doorno: "hkj",
+        //     email: "hkj",
+        //     firstname: "User " + i,
+        //     id: 9,
+        //     lastname: "jhkj",
+        //     phone: "hkj",
+        //     state: "jhkjh",
+        //     street: "hkh",
+        //     username: "asdl"
+        //   });
+        // }
+        this.setState({ data: data, isLoading: false });
       })
       .catch(err => {
         this.setState({ isLoading: false });
       });
   }
 
-  buildTest() {
-    let counter = (Math.random() * 100).toFixed(0);
-    const statusChance = Math.random();
-    return {
-      firstName: "User" + counter,
-      lastName: "last User" + counter,
-      age: Math.floor(Math.random() * 30),
-      visits: Math.floor(Math.random() * 100),
-      progress: Math.floor(Math.random() * 100),
-      status:
-        statusChance > 0.66
-          ? "relationship"
-          : statusChance > 0.33 ? "complicated" : "single"
-    };
+  onDelete(rowMeta) {
+    UserService.deleteUser(rowMeta.original.id)
+      .then(response => {
+        let data = [
+          ...this.state.data.slice(0, rowMeta.index),
+          ...this.state.data.slice(rowMeta.index + 1)
+        ];
+        this.setState({
+          data: data,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        this.setState({ isLoading: false });
+      });
   }
 
   toggleModal(row) {
@@ -130,125 +165,115 @@ export default class ListUser extends Component {
   }
 
   render() {
-    const Layout = props => {
-      return (
-        <div>
-          <div className="page-title">
-            <div className="title_left">
-              <h3>{props.title}</h3>
-            </div>
-
-            <div className="title_right">
-              <Link to="/user/add" className="btn btn-info pull-right">
-                Add
-              </Link>
-            </div>
-          </div>
-          <div className="clearfix" />
-          {props.searchBox()}
-          <div className="row">
-            <div className="col-md-12 col-sm-12 col-xs-12">
-              <div className="x_panel">
-                <div className="x_content">
-                  <div className="table-responsive">{props.children}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    };
     return (
       <div>
-        <Layout title="Users" searchBox={this.renderSearchBox}>
+        <RightLayout title="Users" linkTo="/user/add" linkText="Add User">
           <div className="table-responsive">{this.renderTable()}</div>
-        </Layout>
-        {this.renderModal()}
+        </RightLayout>
       </div>
     );
   }
 
-  renderModal() {
-    return (
-      <Modal
-        show={this.state.showModal}
-        onHide={() => {
-          this.toggleModal();
-        }}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h1>
-            {this.state.selectedRow ? this.state.selectedRow.firstName : ""}
-          </h1>
-          <h1>
-            {this.state.selectedRow ? this.state.selectedRow.lastName : ""}
-          </h1>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            onClick={() => {
-              this.toggleModal();
-            }}
-          >
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-  fetchData1(state, instance) {
-    console.log(state.pageSize, state.page, state.sorted, state.filtered);
-  }
-
   renderTable() {
-    const { data, isLoading, pages } = this.state;
+    const { data, isLoading, showFilter } = this.state;
     return (
       <div>
         <ReactTable
           data={data}
+          defaultFilterMethod={(filter, row, column) => {
+            const id = filter.pivotId || filter.id;
+            return row[id] !== undefined
+              ? String(row[id]).indexOf(filter.value) > -1
+              : true;
+          }}
           loading={isLoading}
-          pages={pages}
-          onFetchData={this.fetchData1}
+          defaultPageSize={10}
           columns={[
             {
+              Header: "Id",
+              accessor: "id",
+              filterable: showFilter
+            },
+            {
               Header: "First Name",
-              accessor: "firstname"
+              accessor: "firstname",
+              filterable: showFilter
             },
             {
               Header: "Last Name",
-              accessor: "lastname"
+              accessor: "lastname",
+              filterable: showFilter
             },
             {
               Header: "Phone",
-              accessor: "phone"
+              accessor: "phone",
+              filterable: showFilter
             },
             {
               Header: "Email",
-              accessor: "email"
+              accessor: "email",
+              filterable: showFilter
             },
             {
-              /* {
-              Header: "Last Name",
-              id: "lastname",
-              accessor: d => d.lastname,
+              Header: "Username",
+              accessor: "username",
+              filterable: showFilter
+            },
+            {
+              Header: (
+                <span
+                  style={{
+                    display: "block",
+                    textAlign: "center",
+                    cursor: "pointer"
+                  }}
+                  onClick={() => {
+                    this.setState({ showFilter: !this.state.showFilter });
+                  }}
+                >
+                  <i className="fa fa-filter" />
+                </span>
+              ),
+              sortable: false,
+              id: "id",
+              accessor: d => d.id,
               Cell: rowMeta => (
                 <div>
-                  <a
-                    onClick={() => {
-                      this.toggleModal(rowMeta.row);
-                    }}
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={
+                      <Tooltip id={"edit" + rowMeta.original.id}> Edit</Tooltip>
+                    }
                   >
-                    Edit
-                  </a>
+                    <Link to={"/user/" + rowMeta.original.id + "/edit"}>
+                      <i className="fa fa-edit" />
+                    </Link>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={
+                      <Tooltip id={"delete" + rowMeta.original.id}>
+                        Delete
+                      </Tooltip>
+                    }
+                  >
+                    <Confirm
+                      onConfirm={() => {
+                        this.onDelete(rowMeta);
+                      }}
+                      body="Are you sure you want to delete?"
+                      confirmText="Confirm Delete"
+                      title="Delete User"
+                    >
+                      <a>
+                        <i className="fa fa-trash-o" />
+                      </a>
+                    </Confirm>
+                  </OverlayTrigger>
                 </div>
               )
-            } */
             }
           ]}
-          defaultPageSize={10}
           className="-striped -highlight"
         />
         <br />

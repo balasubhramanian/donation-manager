@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import "./login.css";
 import * as actions from "./action";
 import { Alert } from "components/alert";
+import { ToastContainer, toast } from 'react-toastify';
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +34,7 @@ class Login extends Component {
     const { submitted, username, password } = this.state;
     return (
       <div className="login">
+      <ToastContainer autoClose={8000} />
         <Alert type="danger" message={this.props.errorMessage} />
         <div className="login_wrapper">
           <div className="animate form login_form">
@@ -91,7 +94,7 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state.auth });
+const mapStateToProps = state => ({ ...state.auth});
 
 const mapDispatchToProps = dispatch => ({
   onLogin: (username, password) => dispatch(actions.login(username, password))

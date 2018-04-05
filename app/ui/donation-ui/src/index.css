@@ -1,5 +1,29 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.ReactTable .rt-thead.-filters input,
+.ReactTable .rt-thead.-filters select {
+    color: black !important;
+}
+
+.ReactTable .fa-edit,
+.ReactTable .fa-trash-o {
+    font-size: 15px;
+    padding-right: 10px;
+}
+
+.ReactTable .rt-tbody .rt-td {
+    /* color: black; */
+    font-size: 14px;
+}
+
+.ReactTable.-striped .rt-tr.-odd {
+    background: #fff !important;
+}
+
+.ReactTable .rt-tbody {
+    margin-left: 10px;
 }
