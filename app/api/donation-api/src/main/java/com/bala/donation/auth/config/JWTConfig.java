@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.WebMvcRegistrationsAdapter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
@@ -27,10 +28,8 @@ import com.bala.donation.auth.service.AuthService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class JWTConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    AuthService authService;
-    @Autowired
-    JWTAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired AuthService authService;
+    @Autowired JWTAuthenticationFilter jwtAuthenticationFilter;
 
     // @Bean
     public WebMvcRegistrationsAdapter webMvcRegistrationsHandlerMapping() {
@@ -83,7 +82,8 @@ public class JWTConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(authService).passwordEncoder(getEncoder());
     }
 
-    private PasswordEncoder getEncoder() {
+    @Bean
+    public PasswordEncoder getEncoder() {
         PasswordEncoder encoder = NoOpPasswordEncoder.getInstance();
         return encoder;
     }
