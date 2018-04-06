@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bala.donation.donor.service.DonorService;
 import com.bala.donation.user.rest.model.Donor;
+import com.bala.donation.user.rest.model.DonorSearchModel;
 
 @RestController
 public class DonationController {
@@ -22,8 +23,8 @@ public class DonationController {
     @Autowired DonorService donorService;
 
     @RequestMapping(path = "/donor", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllDonor() {
-        List<Donor> users = donorService.getAllDonor();
+    public ResponseEntity<?> getAllDonor(DonorSearchModel donor) {
+        List<Donor> users = donorService.getAllDonor(donor);
         return ResponseEntity.ok(users);
     }
 
