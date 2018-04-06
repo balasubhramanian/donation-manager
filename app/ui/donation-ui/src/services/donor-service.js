@@ -6,8 +6,8 @@ class DonorService extends BaseService {
     return promise;
   }
 
-  getAllDonor() {
-    return this.get("/donor");
+  getAllDonor(donor) {
+    return this.get("/donor", donor);
   }
 
   getDonor(id) {

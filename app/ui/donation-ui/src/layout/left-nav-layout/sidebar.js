@@ -5,32 +5,47 @@ import $ from "jquery";
 
 const Menus = [
   {
-    title: "Fundraising",
+    title: "Donations",
     icon: "fa-money",
     children: [
       {
-        title: "All Fundrising",
+        title: "Manage Donation Types",
         path: "/fundraising"
       },
       {
-        title: "Add New",
+        title: "Collect Donation",
+        path: "/fundraising/new"
+      },
+      {
+        title: "Pending Donation",
         path: "/fundraising/new"
       }
     ]
   },
   {
     title: "Donors",
+    icon: "fa-male",
+    path: "/donor"
+    // children: [
+    //   {
+    //     title: "All Donor",
+    //     path: "/donor"
+    //   },
+    //   {
+    //     title: "Add New",
+    //     path: "/donor/add"
+    //   }
+    // ]
+  },
+  {
+    title: "Users",
     icon: "fa-user-o",
-    children: [
-      {
-        title: "All Donor",
-        path: "/donor"
-      },
-      {
-        title: "Add New",
-        path: "/donor/add"
-      }
-    ]
+    path: "/user"
+  },
+  {
+    title: "Reports",
+    icon: "fa-line-chart",
+    path: "/user"
   },
   {
     title: "Settings",
@@ -76,14 +91,22 @@ const Menu = props => {
       {props.items.map(item => {
         return (
           <li key={item.title}>
-            <a>
-              <i className={"fa " + item.icon} /> {item.title}
-              {item.children ? (
-                <span className="fa fa-chevron-down" />
-              ) : (
-                <span />
-              )}
-            </a>
+            {item.path ? (
+              <Link to={item.path}>
+                <i className={"fa " + item.icon} />
+                {item.title}
+              </Link>
+            ) : (
+              <a>
+                <i className={"fa " + item.icon} /> {item.title}
+                {item.children ? (
+                  <span className="fa fa-chevron-down" />
+                ) : (
+                  <span />
+                )}
+              </a>
+            )}
+
             <SubMenu key={item.title} items={item.children} />
           </li>
         );

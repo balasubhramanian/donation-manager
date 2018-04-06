@@ -16,17 +16,25 @@ export const RightLayout = props => {
               </Link>
             </div>
           ) : null}
+          <div className="clearfix" />
         </div>
       ) : null}
-      <div className="clearfix" />
-      {props.searchBox ? props.searchBox : null}
-      <div className="row">
-        <div className="col-md-12 col-sm-12 col-xs-12">
-          <div className="x_panel">
-            <div className="x_content">{props.children}</div>
+
+      {props.children ? (
+        <div className="row">
+          <div className="col-md-12 col-sm-12 col-xs-12">
+            <div className="x_panel">
+              {props.panelTitle ? (
+                <div className="x_title">
+                  <h2>{props.panelTitle}</h2>
+                  <div class="clearfix" />
+                </div>
+              ) : null}
+              <div className="x_content">{props.children}</div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };

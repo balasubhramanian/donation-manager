@@ -9,10 +9,15 @@ body {
     color: black !important;
 }
 
-.ReactTable .fa-edit,
-.ReactTable .fa-trash-o {
-    font-size: 15px;
-    padding-right: 10px;
+
+/* .ReactTable .fa-edit,
+.ReactTable .fa-trash-o,
+.ReactTable .fa-key, */
+
+.ReactTable .row-action .fa {
+    font-size: 17px;
+    padding: 3px 12px;
+    cursor: pointer;
 }
 
 .ReactTable .rt-tbody .rt-td {
