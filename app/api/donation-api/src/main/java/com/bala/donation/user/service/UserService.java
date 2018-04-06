@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.bala.donation.common.exception.AppException;
@@ -28,6 +29,8 @@ import com.bala.donation.user.rest.model.User;
 
 @Component
 public class UserService {
+
+    @Autowired PasswordEncoder passwordEncoder;
 
     @Autowired UserMapper userMapper;
 
@@ -79,6 +82,16 @@ public class UserService {
         User user = userMapper.toUser(userEntity);
         user.setRoles(getAllRoleForUser(userId));
         return user;
+    }
+
+    @Transactional
+    public void updatePassword(Long id, User user) {
+        UserLoginEntity userEntity = userLoginRepo.findOne(id);
+        if (userEntity == null) {
+            throw new AppException(UserError.USER_NOT_FOUND);
+        }
+        userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+        userLoginRepo.save(userEntity);
     }
 
     @Transactional

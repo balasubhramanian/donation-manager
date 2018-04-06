@@ -24,6 +24,10 @@ class UserService extends BaseService {
   updateUser(id, payload) {
     return this.post("/user/" + id, payload);
   }
+
+  updatePassword(id, password) {
+    return this.post("/user/" + id + "/password", { password: password });
+  }
 }
 
 export default new UserService();

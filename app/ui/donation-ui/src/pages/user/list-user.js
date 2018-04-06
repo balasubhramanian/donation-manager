@@ -1,18 +1,64 @@
 import React, { Component } from "react";
-import {
-  Modal,
-  Button,
-  Collapse,
-  OverlayTrigger,
-  Tooltip
-} from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import ReactTable from "react-table";
-import CollapsablePanel from "components/collapsable-panel";
 import Confirm from "components/confirm";
-import { toast } from "react-toastify";
+import UpdatePasswordModal from "components/user/update-password-modal";
 import UserService from "services/user-service";
 import { Link } from "react-router-dom";
 import { RightLayout } from "layout/right-layout";
+
+const ActionControls = props => {
+  const { rowMeta, onDelete, onUpdatePassword } = props;
+  return (
+    <div class="row-action">
+      <OverlayTrigger
+        placement="bottom"
+        overlay={<Tooltip id={"edit" + rowMeta.original.id}> Edit</Tooltip>}
+      >
+        <Link to={"/user/" + rowMeta.original.id + "/edit"}>
+          <i className="fa fa-edit" />
+        </Link>
+      </OverlayTrigger>
+
+      <OverlayTrigger
+        placement="bottom"
+        overlay={
+          <Tooltip id={"password" + rowMeta.original.id}>
+            Update Password
+          </Tooltip>
+        }
+      >
+        <a
+          onClick={() => {
+            onUpdatePassword(rowMeta.original.id);
+          }}
+        >
+          <i className="fa fa-key" />
+        </a>
+      </OverlayTrigger>
+
+      <Confirm
+        onConfirm={() => {
+          onDelete(rowMeta.row.id);
+        }}
+        body="Are you sure you want to delete?"
+        confirmText="Confirm Delete"
+        title="Delete User"
+      >
+        <a>
+          <OverlayTrigger
+            placement="bottom"
+            overlay={
+              <Tooltip id={"delete" + rowMeta.original.id}>Delete</Tooltip>
+            }
+          >
+            <i className="fa fa-trash-o" />
+          </OverlayTrigger>
+        </a>
+      </Confirm>
+    </div>
+  );
+};
 
 export default class ListUser extends Component {
   constructor(props) {
@@ -33,23 +79,6 @@ export default class ListUser extends Component {
     UserService.getAllUser()
       .then(response => {
         let data = response.data;
-        //  let data = [];
-        //  for (let i = 0; i < 200; i++) {
-        //   data.push({
-        //     area: "khkh",
-        //     city: "khk",
-        //     country: "kjh",
-        //     doorno: "hkj",
-        //     email: "hkj",
-        //     firstname: "User " + i,
-        //     id: 9,
-        //     lastname: "jhkj",
-        //     phone: "hkj",
-        //     state: "jhkjh",
-        //     street: "hkh",
-        //     username: "asdl"
-        //   });
-        // }
         this.setState({ data: data, isLoading: false });
       })
       .catch(err => {
@@ -78,97 +107,18 @@ export default class ListUser extends Component {
     this.setState({ showModal: !this.state.showModal, selectedRow: row });
   }
 
-  renderSearchBox() {
-    return (
-      <CollapsablePanel title="Search">
-        <form className="form-horizontal form-label-left" noValidate="">
-          <div className="item form-group">
-            <label
-              className="control-label col-md-3 col-sm-3 col-xs-12"
-              htmlFor="name"
-            >
-              Id <span className="required" />
-            </label>
-            <div className="col-md-6 col-sm-6 col-xs-12">
-              <input
-                id="name"
-                className="form-control col-md-7 col-xs-12"
-                name="name"
-                type="text"
-              />
-            </div>
-            <div className="alert" />
-          </div>
-          <div className="item form-group">
-            <label
-              className="control-label col-md-3 col-sm-3 col-xs-12"
-              htmlFor="name"
-            >
-              Name <span className="required" />
-            </label>
-            <div className="col-md-6 col-sm-6 col-xs-12">
-              <input
-                id="name"
-                className="form-control col-md-7 col-xs-12"
-                name="name"
-                type="text"
-              />
-            </div>
-            <div className="alert" />
-          </div>
-          <div className="item form-group">
-            <label
-              className="control-label col-md-3 col-sm-3 col-xs-12"
-              htmlFor="name"
-            >
-              Phone <span className="required" />
-            </label>
-            <div className="col-md-6 col-sm-6 col-xs-12">
-              <input
-                id="name"
-                className="form-control col-md-7 col-xs-12"
-                name="name"
-                type="text"
-              />
-            </div>
-            <div className="alert" />
-          </div>
-          <div className="item form-group">
-            <label
-              className="control-label col-md-3 col-sm-3 col-xs-12"
-              htmlFor="name"
-            >
-              Street <span className="required" />
-            </label>
-            <div className="col-md-6 col-sm-6 col-xs-12">
-              <input
-                id="name"
-                className="form-control col-md-7 col-xs-12"
-                name="name"
-                type="text"
-              />
-            </div>
-            <div className="alert" />
-          </div>
-
-          <div className="ln_solid" />
-          <div className="form-group">
-            <div className="col-md-6 col-md-offset-3">
-              <button id="send" type="submit" className="btn btn-success">
-                Submit
-              </button>
-            </div>
-          </div>
-        </form>
-      </CollapsablePanel>
-    );
-  }
-
   render() {
     return (
       <div>
         <RightLayout title="Users" linkTo="/user/add" linkText="Add User">
           <div className="table-responsive">{this.renderTable()}</div>
+          <UpdatePasswordModal
+            showModal={this.state.showModal}
+            toggleModal={() => {
+              this.toggleModal();
+            }}
+            user={this.state.selectedRow}
+          />
         </RightLayout>
       </div>
     );
@@ -231,46 +181,30 @@ export default class ListUser extends Component {
                     this.setState({ showFilter: !this.state.showFilter });
                   }}
                 >
-                  <i className="fa fa-filter" />
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={<Tooltip id={"filter"}>Search User</Tooltip>}
+                  >
+                    <i className="fa fa-filter" />
+                  </OverlayTrigger>
                 </span>
               ),
               sortable: false,
               id: "id",
               accessor: d => d.id,
               Cell: rowMeta => (
-                <div>
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={
-                      <Tooltip id={"edit" + rowMeta.original.id}> Edit</Tooltip>
-                    }
-                  >
-                    <Link to={"/user/" + rowMeta.original.id + "/edit"}>
-                      <i className="fa fa-edit" />
-                    </Link>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={
-                      <Tooltip id={"delete" + rowMeta.original.id}>
-                        Delete
-                      </Tooltip>
-                    }
-                  >
-                    <Confirm
-                      onConfirm={() => {
-                        this.onDelete(rowMeta);
-                      }}
-                      body="Are you sure you want to delete?"
-                      confirmText="Confirm Delete"
-                      title="Delete User"
-                    >
-                      <a>
-                        <i className="fa fa-trash-o" />
-                      </a>
-                    </Confirm>
-                  </OverlayTrigger>
-                </div>
+                <ActionControls
+                  rowMeta={rowMeta}
+                  onDelete={rowMeta => {
+                    this.onDelete(rowMeta);
+                  }}
+                  onUpdatePassword={userId => {
+                    this.setState({
+                      showModal: true,
+                      selectedRow: userId
+                    });
+                  }}
+                />
               )
             }
           ]}

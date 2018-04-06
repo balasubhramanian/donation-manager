@@ -20,15 +20,14 @@ public class UserMapper {
         }
 
         List<User> users = userEntities.stream().map(this::toUser).collect(Collectors.toList());
-        ;
         return users;
     }
 
     public User toUser(UserLoginEntity userEntity) {
         User user = new User();
+        toUserDetails(userEntity.getUserDetails(), user);
         user.setId(userEntity.getId());
         user.setUsername(userEntity.getUsername());
-        toUserDetails(userEntity.getUserDetails(), user);
         return user;
     }
 

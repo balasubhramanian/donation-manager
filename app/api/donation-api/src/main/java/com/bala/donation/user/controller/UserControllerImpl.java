@@ -43,6 +43,11 @@ public class UserControllerImpl implements UserController {
         return userService.getUsers(id);
     }
 
+    @RequestMapping(path = "/user/{id}/password", method = RequestMethod.POST)
+    public void updatePassword(@PathVariable("id") Long id, @RequestBody User user) {
+        userService.updatePassword(id, user);
+    }
+
     @RequestMapping(path = "/user/{id}", method = RequestMethod.POST)
     public void updateUser(@PathVariable("id") Long id, @Valid @RequestBody User user) {
         userService.updateUser(id, user);
