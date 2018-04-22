@@ -16,7 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.bala.donation.user.rest.model.User;
+import com.bala.donation.user.model.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -29,7 +29,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException, IOException, ServletException {
-        User creds = new ObjectMapper().readValue(req.getInputStream(), User.class);
+        UserModel creds = new ObjectMapper().readValue(req.getInputStream(), UserModel.class);
         System.out.println(
                 "Credential for Login>>>>>>" + creds.getUsername() + ">>>>>password>>>>" + creds.getPassword());
         return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(creds.getUsername(),

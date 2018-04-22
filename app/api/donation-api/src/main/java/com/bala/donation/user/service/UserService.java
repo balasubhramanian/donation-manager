@@ -19,13 +19,13 @@ import com.bala.donation.user.entity.UserDetailsEntity;
 import com.bala.donation.user.entity.UserLoginEntity;
 import com.bala.donation.user.entity.UserRoleEntity;
 import com.bala.donation.user.mapper.UserMapper;
+import com.bala.donation.user.model.PermissionModel;
+import com.bala.donation.user.model.RoleModel;
+import com.bala.donation.user.model.UserModel;
 import com.bala.donation.user.repo.RoleRepo;
 import com.bala.donation.user.repo.UserDetailsRepo;
 import com.bala.donation.user.repo.UserLoginRepo;
 import com.bala.donation.user.repo.UserRoleRepo;
-import com.bala.donation.user.rest.model.PermissionModel;
-import com.bala.donation.user.rest.model.RoleModel;
-import com.bala.donation.user.rest.model.User;
 
 @Component
 public class UserService {
@@ -44,14 +44,14 @@ public class UserService {
 
     @Autowired private RoleRepo roleRepo;
 
-    public List<User> getAllUsers() {
+    public List<UserModel> getAllUsers() {
         List<UserLoginEntity> userEntities = userLoginRepo.findAll();
-        List<User> users = userMapper.toUser(userEntities);
+        List<UserModel> users = userMapper.toUser(userEntities);
         return users;
     }
 
     @Transactional
-    public void saveUser(User user) {
+    public void saveUser(UserModel user) {
         UserLoginEntity userLoginEntity = userMapper.toUserEntity(user);
         userLoginEntity.setPassword(user.getPassword());
         UserDetailsEntity userDetailsEntity = userMapper.toUserDetailsEntity(user);
@@ -63,29 +63,29 @@ public class UserService {
         addRoleToUser(userLoginEntity.getId(), user.getRoles());
     }
 
-    public User getUserForLogin(String username) {
+    public UserModel getUserForLogin(String username) {
         UserLoginEntity userEntity = userLoginRepo.findByUsername(username);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
 
-        User user = userMapper.toUser(userEntity);
+        UserModel user = userMapper.toUser(userEntity);
         user.setPassword(userEntity.getPassword());
         return user;
     }
 
-    public User getUsers(Long userId) {
+    public UserModel getUsers(Long userId) {
         UserLoginEntity userEntity = userLoginRepo.findOne(userId);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
-        User user = userMapper.toUser(userEntity);
+        UserModel user = userMapper.toUser(userEntity);
         user.setRoles(getAllRoleForUser(userId));
         return user;
     }
 
     @Transactional
-    public void updatePassword(Long id, User user) {
+    public void updatePassword(Long id, UserModel user) {
         UserLoginEntity userEntity = userLoginRepo.findOne(id);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
@@ -95,7 +95,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long id, User user) {
+    public void updateUser(Long id, UserModel user) {
         UserLoginEntity userEntity = userLoginRepo.findOne(id);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);

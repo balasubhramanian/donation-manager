@@ -1,4 +1,4 @@
-package com.bala.donation.user.rest.model;
+package com.bala.donation.donor.model;
 
 public class DonorSearchModel {
     private Long id;

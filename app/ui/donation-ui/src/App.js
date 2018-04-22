@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 import "react-table/react-table.css";
 import "react-select/dist/react-select.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 import LoginPage from "pages/login";
 import AppLayout from "layout/left-nav-layout";
@@ -17,6 +18,8 @@ import DonorPage from "pages/donor";
 import AddDonorPage from "pages/donor/add-donor";
 import ListDonorPage from "pages/donor/list-donor";
 import Fundraising from "pages/fundraising";
+import Campaign from "pages/fundraising/campaign";
+import AddCampaign from "pages/fundraising/add-campaign";
 
 const ProtectedContainer = props => {
   if (!props.isLoggedIn) {
@@ -28,10 +31,16 @@ const ProtectedContainer = props => {
       <Route exact path="/user" component={ListUserPage} />
       <Route exact path="/user/add" component={AddUserPage} />
       <Route exact path="/user/:userId/edit" component={AddUserPage} />
+
       <Route exact path="/fundraising" component={Fundraising} />
+
       <Route exact path="/donor" component={ListDonorPage} />
       <Route exact path="/donor/add" component={AddDonorPage} />
       <Route exact path="/donor/:donorId/edit" component={AddDonorPage} />
+
+      <Route exact path="/campaign" component={Campaign} />
+      <Route exact path="/campaign/add" component={AddCampaign} />
+      <Route exact path="/campaign/:campaignId/edit" component={AddCampaign} />
     </AppLayout>
   );
 };

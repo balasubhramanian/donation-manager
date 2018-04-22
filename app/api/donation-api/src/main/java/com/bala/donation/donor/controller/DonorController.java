@@ -1,4 +1,4 @@
-package com.bala.donation.donation.controller;
+package com.bala.donation.donor.controller;
 
 import java.util.List;
 
@@ -13,34 +13,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bala.donation.donor.model.DonorSearchModel;
 import com.bala.donation.donor.service.DonorService;
-import com.bala.donation.user.rest.model.Donor;
-import com.bala.donation.user.rest.model.DonorSearchModel;
+import com.bala.donation.user.model.DonorModel;
 
 @RestController
-public class DonationController {
+public class DonorController {
 
     @Autowired DonorService donorService;
 
     @RequestMapping(path = "/donor", method = RequestMethod.GET)
     public ResponseEntity<?> getAllDonor(DonorSearchModel donor) {
-        List<Donor> users = donorService.getAllDonor(donor);
+        List<DonorModel> users = donorService.getAllDonor(donor);
         return ResponseEntity.ok(users);
     }
 
     @RequestMapping(path = "/donor", method = RequestMethod.POST)
-    public ResponseEntity<?> save(@Valid @RequestBody Donor donor) {
+    public ResponseEntity<?> save(@Valid @RequestBody DonorModel donor) {
         donorService.saveDonor(donor);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(path = "/donor/{id}", method = RequestMethod.GET)
-    public Donor getDonor(@PathVariable("id") Long id) {
+    public DonorModel getDonor(@PathVariable("id") Long id) {
         return donorService.getDonor(id);
     }
 
     @RequestMapping(path = "/donor/{id}", method = RequestMethod.POST)
-    public void updateDonor(@PathVariable("id") Long id, @Valid @RequestBody Donor user) {
+    public void updateDonor(@PathVariable("id") Long id, @Valid @RequestBody DonorModel user) {
         donorService.updateDonor(id, user);
     }
 

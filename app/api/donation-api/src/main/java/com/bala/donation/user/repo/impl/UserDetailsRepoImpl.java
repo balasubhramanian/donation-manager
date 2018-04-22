@@ -7,9 +7,9 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
+import com.bala.donation.donor.model.DonorSearchModel;
 import com.bala.donation.user.entity.UserDetailsEntity;
 import com.bala.donation.user.repo.UserDetailsCustomRepo;
-import com.bala.donation.user.rest.model.DonorSearchModel;
 
 @Repository
 public class UserDetailsRepoImpl implements UserDetailsCustomRepo { // Naming patter should be followed in order to

@@ -10,11 +10,11 @@ import ReactTable from "react-table";
 import CollapsablePanel from "components/collapsable-panel";
 import Confirm from "components/confirm";
 import SearchUser from "components/user/search";
-import DonorService from "services/donor-service";
+import CampaignService from "services/campaign-service";
 import { Link } from "react-router-dom";
 import { RightLayout } from "layout/right-layout";
-
-export default class ListDonor extends Component {
+import DateUtils from "common/date-utils";
+export default class Campaign extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,10 +27,13 @@ export default class ListDonor extends Component {
       showFilter: false
     };
   }
+  componentWillMount() {
+    this.fetchData();
+  }
 
   fetchData(param) {
     this.setState({ isLoading: true });
-    DonorService.getAllDonor(param)
+    CampaignService.getAllCampaign()
       .then(response => {
         let data = response.data;
         this.setState({ data: data, isLoading: false });
@@ -41,7 +44,7 @@ export default class ListDonor extends Component {
   }
 
   onDelete(rowMeta) {
-    DonorService.deleteDonor(rowMeta.original.id)
+    CampaignService.deleteCampaign(rowMeta.original.id)
       .then(response => {
         let data = [
           ...this.state.data.slice(0, rowMeta.index),
@@ -56,10 +59,14 @@ export default class ListDonor extends Component {
         this.setState({ isLoading: false });
       });
   }
-  render() {
+  renderSearch() {
     return (
       <div>
-        <RightLayout title="Donors" linkTo="/donor/add" linkText="Add Donor" />
+        <RightLayout
+          title="Campaigns"
+          linkTo="/campaign/add"
+          linkText="Add Campaign"
+        />
         <CollapsablePanel
           isOpen={this.state.data ? false : true}
           title="Search"
@@ -71,13 +78,17 @@ export default class ListDonor extends Component {
     );
   }
 
-  renderTable() {
+  render() {
     if (!this.state.data) {
       return null;
     }
     const { data, isLoading, showFilter } = this.state;
     return (
-      <RightLayout>
+      <RightLayout
+        title="Campaigns"
+        linkText="Add Campaign"
+        linkTo="/campaign/add"
+      >
         <div className="table-responsive">
           <ReactTable
             data={data}
@@ -96,24 +107,40 @@ export default class ListDonor extends Component {
                 filterable: showFilter
               },
               {
-                Header: "First Name",
-                accessor: "firstname",
+                Header: "Name",
+                accessor: "name",
+                filterable: showFilter
+              },
+              // {
+              //Header: "Description",
+              //accessor: "description",
+              //filterable: showFilter
+              //},
+              {
+                Header: "Type",
+                accessor: "type",
                 filterable: showFilter
               },
               {
-                Header: "Last Name",
-                accessor: "lastname",
-                filterable: showFilter
+                Header: "Start Date",
+                accessor: "startDate",
+                filterable: showFilter,
+                Cell: rowMeta => DateUtils.toAppDate(rowMeta.row.startDate)
               },
+
               {
-                Header: "Phone",
-                accessor: "phone",
-                filterable: showFilter
+                Header: "End Date",
+                accessor: "endDate",
+                filterable: showFilter,
+                Cell: rowMeta => DateUtils.toAppDate(rowMeta.row.endDate)
               },
+
               {
-                Header: "Email",
-                accessor: "email",
-                filterable: showFilter
+                Header: "Status",
+                accessor: "status",
+                filterable: showFilter,
+                Cell: rowMeta =>
+                  rowMeta.row.status === "A" ? "Active" : "Disabled"
               },
               {
                 Header: (
@@ -143,21 +170,8 @@ export default class ListDonor extends Component {
                         </Tooltip>
                       }
                     >
-                      <Link to={"/donor/" + rowMeta.original.id + "/edit"}>
+                      <Link to={"/campaign/" + rowMeta.original.id + "/edit"}>
                         <i className="fa fa-edit" />
-                      </Link>
-                    </OverlayTrigger>
-
-                    <OverlayTrigger
-                      placement="bottom"
-                      overlay={
-                        <Tooltip id={"edit" + rowMeta.original.id}>
-                          Donation Details
-                        </Tooltip>
-                      }
-                    >
-                      <Link to={"/donor/" + rowMeta.original.id + "/details"}>
-                        <i className="fa fa-money" />
                       </Link>
                     </OverlayTrigger>
 
@@ -175,7 +189,7 @@ export default class ListDonor extends Component {
                         }}
                         body="Are you sure you want to delete?"
                         confirmText="Confirm Delete"
-                        title="Delete Donor"
+                        title="Delete Campaign"
                       >
                         <a>
                           <i className="fa fa-trash-o" />

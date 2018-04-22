@@ -5,12 +5,12 @@ import $ from "jquery";
 
 const Menus = [
   {
-    title: "Donations",
+    title: "Fundraising",
     icon: "fa-money",
     children: [
       {
-        title: "Manage Donation Types",
-        path: "/fundraising"
+        title: "Campaign",
+        path: "/campaign"
       },
       {
         title: "Collect Donation",

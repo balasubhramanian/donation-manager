@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bala.donation.config.rest.model.ConfigModel;
+import com.bala.donation.config.model.ConfigModel;
 import com.bala.donation.config.service.ConfigService;
 
 @RestController

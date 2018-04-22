@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bala.donation.user.rest.model.PermissionModel;
-import com.bala.donation.user.rest.model.RoleModel;
+import com.bala.donation.user.model.PermissionModel;
+import com.bala.donation.user.model.RoleModel;
 import com.bala.donation.user.service.RolePermissionService;
 
 @RestController

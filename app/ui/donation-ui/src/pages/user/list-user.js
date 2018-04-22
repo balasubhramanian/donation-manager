@@ -10,7 +10,7 @@ import { RightLayout } from "layout/right-layout";
 const ActionControls = props => {
   const { rowMeta, onDelete, onUpdatePassword } = props;
   return (
-    <div class="row-action">
+    <div className="row-action">
       <OverlayTrigger
         placement="bottom"
         overlay={<Tooltip id={"edit" + rowMeta.original.id}> Edit</Tooltip>}

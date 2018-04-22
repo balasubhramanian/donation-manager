@@ -1,9 +1,14 @@
-package com.bala.donation.user.rest.model;
+package com.bala.donation.user.model;
 
-public class PermissionModel {
+import javax.validation.constraints.NotNull;
+
+public class RoleModel {
 
     private Long id;
+
+    @NotNull
     private String name;
+    @NotNull
     private String description;
 
     public Long getId() {

@@ -1,4 +1,4 @@
-package com.bala.donation.config.rest.model;
+package com.bala.donation.config.model;
 
 public class ConfigModel {
 

@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.bala.donation.auth.model.AppUserDetails;
-import com.bala.donation.user.rest.model.PermissionModel;
-import com.bala.donation.user.rest.model.User;
+import com.bala.donation.user.model.PermissionModel;
+import com.bala.donation.user.model.UserModel;
 import com.bala.donation.user.service.UserService;
 
 @Component
@@ -26,7 +26,7 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userService.getUserForLogin(username);
+        UserModel user = userService.getUserForLogin(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }

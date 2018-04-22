@@ -2,7 +2,14 @@ package com.bala.donation.common.exception;
 
 public enum DonationError implements AppError {
 
-    DONOR_NOT_FOUND("donor.notfound", "DONOR Not Found", SeverityType.NONE, ErrorType.VALIDATION_FAILURE);
+    DONOR_NOT_FOUND("donor.notfound", "Donor Not Found", SeverityType.NONE, ErrorType.VALIDATION_FAILURE),
+
+    CAMPAIGN_TYPE_NOT_FOUND("campaign.type.notfound", "Campaign Type Not Found", SeverityType.NONE,
+            ErrorType.VALIDATION_FAILURE),
+
+    CAMPAIGN_NOT_FOUND("campaign.notfound", "Campaign Not Found", SeverityType.NONE, ErrorType.VALIDATION_FAILURE),
+
+    ;
 
     String errorCode;
     String defaultMessage;

@@ -1,11 +1,11 @@
-package com.bala.donation.user.rest.model;
+package com.bala.donation.user.model;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-public class User extends Donor {
+public class UserModel extends DonorModel {
     private String username;
 
     @JsonProperty(access = Access.WRITE_ONLY) private String password;

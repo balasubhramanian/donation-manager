@@ -1,11 +1,6 @@
 import BaseService from "./base-service";
 
 class DonorService extends BaseService {
-  login(username, password) {
-    let promise = this.post("/login", { username, password });
-    return promise;
-  }
-
   getAllDonor(donor) {
     return this.get("/donor", donor);
   }

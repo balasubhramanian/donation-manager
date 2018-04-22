@@ -7,7 +7,7 @@ import "./main.css";
 import $ from "jquery";
 import { Alert } from "components/alert";
 import { connect } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 class LeftNavLayout extends Component {
   setContentHeight() {
@@ -44,15 +44,16 @@ class LeftNavLayout extends Component {
             <Sidebar />
             <TopNav />
             <div className="right_col" role="main">
-              <Alert className="global-msg"
+              <Alert
+                className="global-msg"
                 type={this.props.globalMsg ? this.props.globalMsg.type : null}
                 message={
                   this.props.globalMsg ? this.props.globalMsg.value : null
                 }
               />
               {this.props.children}
-              <Footer />
             </div>
+            <Footer />
           </div>
         </div>
       </div>

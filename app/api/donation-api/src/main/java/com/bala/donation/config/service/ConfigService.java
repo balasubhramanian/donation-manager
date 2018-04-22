@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bala.donation.config.rest.model.ConfigModel;
+import com.bala.donation.config.model.ConfigModel;
 import com.bala.donation.user.entity.ConfigEntity;
 import com.bala.donation.user.repo.ConfigRepo;
 

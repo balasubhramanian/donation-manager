@@ -27,7 +27,7 @@ export const RightLayout = props => {
               {props.panelTitle ? (
                 <div className="x_title">
                   <h2>{props.panelTitle}</h2>
-                  <div class="clearfix" />
+                  <div className="clearfix" />
                 </div>
               ) : null}
               <div className="x_content">{props.children}</div>

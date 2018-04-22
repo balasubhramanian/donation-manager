@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.bala.donation.config.rest.model.ConfigModel;
+import com.bala.donation.config.model.ConfigModel;
 
 @RequestMapping("/config")
 public interface ConfigController {

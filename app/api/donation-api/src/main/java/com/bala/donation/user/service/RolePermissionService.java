@@ -16,11 +16,11 @@ import com.bala.donation.common.exception.UserError;
 import com.bala.donation.user.entity.PermissionEntity;
 import com.bala.donation.user.entity.RoleEntity;
 import com.bala.donation.user.entity.RolePermissionEntity;
+import com.bala.donation.user.model.PermissionModel;
+import com.bala.donation.user.model.RoleModel;
 import com.bala.donation.user.repo.PermisssionRepo;
 import com.bala.donation.user.repo.RolePermissionRepo;
 import com.bala.donation.user.repo.RoleRepo;
-import com.bala.donation.user.rest.model.PermissionModel;
-import com.bala.donation.user.rest.model.RoleModel;
 
 @Component
 public class RolePermissionService {

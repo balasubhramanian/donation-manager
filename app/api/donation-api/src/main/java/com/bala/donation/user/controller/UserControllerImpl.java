@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bala.donation.user.rest.model.RoleModel;
-import com.bala.donation.user.rest.model.User;
+import com.bala.donation.user.model.RoleModel;
+import com.bala.donation.user.model.UserModel;
 import com.bala.donation.user.service.UserService;
 
 @RestController
@@ -28,28 +28,28 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<?> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+        List<UserModel> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.POST)
-    public ResponseEntity<?> save(@Valid @RequestBody User user) {
+    public ResponseEntity<?> save(@Valid @RequestBody UserModel user) {
         userService.saveUser(user);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(path = "/user/{id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable("id") Long id) {
+    public UserModel getUser(@PathVariable("id") Long id) {
         return userService.getUsers(id);
     }
 
     @RequestMapping(path = "/user/{id}/password", method = RequestMethod.POST)
-    public void updatePassword(@PathVariable("id") Long id, @RequestBody User user) {
+    public void updatePassword(@PathVariable("id") Long id, @RequestBody UserModel user) {
         userService.updatePassword(id, user);
     }
 
     @RequestMapping(path = "/user/{id}", method = RequestMethod.POST)
-    public void updateUser(@PathVariable("id") Long id, @Valid @RequestBody User user) {
+    public void updateUser(@PathVariable("id") Long id, @Valid @RequestBody UserModel user) {
         userService.updateUser(id, user);
     }
 

@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 import com.bala.donation.common.exception.AppException;
 import com.bala.donation.common.exception.DonationError;
+import com.bala.donation.donor.model.DonorSearchModel;
 import com.bala.donation.user.entity.UserDetailsEntity;
 import com.bala.donation.user.mapper.UserMapper;
-import com.bala.donation.user.repo.UserDetailsRepo;
-import com.bala.donation.user.rest.model.Donor;
-import com.bala.donation.user.rest.model.DonorSearchModel;;
+import com.bala.donation.user.model.DonorModel;
+import com.bala.donation.user.repo.UserDetailsRepo;;
 
 @Component
 public class DonorService {
@@ -26,29 +26,29 @@ public class DonorService {
 
     @Autowired UserDetailsRepo userDetailsRepo;
 
-    public List<Donor> getAllDonor() {
+    public List<DonorModel> getAllDonor() {
         List<UserDetailsEntity> userEntities = userDetailsRepo.findAll();
-        List<Donor> users = userMapper.toUserDetails(userEntities);
+        List<DonorModel> users = userMapper.toUserDetails(userEntities);
         return users;
     }
 
     @Transactional
-    public void saveDonor(Donor donor) {
+    public void saveDonor(DonorModel donor) {
         UserDetailsEntity userDetailsEntity = userMapper.toUserDetailsEntity(donor);
         userDetailsRepo.save(userDetailsEntity);
     }
 
-    public Donor getDonor(Long donorId) {
+    public DonorModel getDonor(Long donorId) {
         UserDetailsEntity donorEntity = userDetailsRepo.findOne(donorId);
         if (donorEntity == null) {
             throw new AppException(DonationError.DONOR_NOT_FOUND);
         }
-        Donor donor = userMapper.toUserDetails(donorEntity);
+        DonorModel donor = userMapper.toUserDetails(donorEntity);
         return donor;
     }
 
     @Transactional
-    public void updateDonor(Long id, Donor user) {
+    public void updateDonor(Long id, DonorModel user) {
 
         UserDetailsEntity userDetailsEntity = userDetailsRepo.findOne(id);
         if (userDetailsEntity == null) {
@@ -68,7 +68,7 @@ public class DonorService {
         userDetailsRepo.delete(userEntity);
     }
 
-    public List<Donor> getAllDonor(DonorSearchModel donor) {
+    public List<DonorModel> getAllDonor(DonorSearchModel donor) {
         List<UserDetailsEntity> userDetailsEntities = userDetailsRepo.findAll(findByIdOrNameOrStreetOrArea(donor));
         return userMapper.toUserDetails(userDetailsEntities);
     }

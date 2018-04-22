@@ -32,3 +32,35 @@ body {
 .ReactTable .rt-tbody {
     margin-left: 10px;
 }
+
+.react-datepicker__input-container {
+    width: 100%;
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+    width: 30px !important;
+    font-size: 13px;
+    padding: 10px;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header {
+    font-size: 13px !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range {
+    background-color: #2b3f54;
+}
+
+.react-datepicker__close-icon {
+    position: absolute;
+    margin: 18px 0px;
+}

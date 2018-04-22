@@ -1,8 +1,8 @@
-package com.bala.donation.user.rest.model;
+package com.bala.donation.user.model;
 
 import javax.validation.constraints.NotNull;
 
-public class Donor {
+public class DonorModel {
     private Long id;
 
     @NotNull
