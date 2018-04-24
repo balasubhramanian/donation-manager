@@ -24,7 +24,8 @@ public class UserControllerImpl implements UserController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired UserService userService;
+    @Autowired
+    UserService userService;
 
     @Override
     public ResponseEntity<?> getAllUsers() {

@@ -20,12 +20,13 @@ import com.bala.donation.campaign.service.CampaignService;
 @RestController
 public class CampaignController {
 
-    @Autowired CampaignService campaignService;
+    @Autowired
+    CampaignService campaignService;
 
     @RequestMapping(path = "/campaign", method = RequestMethod.GET)
     public ResponseEntity<?> getAllCampaign(CampaignSearchModel campaign) {
-        List<CampaignModel> users = campaignService.getAllCampaign(campaign);
-        return ResponseEntity.ok(users);
+        List<CampaignModel> campaigns = campaignService.getAllCampaign(campaign);
+        return ResponseEntity.ok(campaigns);
     }
 
     @RequestMapping(path = "/campaign", method = RequestMethod.POST)
