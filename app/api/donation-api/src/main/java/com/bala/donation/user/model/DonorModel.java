@@ -1,6 +1,10 @@
 package com.bala.donation.user.model;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
+
+import com.bala.donation.userpledge.model.UserPledgeModel;
 
 public class DonorModel {
     private Long id;
@@ -24,6 +28,8 @@ public class DonorModel {
     private String state;
     @NotNull
     private String country;
+
+    private List<UserPledgeModel> pledges;
 
     public String getDoorno() {
         return doorno;
@@ -111,6 +117,14 @@ public class DonorModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<UserPledgeModel> getPledges() {
+        return pledges;
+    }
+
+    public void setPledges(List<UserPledgeModel> pledges) {
+        this.pledges = pledges;
     }
 
 }

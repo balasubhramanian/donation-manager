@@ -5,61 +5,79 @@ import $ from "jquery";
 
 const Menus = [
   {
-    title: "Fundraising",
-    icon: "fa-money",
+    title: "Donors",
+    icon: "fa-male",
+    path: "/donor"
+  },
+  {
+    title: "Donation",
+    path: "/donation"
+  },
+  {
+    title: "Cash Flow",
+    icon: "fa-user-o",
     children: [
       {
-        title: "Campaign",
-        path: "/campaign"
+        title: "Income",
+        path: "/cashflow/income"
       },
       {
-        title: "Collect Donation",
-        path: "/fundraising/new"
-      },
-      {
-        title: "Pending Donation",
-        path: "/fundraising/new"
+        title: "Expense",
+        path: "/cashflow/expense"
       }
     ]
   },
   {
-    title: "Donors",
-    icon: "fa-male",
-    path: "/donor"
-    // children: [
-    //   {
-    //     title: "All Donor",
-    //     path: "/donor"
-    //   },
-    //   {
-    //     title: "Add New",
-    //     path: "/donor/add"
-    //   }
-    // ]
+    title: "Campaign",
+    path: "/campaign"
   },
-  {
-    title: "Users",
-    icon: "fa-user-o",
-    path: "/user"
-  },
+
   {
     title: "Reports",
     icon: "fa-line-chart",
-    path: "/user"
+    children: [
+      {
+        title: "Income vs Expense",
+        path: "/user"
+      },
+      {
+        title: "Pending Donations Summary",
+        path: "/user"
+      },
+      {
+        title: "Pending Donation User",
+        path: "/user"
+      },
+      {
+        title: "Actual vs Expected ",
+        path: "/user"
+      }
+    ]
   },
   {
     title: "Settings",
     icon: "fa-gear",
     children: [
       {
-        title: "User",
+        title: "Users",
+        icon: "fa-user-o",
         path: "/user"
       },
-      // {
-      //   title: "Role & Permission"
-      // },
       {
-        title: "Settings"
+        title: "Campaign Types",
+        path: "/config/campaign_type"
+      },
+      {
+        title: "Income Types",
+        path: "/config/income_type"
+      },
+      {
+        title: "Expense Types",
+        path: "/config/expense_type"
+      },
+      {
+        title: "Accounts",
+        path: "/account"
       }
     ]
   }

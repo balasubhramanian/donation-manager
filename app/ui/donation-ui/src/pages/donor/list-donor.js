@@ -13,19 +13,23 @@ import SearchUser from "components/user/search";
 import DonorService from "services/donor-service";
 import { Link } from "react-router-dom";
 import { RightLayout } from "layout/right-layout";
+import DonationCollection from "components/donation-collection";
+import PledgeModal from "pages/donor/pledges";
 
 export default class ListDonor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null,
+      data: [],
       isLoading: true,
       showModal: false,
+      showPledgeModal: false,
       pages: 1,
       showConfirm: false,
       idToDelete: null,
       showFilter: false
     };
+    this.fetchData({});
   }
 
   fetchData(param) {
@@ -75,10 +79,10 @@ export default class ListDonor extends Component {
     if (!this.state.data) {
       return null;
     }
-    const { data, isLoading, showFilter } = this.state;
+    const { data, isLoading } = this.state;
     return (
       <RightLayout>
-        <div className="table-responsive">
+        <div>
           <ReactTable
             data={data}
             defaultFilterMethod={(filter, row, column) => {
@@ -91,46 +95,95 @@ export default class ListDonor extends Component {
             defaultPageSize={10}
             columns={[
               {
-                Header: "Id",
+                Header: "Donor",
                 accessor: "id",
-                filterable: showFilter
+                Cell: rowMeta => {
+                  return (
+                    <div>
+                      <b>
+                        {rowMeta.original.firstname} {rowMeta.original.lastname}
+                      </b>
+                      <br />
+                      {rowMeta.original.street}
+                      <br />
+                      {rowMeta.original.area}
+                      <br />
+                      {rowMeta.original.phone} {rowMeta.original.email}
+                    </div>
+                  );
+                }
               },
               {
-                Header: "First Name",
-                accessor: "firstname",
-                filterable: showFilter
+                id: "id",
+                accessor: d => d.id,
+                Cell: rowMeta => (
+                  <div className="row-action">
+                    <OverlayTrigger
+                      placement="bottom"
+                      overlay={
+                        <Tooltip id={"edit" + rowMeta.original.id}>
+                          Collect Donation
+                        </Tooltip>
+                      }
+                    >
+                      <a
+                        onClick={() => {
+                          this.setState({
+                            showModal: true,
+                            selectedDonor: rowMeta.original
+                          });
+                        }}
+                      >
+                        <i className="fa fa-money" />
+                      </a>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="bottom"
+                      overlay={
+                        <Tooltip id={"edit" + rowMeta.original.id}>
+                          Pledges
+                        </Tooltip>
+                      }
+                    >
+                      <a
+                        onClick={() => {
+                          this.setState({
+                            showPledgeModal: true,
+                            selectedDonor: rowMeta.original
+                          });
+                        }}
+                      >
+                        <i className="fa fa-money" />
+                      </a>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="bottom"
+                      overlay={
+                        <Tooltip id={"edit" + rowMeta.original.id}>
+                          Previous Donation
+                        </Tooltip>
+                      }
+                    >
+                      <Link to={"/donor/" + rowMeta.original.id + "/details"}>
+                        <i className="fa fa-money" />
+                      </Link>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="bottom"
+                      overlay={
+                        <Tooltip id={"edit" + rowMeta.original.id}>
+                          Pending Donation
+                        </Tooltip>
+                      }
+                    >
+                      <Link to={"/donor/" + rowMeta.original.id + "/details"}>
+                        <i className="fa fa-money" />
+                      </Link>
+                    </OverlayTrigger>
+                  </div>
+                )
               },
               {
-                Header: "Last Name",
-                accessor: "lastname",
-                filterable: showFilter
-              },
-              {
-                Header: "Phone",
-                accessor: "phone",
-                filterable: showFilter
-              },
-              {
-                Header: "Email",
-                accessor: "email",
-                filterable: showFilter
-              },
-              {
-                Header: (
-                  <span
-                    style={{
-                      display: "block",
-                      textAlign: "center",
-                      cursor: "pointer"
-                    }}
-                    onClick={() => {
-                      this.setState({ showFilter: !this.state.showFilter });
-                    }}
-                  >
-                    <i className="fa fa-filter" />
-                  </span>
-                ),
-                sortable: false,
                 id: "id",
                 accessor: d => d.id,
                 Cell: rowMeta => (
@@ -148,40 +201,27 @@ export default class ListDonor extends Component {
                       </Link>
                     </OverlayTrigger>
 
-                    <OverlayTrigger
-                      placement="bottom"
-                      overlay={
-                        <Tooltip id={"edit" + rowMeta.original.id}>
-                          Donation Details
-                        </Tooltip>
-                      }
+                    <Confirm
+                      onConfirm={() => {
+                        this.onDelete(rowMeta);
+                      }}
+                      body="Are you sure you want to delete?"
+                      confirmText="Confirm Delete"
+                      title="Delete Donor"
                     >
-                      <Link to={"/donor/" + rowMeta.original.id + "/details"}>
-                        <i className="fa fa-money" />
-                      </Link>
-                    </OverlayTrigger>
-
-                    <OverlayTrigger
-                      placement="bottom"
-                      overlay={
-                        <Tooltip id={"delete" + rowMeta.original.id}>
-                          Delete
-                        </Tooltip>
-                      }
-                    >
-                      <Confirm
-                        onConfirm={() => {
-                          this.onDelete(rowMeta);
-                        }}
-                        body="Are you sure you want to delete?"
-                        confirmText="Confirm Delete"
-                        title="Delete Donor"
-                      >
-                        <a>
+                      <a>
+                        <OverlayTrigger
+                          placement="bottom"
+                          overlay={
+                            <Tooltip id={"delete" + rowMeta.original.id}>
+                              Delete
+                            </Tooltip>
+                          }
+                        >
                           <i className="fa fa-trash-o" />
-                        </a>
-                      </Confirm>
-                    </OverlayTrigger>
+                        </OverlayTrigger>
+                      </a>
+                    </Confirm>
                   </div>
                 )
               }
@@ -189,6 +229,27 @@ export default class ListDonor extends Component {
             className="-striped -highlight"
           />
         </div>
+        <DonationCollection
+          donor={this.state.selectedDonor}
+          showModal={this.state.showModal}
+          onSuccess={() => {
+            this.setState({ showModal: false, selectedDonor: null });
+          }}
+          onCancel={() => {
+            this.setState({ showModal: false, selectedDonor: null });
+          }}
+        />
+
+        <PledgeModal
+          showModal={this.state.showPledgeModal}
+          donor={this.state.selectedDonor}
+          onSuccess={() => {
+            this.setState({ showPledgeModal: false, selectedDonor: null });
+          }}
+          onCancel={() => {
+            this.setState({ showPledgeModal: false, selectedDonor: null });
+          }}
+        />
       </RightLayout>
     );
   }

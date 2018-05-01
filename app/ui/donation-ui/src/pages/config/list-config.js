@@ -1,20 +1,14 @@
 import React, { Component } from "react";
-import {
-  Modal,
-  Button,
-  Collapse,
-  OverlayTrigger,
-  Tooltip
-} from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import ReactTable from "react-table";
-import CollapsablePanel from "components/collapsable-panel";
 import Confirm from "components/confirm";
-import SearchUser from "components/user/search";
-import CampaignService from "services/campaign-service";
+import DonorService from "services/donor-service";
+import ConfigService from "services/config-service";
 import { Link } from "react-router-dom";
 import { RightLayout } from "layout/right-layout";
-import DateUtils from "common/date-utils";
-export default class Campaign extends Component {
+import { AppConfig } from "constant";
+import AddConfigModal from "pages/config/add-config-modal";
+export default class ListConfig extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,14 +20,32 @@ export default class Campaign extends Component {
       idToDelete: null,
       showFilter: false
     };
+    this.modules = {};
+    AppConfig.modules.forEach(module => {
+      this.modules[module.value] = module.name;
+    });
+    if (this.props.match.params.module) {
+      this.state.module = this.props.match.params.module;
+      this.state.moduleName = this.modules[this.state.module];
+    }
+    this.fetchData({});
   }
-  componentWillMount() {
-    this.fetchData();
+
+  componentWillReceiveProps(newProps) {
+    const newModule = newProps.match.params.module;
+    this.setState(
+      { module: newModule, moduleName: this.modules[newModule] },
+      this.fetchData
+    );
+  }
+
+  toggleModal(row) {
+    this.setState({ showModal: !this.state.showModal, selectedRow: row });
   }
 
   fetchData(param) {
     this.setState({ isLoading: true });
-    CampaignService.getAllCampaign()
+    ConfigService.getConfigByModule(this.state.module)
       .then(response => {
         let data = response.data;
         this.setState({ data: data, isLoading: false });
@@ -44,7 +56,7 @@ export default class Campaign extends Component {
   }
 
   onDelete(rowMeta) {
-    CampaignService.deleteCampaign(rowMeta.original.id)
+    DonorService.deleteDonor(rowMeta.original.id)
       .then(response => {
         let data = [
           ...this.state.data.slice(0, rowMeta.index),
@@ -59,37 +71,21 @@ export default class Campaign extends Component {
         this.setState({ isLoading: false });
       });
   }
-  renderSearch() {
-    return (
-      <div>
-        <RightLayout
-          title="Campaigns"
-          linkTo="/campaign/add"
-          linkText="Add Campaign"
-        />
-        <CollapsablePanel
-          isOpen={this.state.data ? false : true}
-          title="Search"
-        >
-          <SearchUser onSearch={param => this.fetchData(param)} />
-        </CollapsablePanel>
-        {this.renderTable()}
-      </div>
-    );
-  }
-
   render() {
     if (!this.state.data) {
       return null;
     }
+    console.log(this.modules);
     const { data, isLoading, showFilter } = this.state;
     return (
       <RightLayout
-        title="Campaigns"
-        linkText="Add Campaign"
-        linkTo="/campaign/add"
+        title={"Manage " + this.state.moduleName}
+        linkText="Add"
+        onClick={() => {
+          this.toggleModal();
+        }}
       >
-        <div className="table-responsive">
+        <div>
           <ReactTable
             data={data}
             defaultFilterMethod={(filter, row, column) => {
@@ -111,30 +107,6 @@ export default class Campaign extends Component {
                 accessor: "name",
                 filterable: showFilter
               },
-              // {
-              //Header: "Description",
-              //accessor: "description",
-              //filterable: showFilter
-              //},
-              {
-                Header: "Type",
-                accessor: "type",
-                filterable: showFilter
-              },
-              {
-                Header: "Start Date",
-                accessor: "startDate",
-                filterable: showFilter,
-                Cell: rowMeta => DateUtils.toAppDate(rowMeta.row.startDate)
-              },
-
-              {
-                Header: "End Date",
-                accessor: "endDate",
-                filterable: showFilter,
-                Cell: rowMeta => DateUtils.toAppDate(rowMeta.row.endDate)
-              },
-
               {
                 Header: "Status",
                 accessor: "status",
@@ -170,32 +142,17 @@ export default class Campaign extends Component {
                         </Tooltip>
                       }
                     >
-                      <Link to={"/campaign/" + rowMeta.original.id + "/edit"}>
-                        <i className="fa fa-edit" />
-                      </Link>
-                    </OverlayTrigger>
-
-                    {/* <OverlayTrigger
-                      placement="bottom"
-                      overlay={
-                        <Tooltip id={"delete" + rowMeta.original.id}>
-                          Delete
-                        </Tooltip>
-                      }
-                    >
-                      <Confirm
-                        onConfirm={() => {
-                          this.onDelete(rowMeta);
+                      <a
+                        onClick={() => {
+                          this.setState({
+                            showModal: true,
+                            selectedRow: rowMeta.original
+                          });
                         }}
-                        body="Are you sure you want to delete?"
-                        confirmText="Confirm Delete"
-                        title="Delete Campaign"
                       >
-                        <a>
-                          <i className="fa fa-trash-o" />
-                        </a>
-                      </Confirm>
-                    </OverlayTrigger> */}
+                        <i className="fa fa-edit" />
+                      </a>
+                    </OverlayTrigger>
                   </div>
                 )
               }
@@ -203,6 +160,19 @@ export default class Campaign extends Component {
             className="-striped -highlight"
           />
         </div>
+        <AddConfigModal
+          showModal={this.state.showModal}
+          module={this.state.module}
+          moduleName={this.state.moduleName}
+          toggleModal={() => {
+            this.toggleModal();
+          }}
+          config={this.state.selectedRow}
+          onSuccess={() => {
+            this.fetchData();
+            this.toggleModal();
+          }}
+        />
       </RightLayout>
     );
   }

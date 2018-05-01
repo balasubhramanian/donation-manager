@@ -5,6 +5,10 @@ class CampaignService extends BaseService {
     return this.get("/campaign", campaign);
   }
 
+  getActiveCampaign() {
+    return this.get("/campaign", { is_active: true });
+  }
+
   getCampaign(id) {
     return this.get("/campaign/" + id);
   }

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import com.bala.donation.campaign.entity.CampaignEntity;
 import com.bala.donation.campaign.mapper.CampaignMapper;
 import com.bala.donation.campaign.model.CampaignModel;
-import com.bala.donation.campaign.model.CampaignSearchModel;
 import com.bala.donation.campaign.repo.CampaignRepo;
+import com.bala.donation.common.constants.AppConstants;
 import com.bala.donation.common.exception.AppException;
 import com.bala.donation.common.exception.DonationError;
 import com.bala.donation.user.entity.ConfigEntity;
@@ -20,12 +20,21 @@ import com.bala.donation.user.repo.ConfigRepo;;
 @Component
 public class CampaignService {
 
-    @Autowired CampaignRepo campaignRepo;
-    @Autowired ConfigRepo configRepo;
-    @Autowired CampaignMapper campaignMapper;
+    @Autowired
+    CampaignRepo campaignRepo;
+    @Autowired
+    ConfigRepo configRepo;
+    @Autowired
+    CampaignMapper campaignMapper;
 
-    public List<CampaignModel> getAllCampaign(CampaignSearchModel campaign) {
-        List<CampaignEntity> campaignEntities = campaignRepo.findAll();
+    public List<CampaignModel> getAllCampaign(boolean onlyActive) {
+        List<CampaignEntity> campaignEntities = null;
+        if (onlyActive) {
+            campaignEntities = campaignRepo.findByStatus(AppConstants.STATUS_ACTIVE);
+        } else {
+            campaignEntities = campaignRepo.findAll();
+        }
+
         List<CampaignModel> campaignModels = campaignMapper.toCampaign(campaignEntities);
         return campaignModels;
     }

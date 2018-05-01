@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bala.donation.campaign.model.CampaignModel;
-import com.bala.donation.campaign.model.CampaignSearchModel;
 import com.bala.donation.campaign.service.CampaignService;
 
 @RestController
@@ -24,8 +24,9 @@ public class CampaignController {
     CampaignService campaignService;
 
     @RequestMapping(path = "/campaign", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllCampaign(CampaignSearchModel campaign) {
-        List<CampaignModel> campaigns = campaignService.getAllCampaign(campaign);
+    public ResponseEntity<?> getAllCampaign(
+            @RequestParam(value = "is_active", defaultValue = "false") boolean onlyActive) {
+        List<CampaignModel> campaigns = campaignService.getAllCampaign(onlyActive);
         return ResponseEntity.ok(campaigns);
     }
 

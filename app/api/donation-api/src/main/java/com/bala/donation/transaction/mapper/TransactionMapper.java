@@ -35,6 +35,7 @@ public class TransactionMapper {
         model.setAmount(entity.getAmount());
         model.setId(entity.getId());
         model.setDate(entity.getDate());
+        model.setDescription(entity.getDescription());
 
         model.setTransactionType(entity.getTransactionType());
         model.setTypeId(entity.getType().getId());
@@ -51,6 +52,7 @@ public class TransactionMapper {
         transactionEntity.setType(configEntity);
         transactionEntity.setDate(model.getDate());
         transactionEntity.setTransactionType(model.getTransactionType());
+        transactionEntity.setDescription(model.getDescription());
         return transactionEntity;
 
     }

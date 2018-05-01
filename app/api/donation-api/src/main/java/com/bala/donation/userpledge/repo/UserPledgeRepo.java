@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.bala.donation.userpledge.entity.UserPledgeEntity;
 
-public interface UserPledgeRepo extends JpaRepository<UserPledgeEntity, Long> {
+public interface UserPledgeRepo extends JpaRepository<UserPledgeEntity, Long>, UserPledgeCustomRepo {
 
     List<UserPledgeEntity> findByUserDetailsId(long userId);
 

@@ -47,6 +47,8 @@ public class TransactionEntity extends BaseEntity {
     private long amount;
     private long transferId;
 
+    private String description;
+
     public Long getId() {
         return id;
     }
@@ -101,6 +103,14 @@ public class TransactionEntity extends BaseEntity {
 
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

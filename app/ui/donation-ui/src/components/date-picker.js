@@ -29,12 +29,12 @@ export default class Date extends Component {
   }
 
   componentWillReceiveProps(nextProps, prevState) {
-    console.log(
-      "reciving",
-      nextProps.startDate,
-      nextProps.endDate,
-      nextProps.value
-    );
+    // console.log(
+    //   "reciving",
+    //   nextProps.startDate,
+    //   nextProps.endDate,
+    //   nextProps.value
+    // );
     this.setState({
       startDate: this.transform(nextProps.startDate),
       endDate: this.transform(nextProps.endDate),
@@ -46,7 +46,7 @@ export default class Date extends Component {
     this.setState({
       date: date
     });
-    console.log(this.props.selectsStart ? "start" : "end", this.state);
+    //console.log(this.props.selectsStart ? "start" : "end", this.state);
     this.props.onChange(DateUtils.toServerDate(date));
   }
 

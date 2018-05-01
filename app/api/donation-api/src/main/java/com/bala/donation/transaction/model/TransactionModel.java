@@ -20,6 +20,7 @@ public class TransactionModel {
 
     @NotNull
     private long amount;
+    private String description;
 
     private Long accountId;
     private String accountName;
@@ -94,6 +95,14 @@ public class TransactionModel {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

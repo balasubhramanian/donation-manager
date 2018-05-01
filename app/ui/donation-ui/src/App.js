@@ -21,6 +21,11 @@ import Fundraising from "pages/fundraising";
 import Campaign from "pages/fundraising/campaign";
 import AddCampaign from "pages/fundraising/add-campaign";
 
+import ListCashFlow from "pages/cashflow/list-entry";
+import ListDonation from "pages/donation/list-entry";
+import ListAccount from "pages/account/list-entry";
+
+import ListConfig from "pages/config/list-config";
 const ProtectedContainer = props => {
   if (!props.isLoggedIn) {
     history.push("/login");
@@ -41,6 +46,14 @@ const ProtectedContainer = props => {
       <Route exact path="/campaign" component={Campaign} />
       <Route exact path="/campaign/add" component={AddCampaign} />
       <Route exact path="/campaign/:campaignId/edit" component={AddCampaign} />
+
+      <Route exact path="/config/:module" component={ListConfig} />
+
+      <Route exact path="/cashflow/:type" component={ListCashFlow} />
+
+      <Route exact path="/donation" component={ListDonation} />
+
+      <Route exact path="/account" component={ListAccount} />
     </AppLayout>
   );
 };

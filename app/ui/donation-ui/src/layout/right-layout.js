@@ -9,6 +9,18 @@ export const RightLayout = props => {
           <div className="title_left">
             <h3>{props.title}</h3>
           </div>
+          {props.onClick ? (
+            <div className="title_right">
+              <a
+                onClick={() => {
+                  props.onClick();
+                }}
+                className="btn btn-info pull-right"
+              >
+                {props.linkText}
+              </a>
+            </div>
+          ) : null}
           {props.linkTo ? (
             <div className="title_right">
               <Link to={props.linkTo} className="btn btn-info pull-right">

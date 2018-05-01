@@ -22,9 +22,11 @@ import com.bala.donation.user.repo.UserDetailsRepo;;
 @Component
 public class DonorService {
 
-    @Autowired UserMapper userMapper;
+    @Autowired
+    UserMapper userMapper;
 
-    @Autowired UserDetailsRepo userDetailsRepo;
+    @Autowired
+    UserDetailsRepo userDetailsRepo;
 
     public List<DonorModel> getAllDonor() {
         List<UserDetailsEntity> userEntities = userDetailsRepo.findAll();
@@ -96,7 +98,13 @@ public class DonorService {
             if (StringUtils.isNotBlank(donorSearchModel.getStreet())) {
                 predicates.add(cb.like(root.get("street"), "%" + donorSearchModel.getStreet() + "%"));
             }
-            return cb.or(predicates.toArray(new Predicate[predicates.size()]));
+
+            if (predicates.size() > 0) {
+                return cb.or(predicates.toArray(new Predicate[predicates.size()]));
+            } else {
+                return null;
+            }
+
         };
     }
 

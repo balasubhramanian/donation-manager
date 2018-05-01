@@ -12,11 +12,13 @@ import com.bala.donation.campaign.repo.CampaignRepo;
 import com.bala.donation.common.exception.AppException;
 import com.bala.donation.common.exception.DonationError;
 import com.bala.donation.common.exception.UserError;
+import com.bala.donation.donation.dto.UserDonationDTO;
 import com.bala.donation.user.entity.UserDetailsEntity;
 import com.bala.donation.user.repo.UserDetailsRepo;
 import com.bala.donation.userpledge.entity.UserPledgeEntity;
 import com.bala.donation.userpledge.mapper.UserPledgeMapper;
 import com.bala.donation.userpledge.model.UserPledgeModel;
+import com.bala.donation.userpledge.model.UserPledgeSearchModel;
 import com.bala.donation.userpledge.repo.UserPledgeRepo;
 
 @Component
@@ -67,6 +69,11 @@ public class UserPledgeService {
             throw new AppException(DonationError.USER_PLEDGE_NOT_FOUND);
         }
         userPledgeRepo.delete(userPledgeEntity);
+    }
+
+    public List<UserDonationDTO> findUserDonations(UserPledgeSearchModel searchModel) {
+
+        return userPledgeRepo.findUserDonations(searchModel);
     }
 
 }
