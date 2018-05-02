@@ -91,8 +91,9 @@ export default class ListDonor extends Component {
                 ? String(row[id]).indexOf(filter.value) > -1
                 : true;
             }}
+            minRows={10}
             loading={isLoading}
-            defaultPageSize={10}
+            defaultPageSize={100}
             columns={[
               {
                 Header: "Donor",
