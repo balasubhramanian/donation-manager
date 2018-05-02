@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping>
+	<!-- <query name="HQL_GET_ALL_EMPLOYEE">from Employee</query>
+
+	<query name="HQL_GET_EMPLOYEE_BY_ID">
+		<![CDATA[from Employee where emp_id = :id]]>
+	</query>
+
+	<query name="HQL_GET_EMPLOYEE_BY_SALARY">
+		<![CDATA[from Employee where emp_salary > :salary]]>
+	</query>
+	
+	<sql-query name="SQL_GET_ALL_EMPLOYEE">
+		<![CDATA[select emp_id, emp_name, emp_salary from Employee]]>
+	</sql-query>
+	
+	<sql-query name="SQL_GET_ALL_EMP_ADDRESS">
+		<![CDATA[select {e.*}, {a.*} from Employee e join Address a ON e.emp_id=a.emp_id]]>
+		<return alias="e" class="com.journaldev.hibernate.model.Employee" />
+		<return-join alias="a" property="e.address"></return-join>
+	</sql-query> -->
+	
+	<!-- Returns all users with paid amount who pledged for given campaign with monthly collection period -->
+	<sql-query name="USER_PLEDGE_PAYMENT_STATUS_FOR_MONTHLY_CAMPAIGN">
+	<![CDATA[
+	select 
+		  up.period, 
+		  up.user_id, 
+		  ud.firstname 'user_name', 
+		  up.campaign_id, 
+		  c.name 'campaign_name', 
+		  up.amount 'pledged_amount', 
+		  sum(d.amount) 
+	from 
+		  (
+		    select 
+		      concat(year, '-', month) 'period', 
+		      campaign_id, 
+		      user_id, 
+		      amount 
+		    from 
+		      dim_month_year, 
+		      user_pledge 
+		    where 
+		      concat(year, '-', month) >= :fromMonth 
+		      and concat(year, '-', month) <= :toMonth
+		  ) up 
+  	left outer join (
+		    select 
+		      campaign_id, 
+		      user_id, 
+		      date, 
+		      amount 
+		    from 
+		      donation 
+		    where 
+		      date >= :fromDateDate and date< :toDate
+  		) d 
+  	on up.campaign_id = d.campaign_id 
+  	and up.user_id = d.user_id 
+  	and up.period = date_format(d.date, '%Y-%m') 
+  	join 
+  		user_details ud 
+  	on up.user_id = ud.id 
+  	join 
+  		campaign c 
+  	on up.campaign_id = c.id 
+  		and up.campaign_id = :campaignId
+	group by 
+	  up.period, 
+	  up.user_id, 
+	  up.campaign_id, 
+	  up.amount 
+	order by 
+	  up.period, 
+	  up.campaign_id, 
+	  up.user_id
+	]]>
+	
+	</sql-query>
+</hibernate-mapping>

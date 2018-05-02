@@ -1,0 +1,2 @@
+Testing with mem db
+https://memorynotfound.com/spring-boot-spring-security-hibernate-configuration-example/
