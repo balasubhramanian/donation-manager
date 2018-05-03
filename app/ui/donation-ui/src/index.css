@@ -64,3 +64,11 @@ body {
     position: absolute;
     margin: 18px 0px;
 }
+
+.react-datepicker__header__dropdown select {
+    font-size: 13px !important;
+}
+
+.react-datepicker__header__dropdown.react-datepicker__header__dropdown--scroll {
+    font-size: 13px !important;
+}

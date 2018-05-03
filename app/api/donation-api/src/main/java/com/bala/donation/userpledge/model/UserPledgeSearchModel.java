@@ -1,12 +1,12 @@
 package com.bala.donation.userpledge.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserPledgeSearchModel {
     Long userId;
     Long campaignId;
-    Date fromDate;
-    Date toDate;
+    LocalDate fromDate;
+    LocalDate toDate;
     PledgePaymentStatus paymentStatus = PledgePaymentStatus.ALL;
 
     public Long getUserId() {
@@ -25,19 +25,19 @@ public class UserPledgeSearchModel {
         this.campaignId = campaignId;
     }
 
-    public Date getFromDate() {
+    public LocalDate getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(LocalDate fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Date getToDate() {
+    public LocalDate getToDate() {
         return toDate;
     }
 
-    public void setToDate(Date toDate) {
+    public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
     }
 

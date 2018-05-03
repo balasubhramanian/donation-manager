@@ -1,5 +1,7 @@
 package com.bala.donation.userpledge.repo;
 
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -94,6 +96,23 @@ public class UserPledgeRepoImpl implements UserPledgeCustomRepo {
         query.setResultTransformer(Transformers.aliasToBean(UserDonationDTO.class));
         query.setMaxResults(10);
         return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<UserDonationDTO> findUserPledgePaymentForMonthlyCampaign(UserPledgeSearchModel searchModel) {
+        Session session = (Session) entityManager.getDelegate();
+
+        DateTimeFormatter yearMonthFormat = DateTimeFormatter.ofPattern("yyyy-MM");
+        DateTimeFormatter yearMonthDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return session.getNamedQuery("USER_PLEDGE_PAYMENT_STATUS_FOR_MONTHLY_CAMPAIGN")
+                .setParameter("fromDate", searchModel.getFromDate().format(yearMonthDateFormat))
+                .setParameter("toDate", searchModel.getToDate().plus(1, ChronoUnit.DAYS).format(yearMonthDateFormat))
+                .setParameter("fromMonthYear", searchModel.getFromDate().format(yearMonthFormat))
+                .setParameter("toMonthYear", searchModel.getToDate().format(yearMonthFormat))
+                .setParameter("campaignId", searchModel.getCampaignId())
+                .setResultTransformer(Transformers.aliasToBean(UserDonationDTO.class)).list();
+
     }
 
     /*

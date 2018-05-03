@@ -69,6 +69,8 @@ export default class Date extends Component {
       <div>
         <DatePicker
           {...valueProps}
+          showMonthDropdown={this.props.showMonthDropdown ? true : false}
+          showYearDropdown={this.props.showYearDropdown ? true : false}
           isClearable={true}
           dateFormat="DD-MMM-YYYY"
           className="form-control col-md-7 col-xs-12"

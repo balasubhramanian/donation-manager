@@ -12,6 +12,10 @@ class UserPledgeService extends BaseService {
   deleteUserPledge(userId, pledgeId) {
     return this.delete("/user/" + userId + "/pledge/" + pledgeId);
   }
+
+  getCampaignPledgesReport(payload) {
+    return this.get("/campaign/" + payload.campaignId + "/pledge", payload);
+  }
 }
 
 export default new UserPledgeService();

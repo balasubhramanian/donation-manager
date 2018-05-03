@@ -8,6 +8,8 @@ import com.bala.donation.userpledge.model.UserPledgeSearchModel;
 public interface UserPledgeCustomRepo {
 
     List<UserDonationDTO> findUserDonations(UserPledgeSearchModel searchModel);
+
+    List<UserDonationDTO> findUserPledgePaymentForMonthlyCampaign(UserPledgeSearchModel searchModel);
     /**
      * 
      * 

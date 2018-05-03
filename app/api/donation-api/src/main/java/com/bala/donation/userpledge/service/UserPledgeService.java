@@ -76,4 +76,13 @@ public class UserPledgeService {
         return userPledgeRepo.findUserDonations(searchModel);
     }
 
+    public List<UserDonationDTO> findUserPledgePaymentForMonthlyCampaign(UserPledgeSearchModel searchModel) {
+        CampaignEntity campaignEntity = campaignRepo.findOne(searchModel.getCampaignId());
+        if (campaignEntity == null) {
+            throw new AppException(DonationError.CAMPAIGN_NOT_FOUND);
+        }
+
+        return userPledgeRepo.findUserPledgePaymentForMonthlyCampaign(searchModel);
+    }
+
 }

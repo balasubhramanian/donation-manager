@@ -28,12 +28,12 @@
 	<![CDATA[
 	select 
 		  up.period, 
-		  up.user_id, 
-		  ud.firstname 'user_name', 
-		  up.campaign_id, 
-		  c.name 'campaign_name', 
-		  up.amount 'pledged_amount', 
-		  sum(d.amount) 
+		  up.user_id 'userId', 
+		  ud.firstname 'firstname', 
+		  up.campaign_id 'campaignId', 
+		  c.name 'campaignName' , 
+		  up.amount 'pledgedAmount', 
+		  sum(d.amount) 'paidAmount'
 	from 
 		  (
 		    select 
@@ -45,8 +45,8 @@
 		      dim_month_year, 
 		      user_pledge 
 		    where 
-		      concat(year, '-', month) >= :fromMonth 
-		      and concat(year, '-', month) <= :toMonth
+		      concat(year, '-', month) >= :fromMonthYear 
+		      and concat(year, '-', month) <= :toMonthYear
 		  ) up 
   	left outer join (
 		    select 
@@ -57,11 +57,11 @@
 		    from 
 		      donation 
 		    where 
-		      date >= :fromDateDate and date< :toDate
+		      date >= :fromDate and date< :toDate
   		) d 
   	on up.campaign_id = d.campaign_id 
+  	and up.period = date_format(d.date,'%Y-%m')
   	and up.user_id = d.user_id 
-  	and up.period = date_format(d.date, '%Y-%m') 
   	join 
   		user_details ud 
   	on up.user_id = ud.id 

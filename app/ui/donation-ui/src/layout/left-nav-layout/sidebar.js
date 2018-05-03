@@ -41,8 +41,8 @@ const Menus = [
         path: "/user"
       },
       {
-        title: "Pending Donations Summary",
-        path: "/user"
+        title: "Campaign Pledges",
+        path: "/reports/campaign-pledges"
       },
       {
         title: "Pending Donation User",

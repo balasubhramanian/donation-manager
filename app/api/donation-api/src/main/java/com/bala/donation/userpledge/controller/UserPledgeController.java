@@ -1,11 +1,12 @@
 package com.bala.donation.userpledge.controller;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bala.donation.donation.dto.UserDonationDTO;
-import com.bala.donation.userpledge.model.PledgePaymentStatus;
 import com.bala.donation.userpledge.model.UserPledgeModel;
 import com.bala.donation.userpledge.model.UserPledgeSearchModel;
 import com.bala.donation.userpledge.service.UserPledgeService;
@@ -48,17 +48,18 @@ public class UserPledgeController {
     }
 
     // User who need to pay for a Campaing
-    @RequestMapping(path = "/campaign/{campaignId}/pending-pledge", method = RequestMethod.GET)
+    @RequestMapping(path = "/campaign/{campaignId}/pledge", method = RequestMethod.GET)
     public ResponseEntity<?> getPendingPledgesByCampaign(@PathVariable("campaignId") Long campaignId,
-            @RequestParam("fromDate") Date fromDate, @RequestParam("fromDate") Date toDate) {
+            @RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
 
         UserPledgeSearchModel userPledgeSearchModel = new UserPledgeSearchModel();
         userPledgeSearchModel.setCampaignId(campaignId);
         userPledgeSearchModel.setFromDate(fromDate);
         userPledgeSearchModel.setToDate(toDate);
-        userPledgeSearchModel.setPaymentStatus(PledgePaymentStatus.NOT_PAID_OR_PARTIALLY_PAID);
 
-        List<UserDonationDTO> userPledgeModels = userPledgeService.findUserDonations(userPledgeSearchModel);
+        List<UserDonationDTO> userPledgeModels = userPledgeService
+                .findUserPledgePaymentForMonthlyCampaign(userPledgeSearchModel);
         return ResponseEntity.ok(userPledgeModels);
     }
 

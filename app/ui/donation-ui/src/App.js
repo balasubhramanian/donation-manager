@@ -14,7 +14,7 @@ import LoginPage from "pages/login";
 import AppLayout from "layout/left-nav-layout";
 import ListUserPage from "pages/user/list-user";
 import AddUserPage from "pages/user/add-user";
-import DonorPage from "pages/donor";
+
 import AddDonorPage from "pages/donor/add-donor";
 import ListDonorPage from "pages/donor/list-donor";
 import Fundraising from "pages/fundraising";
@@ -26,6 +26,8 @@ import ListDonation from "pages/donation/list-entry";
 import ListAccount from "pages/account/list-entry";
 
 import ListConfig from "pages/config/list-config";
+import UserPledgesByCampaign from "pages/report-user-pledge/user-pledges-by-campaign";
+
 const ProtectedContainer = props => {
   if (!props.isLoggedIn) {
     history.push("/login");
@@ -54,6 +56,12 @@ const ProtectedContainer = props => {
       <Route exact path="/donation" component={ListDonation} />
 
       <Route exact path="/account" component={ListAccount} />
+
+      <Route
+        exact
+        path="/reports/campaign-pledges"
+        component={UserPledgesByCampaign}
+      />
     </AppLayout>
   );
 };

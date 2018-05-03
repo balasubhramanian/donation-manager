@@ -1,20 +1,32 @@
 package com.bala.donation.donation.dto;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 public class UserDonationDTO {
-    private Long userId;
+    private String period;
+    private BigInteger userId;
     private String firstname;
     private String lastname;
-    private Long campaignId;
+    private BigInteger campaignId;
     private String campaignName;
-    private Long pledgedAmount;
-    private Long paidAmount;
-    private Long difference;
+    private BigInteger pledgedAmount;
+    private BigDecimal paidAmount;
+    private BigInteger difference;
 
-    public Long getUserId() {
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 
@@ -34,11 +46,11 @@ public class UserDonationDTO {
         this.lastname = lastname;
     }
 
-    public Long getCampaignId() {
+    public BigInteger getCampaignId() {
         return campaignId;
     }
 
-    public void setCampaignId(Long campaignId) {
+    public void setCampaignId(BigInteger campaignId) {
         this.campaignId = campaignId;
     }
 
@@ -50,27 +62,27 @@ public class UserDonationDTO {
         this.campaignName = campaignName;
     }
 
-    public Long getPledgedAmount() {
+    public BigInteger getPledgedAmount() {
         return pledgedAmount;
     }
 
-    public void setPledgedAmount(Long pledgedAmount) {
+    public void setPledgedAmount(BigInteger pledgedAmount) {
         this.pledgedAmount = pledgedAmount;
     }
 
-    public Long getPaidAmount() {
+    public BigDecimal getPaidAmount() {
         return paidAmount;
     }
 
-    public void setPaidAmount(Long paidAmount) {
+    public void setPaidAmount(BigDecimal paidAmount) {
         this.paidAmount = paidAmount;
     }
 
-    public Long getDifference() {
+    public BigInteger getDifference() {
         return difference;
     }
 
-    public void setDifference(Long difference) {
+    public void setDifference(BigInteger difference) {
         this.difference = difference;
     }
 
