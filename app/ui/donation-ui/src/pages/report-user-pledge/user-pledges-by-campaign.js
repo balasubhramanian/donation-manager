@@ -1,15 +1,12 @@
 import React, { Component } from "react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Tabs, Tab } from "react-bootstrap";
 import ReactTable from "react-table";
-import Confirm from "components/confirm";
 import CampaignService from "services/campaign-service";
 import UserPledgeService from "services/userpledge-service";
-import ConfigService from "services/config-service";
 import { RightLayout } from "layout/right-layout";
 import DatePicker from "components/date-picker";
 import Select from "react-select";
-import DateUtils from "common/date-utils";
-import AddEntry from "pages/cashflow/add-entry";
+import "./report.css";
 
 export default class UserPledgesByCampaign extends Component {
   constructor(props) {
@@ -46,7 +43,20 @@ export default class UserPledgesByCampaign extends Component {
     })
       .then(response => {
         let data = response.data;
-        this.setState({ data: data, isLoading: false });
+        let pending = data.filter(d => d.paidAmount == null);
+        let paid = data.filter(d => d.paidAmount === d.pledgedAmount);
+        let partiallyPaid = data.filter(
+          d =>
+            d.paidAmount &&
+            d.pledgedAmount - (d.paidAmount ? d.paidAmount : 0) > 0
+        );
+        this.setState({
+          data: data,
+          pending,
+          paid,
+          partiallyPaid,
+          isLoading: false
+        });
       })
       .catch(err => {
         console.log("error fetching fetchUserPledgesForCampaign", err);
@@ -58,61 +68,127 @@ export default class UserPledgesByCampaign extends Component {
     return (
       <div>
         <RightLayout title={"Campaign - User Payment "}>
-          <div>
-            <DatePicker
-              id="fromDate"
-              showMonthDropdown
-              showYearDropdown
-              value={this.state.fromDate}
-              onChange={date => {
-                this.setState({ fromDate: date });
-              }}
-              onBlur={date => {
-                this.setState({ fromDate: date });
-              }}
-            />
-            <DatePicker
-              id="toDate"
-              showMonthDropdown
-              showYearDropdown
-              value={this.state.toDate}
-              onChange={date => {
-                this.setState({ toDate: date });
-              }}
-              onBlur={date => {
-                this.setState({ toDate: date });
-              }}
-            />
-            <Select
-              name="form-field-name"
-              value={this.state.selectedCampaign}
-              onChange={selectedOption => {
-                this.setState({ selectedCampaign: selectedOption.value });
-              }}
-              multi={false}
-              options={this.state.campaigns}
-            />
-            <button
-              id="send"
-              className="btn btn-success"
-              onClick={() => {
-                this.fetchUserPledgesForCampaign();
-              }}
-            >
-              Save
-            </button>
+          <h4>Search</h4>
+          <div className="ln_solid" />
+          <div class="row">
+            <div class="col-xs-12 col-md-3">
+              <Select
+                name="form-field-name"
+                placeholder="Campaign"
+                value={this.state.selectedCampaign}
+                onChange={selectedOption => {
+                  this.setState({ selectedCampaign: selectedOption.value });
+                }}
+                multi={false}
+                options={this.state.campaigns}
+              />
+            </div>
+            <div class="col-xs-12 col-md-3">
+              <DatePicker
+                id="fromDate"
+                placeholderText="Start Date"
+                showMonthDropdown
+                showYearDropdown
+                value={this.state.fromDate}
+                onChange={date => {
+                  this.setState({ fromDate: date });
+                }}
+                onBlur={date => {
+                  this.setState({ fromDate: date });
+                }}
+              />
+            </div>
+            <div class="col-xs-12 col-md-3">
+              <DatePicker
+                id="toDate"
+                placeholderText="End Date"
+                showMonthDropdown
+                showYearDropdown
+                value={this.state.toDate}
+                onChange={date => {
+                  this.setState({ toDate: date });
+                }}
+                onBlur={date => {
+                  this.setState({ toDate: date });
+                }}
+              />
+            </div>
+
+            <div class="col-xs-12 col-md-3">
+              <button
+                id="send"
+                className="btn btn-success"
+                onClick={() => {
+                  this.fetchUserPledgesForCampaign();
+                }}
+              >
+                Search
+              </button>
+            </div>
           </div>
-
-          {JSON.stringify(this.state.data)}
-
-          {/* <div>{this.renderTable()}</div> */}
         </RightLayout>
+
+        {!this.state.isLoading && (
+          <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
+            <Tab
+              eventKey={1}
+              title={"Pending Donation (" + this.state.pending.length + ")"}
+            >
+              <RightLayout>
+                <div>{this.renderTable(this.state.pending)}</div>
+              </RightLayout>
+            </Tab>
+            <Tab
+              eventKey={2}
+              title={
+                "Partially Donated (" + this.state.partiallyPaid.length + ")"
+              }
+            >
+              <RightLayout>
+                <div>{this.renderTable(this.state.partiallyPaid)}</div>
+              </RightLayout>
+            </Tab>
+            <Tab
+              eventKey={3}
+              title={"Fully Donated (" + this.state.paid.length + ")"}
+            >
+              <RightLayout>
+                <div>{this.renderTable(this.state.paid)}</div>
+              </RightLayout>
+            </Tab>
+          </Tabs>
+        )}
       </div>
     );
   }
 
-  renderTable() {
-    const { data, isLoading, showFilter } = this.state;
+  renderTable(data) {
+    const { isLoading, showFilter } = this.state;
+
+    if (isLoading) return null;
+
+    // return (
+    //   <table class="table table-bordered table-condensed ">
+    //     <thead>
+    //       <tr>
+    //         <th>Period</th>
+    //         <th>User</th>
+    //         <th>Pledged Amount</th>
+    //         <th>Donated Amount</th>
+    //       </tr>
+    //     </thead>
+
+    //     {data.map(row => (
+    //       <tr>
+    //         <td>{row.period}</td>
+    //         <td>{row.firstname}</td>
+    //         <td>{row.pledgedAmount}</td>
+    //         <td>{row.paidAmount}</td>
+    //       </tr>
+    //     ))}
+    //   </table>
+    // );
+
     return (
       <div>
         <ReactTable
@@ -124,78 +200,41 @@ export default class UserPledgesByCampaign extends Component {
               : true;
           }}
           loading={isLoading}
-          defaultPageSize={10}
+          minRows={5}
+          showPagination={false}
           columns={[
             {
-              Header: "Id",
-              accessor: "id",
-              filterable: showFilter
-            },
-            {
-              Header: "Date ",
-              accessor: "date",
+              Header: "Period",
+              accessor: "period",
               filterable: showFilter,
-              Cell: rowMeta => DateUtils.toAppDate(rowMeta.row.date)
+              sortable: true
             },
             {
-              Header: "Title",
-              accessor: "typeName",
-              filterable: showFilter
-            },
-            {
-              Header: "Description",
-              accessor: "typeDesc",
-              filterable: showFilter
-            },
-            {
-              Header: "Amount",
-              accessor: "amount",
+              Header: "User",
+              accessor: "firstname",
               filterable: showFilter,
-              Cell: rowMeta => rowMeta.row.amount
+              sortable: true
             },
             {
-              Header: "Account",
-              accessor: "accountName",
+              Header: "Pledged ",
+              accessor: "pledgedAmount",
+              sortable: true
+            },
+            {
+              Header: "Paid",
+              accessor: "paidAmount",
               filterable: showFilter,
-              Cell: rowMeta => rowMeta.row.accountName
+              Cell: row =>
+                row.original.paidAmount ? row.original.paidAmount : 0
             },
-
             {
-              Header: (
-                <span
-                  style={{
-                    display: "block",
-                    textAlign: "center",
-                    cursor: "pointer"
-                  }}
-                  onClick={() => {
-                    this.setState({ showFilter: !this.state.showFilter });
-                  }}
-                >
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={<Tooltip id={"filter"}>Search</Tooltip>}
-                  >
-                    <i className="fa fa-filter" />
-                  </OverlayTrigger>
-                </span>
-              )
+              Header: "Pending",
+              Cell: row =>
+                row.original.pledgedAmount -
+                (row.original.paidAmount ? row.original.paidAmount : 0)
             }
           ]}
           className="-striped -highlight"
-        />
-        <AddEntry
-          showModal={this.state.showModal}
-          onCancel={() => {
-            this.toggleModal();
-          }}
-          onSuccess={() => {
-            this.toggleModal();
-            this.fetchData();
-          }}
-          type={this.cashflow[this.state.type]}
-          types={this.state.types}
-          accounts={this.state.accounts}
         />
       </div>
     );
