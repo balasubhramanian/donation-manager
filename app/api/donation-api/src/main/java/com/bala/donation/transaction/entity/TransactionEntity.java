@@ -29,7 +29,7 @@ public class TransactionEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @ManyToOne(fetch = FetchType.EAGER)

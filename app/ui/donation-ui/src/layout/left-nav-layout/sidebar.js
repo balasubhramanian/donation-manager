@@ -45,8 +45,8 @@ const Menus = [
         path: "/reports/campaign-pledges"
       },
       {
-        title: "Pending Donation User",
-        path: "/user"
+        title: "Ledger",
+        path: "/reports/daily-ledger"
       },
       {
         title: "Actual vs Expected ",

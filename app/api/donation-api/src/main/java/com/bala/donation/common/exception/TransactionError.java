@@ -14,6 +14,9 @@ public enum TransactionError implements AppError {
     TRANSACTION_NOT_FOUND("transaction.notfound", "Transaction Not Found", SeverityType.NONE,
             ErrorType.VALIDATION_FAILURE),
 
+    TRANSACTION_REPORT_ERROR("transaction.report.error", "Transaction Report Error", SeverityType.FATAL,
+            ErrorType.ERROR)
+
     ;
 
     String errorCode;

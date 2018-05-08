@@ -14,6 +14,7 @@ import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.bala.donation.common.entity.RepoConstants;
 import com.bala.donation.donation.dto.UserDonationDTO;
 import com.bala.donation.userpledge.model.UserPledgeSearchModel;
 
@@ -105,7 +106,7 @@ public class UserPledgeRepoImpl implements UserPledgeCustomRepo {
 
         DateTimeFormatter yearMonthFormat = DateTimeFormatter.ofPattern("yyyy-MM");
         DateTimeFormatter yearMonthDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return session.getNamedQuery("USER_PLEDGE_PAYMENT_STATUS_FOR_MONTHLY_CAMPAIGN")
+        return session.getNamedQuery(RepoConstants.NQ_USER_PLEDGE_PAYMENT_STATUS_FOR_MONTHLY_CAMPAIGN)
                 .setParameter("fromDate", searchModel.getFromDate().format(yearMonthDateFormat))
                 .setParameter("toDate", searchModel.getToDate().plus(1, ChronoUnit.DAYS).format(yearMonthDateFormat))
                 .setParameter("fromMonthYear", searchModel.getFromDate().format(yearMonthFormat))
@@ -115,68 +116,4 @@ public class UserPledgeRepoImpl implements UserPledgeCustomRepo {
 
     }
 
-    /*
-     * 
-     * select * from donation
-     * 
-     * select * from campaign
-     * 
-     * select * from user_details
-     * 
-     * -- donation given by user with in a period select
-     * user_details.id,firstname,lastname,campaign_id,amount,date,donation.id from
-     * user_details join donation on user_details.id = donation.user_id where date
-     * >= '2018-04-01' and date <'2018-04-15'
-     * 
-     * -- monthly user pledges select * from user_pledge join campaign on
-     * campaign_id = campaign.id where type_id in ( select id from config where
-     * module ='campaign_type' and name='monthly' )
-     * 
-     * 
-     * select user_details.id,firstname,lastname,campaign_id,amount,date,donation.id
-     * from user_details join donation on user_details.id = donation.user_id where
-     * campaign_id in ( select id from campaign where type_id in ( select id from
-     * config where module ='campaign_type' and name='monthly' ) )
-     * 
-     * select * from user_pledge where user_id =6 select * from donation where
-     * user_id =6
-     * 
-     * select up.user_id,up.campaign_id,up.amount 'pledged_amount',
-     * d.campaign_id,d.date,d.amount from user_pledge up left outer join donation d
-     * on up.campaign_id = d.campaign_id and up.user_id = d.user_id
-     * 
-     * 
-     * -- user pledges - amount pledged vs amount paid select
-     * up.user_id,up.campaign_id,up.amount 'pledged_amount',sum(d.amount) from
-     * user_pledge up left outer join donation d on up.campaign_id = d.campaign_id
-     * and up.user_id = d.user_id group by up.user_id,up.campaign_id,up.amount
-     * 
-     * 
-     * -- user pledges yet to be paid select up.user_id,up.campaign_id,up.amount
-     * 'pledged_amount',sum(d.amount) from user_pledge up left outer join donation d
-     * on up.campaign_id = d.campaign_id and up.user_id = d.user_id group by
-     * up.user_id,up.campaign_id,up.amount having sum(d.amount) is null
-     * 
-     * 
-     * -- user pledges be paid select up.user_id,up.campaign_id,up.amount
-     * 'pledged_amount',sum(d.amount) from user_pledge up left outer join donation d
-     * on up.campaign_id = d.campaign_id and up.user_id = d.user_id group by
-     * up.user_id,up.campaign_id,up.amount having sum(d.amount) is not null
-     * 
-     * -- user pledges with amount difference select
-     * up.user_id,up.campaign_id,up.amount, sum(d.amount), ABS(up.amount -
-     * sum(d.amount)) from user_pledge up left outer join donation d on
-     * up.campaign_id = d.campaign_id and up.user_id = d.user_id group by
-     * up.user_id,up.campaign_id,up.amount
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     */
 }

@@ -28,7 +28,7 @@ public class DonationEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @ManyToOne(fetch = FetchType.EAGER)

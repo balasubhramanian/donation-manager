@@ -1,5 +1,6 @@
 package com.bala.donation.transaction.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import com.bala.donation.common.exception.AppException;
 import com.bala.donation.common.exception.TransactionError;
 import com.bala.donation.transaction.entity.TransactionEntity;
 import com.bala.donation.transaction.mapper.TransactionMapper;
+import com.bala.donation.transaction.model.LedgerEntryDTO;
 import com.bala.donation.transaction.model.TransactionModel;
+import com.bala.donation.transaction.model.TransactionReportModel;
 import com.bala.donation.transaction.model.TransactionSearchModel;
 import com.bala.donation.transaction.model.TransactionType;
 import com.bala.donation.transaction.repo.TransactionRepo;
@@ -155,5 +158,50 @@ public class TransactionService {
 
         transactionRepo.delete(transactionEntity);
     }
+
+    public TransactionReportModel findDailyLedgerEntries(LocalDate fromDate, LocalDate toDate) {
+        List<LedgerEntryDTO> ledgerEntries = transactionRepo.findDailyLedgerTransaction(fromDate, toDate);
+        Double openingBalance = transactionRepo.findOpeningBalanceOn(fromDate);
+
+        TransactionReportModel transactionReportModel = new TransactionReportModel();
+        transactionReportModel.setOpeningBalance(openingBalance);
+        transactionReportModel.setEntries(ledgerEntries);
+        return transactionReportModel;
+
+    }
+
+    public TransactionReportModel findMonthlyLedgerTransaction(LocalDate fromDate, LocalDate toDate) {
+        List<LedgerEntryDTO> ledgerEntries = transactionRepo.findMonthlyLedgerTransaction(fromDate, toDate);
+        Double openingBalance = transactionRepo.findOpeningBalanceOn(fromDate);
+
+        TransactionReportModel transactionReportModel = new TransactionReportModel();
+        transactionReportModel.setOpeningBalance(openingBalance);
+        transactionReportModel.setEntries(ledgerEntries);
+        return transactionReportModel;
+
+    }
+
+    // public TransactionReportModel findMonthlyLedgerTransaction(LocalDate
+    // fromDate, LocalDate toDate) {
+    // CompletableFuture<List<LedgerEntryDTO>> ledgerEntriesFuture =
+    // CompletableFuture.supplyAsync(() -> {
+    // return transactionRepo.findMonthlyLedgerTransaction(fromDate, toDate);
+    // });
+    //
+    // CompletableFuture<Long> openingBalanceFuture =
+    // CompletableFuture.supplyAsync(() -> {
+    // return transactionRepo.findOpeningBalanceOn(fromDate);
+    // });
+    //
+    // try {
+    // TransactionReportModel transactionReportModel = new TransactionReportModel();
+    // transactionReportModel.setOpeningBalance(openingBalanceFuture.get());
+    // transactionReportModel.setEntries(ledgerEntriesFuture.get());
+    // return transactionReportModel;
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // throw new AppException(TransactionError.TRANSACTION_REPORT_ERROR);
+    // }
+    // }
 
 }
