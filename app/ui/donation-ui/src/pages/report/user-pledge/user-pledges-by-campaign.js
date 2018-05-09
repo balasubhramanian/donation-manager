@@ -6,7 +6,8 @@ import UserPledgeService from "services/userpledge-service";
 import { RightLayout } from "layout/right-layout";
 import DatePicker from "components/date-picker";
 import Select from "react-select";
-import "./report.css";
+import { toast } from "react-toastify";
+import "../report.css";
 
 export default class UserPledgesByCampaign extends Component {
   constructor(props) {
@@ -36,11 +37,38 @@ export default class UserPledgesByCampaign extends Component {
   }
 
   fetchUserPledgesForCampaign() {
-    UserPledgeService.getCampaignPledgesReport({
+    if (!this.state.selectedCampaign) {
+      toast.error("Campaign is required");
+      return;
+    }
+    if (!this.state.fromDate) {
+      toast.error("Start Date is required");
+      return;
+    }
+
+    if (!this.state.toDate) {
+      toast.error("End Date is required ");
+      return;
+    }
+
+    let fromDate = this.state.fromDate;
+    let toDate = this.state.toDate;
+
+    if (typeof fromDate === "object") {
+      fromDate = this.state.fromDate.format("YYYY-MM-DD");
+    }
+
+    if (typeof toDate === "object") {
+      toDate = this.state.toDate.format("YYYY-MM-DD");
+    }
+
+    const params = {
       campaignId: this.state.selectedCampaign,
-      fromDate: this.state.fromDate,
-      toDate: this.state.toDate
-    })
+      fromDate: fromDate,
+      toDate: toDate
+    };
+
+    UserPledgeService.getCampaignPledgesReport(params)
       .then(response => {
         let data = response.data;
         let pending = data.filter(d => d.paidAmount == null);
@@ -95,6 +123,10 @@ export default class UserPledgesByCampaign extends Component {
                 }}
                 onBlur={date => {
                   this.setState({ fromDate: date });
+                }}
+                showQuickLinks={true}
+                onQuickLink={(fromDate, toDate) => {
+                  this.setState({ fromDate, toDate }, () => {});
                 }}
               />
             </div>

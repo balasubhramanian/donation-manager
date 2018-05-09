@@ -26,8 +26,8 @@ import ListDonation from "pages/donation/list-entry";
 import ListAccount from "pages/account/list-entry";
 
 import ListConfig from "pages/config/list-config";
-import UserPledgesByCampaign from "pages/report-user-pledge/user-pledges-by-campaign";
-import TransactionReport from "pages/report-user-pledge/transaction-report";
+import UserPledgesByCampaign from "pages/report/user-pledge/user-pledges-by-campaign";
+import LedgerReport from "pages/report/transaction/ledger-report";
 
 const ProtectedContainer = props => {
   if (!props.isLoggedIn) {
@@ -63,7 +63,7 @@ const ProtectedContainer = props => {
         path="/reports/campaign-pledges"
         component={UserPledgesByCampaign}
       />
-      <Route exact path="/reports/daily-ledger" component={TransactionReport} />
+      <Route exact path="/reports/daily-ledger" component={LedgerReport} />
     </AppLayout>
   );
 };

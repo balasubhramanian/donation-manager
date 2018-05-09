@@ -4,24 +4,67 @@ import TransactionService from "services/transaction-service";
 import { RightLayout } from "layout/right-layout";
 import DatePicker from "components/date-picker";
 import Select from "react-select";
-import "./report.css";
+import { toast } from "react-toastify";
+import { Amt } from "common/formatter";
+import "../report.css";
 
-export default class LedgerEntries extends Component {
+export default class LedgerReport extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: null,
       isLoading: true,
       fromDate: null,
-      toDate: null
+      toDate: null,
+      selectedReportType: "DAILY",
+      reportType: [
+        {
+          value: "MONTHLY",
+          label: "Monthly"
+        },
+        {
+          value: "DAILY",
+          label: "Daily"
+        }
+      ]
     };
   }
 
   fetchTransactionEntries() {
-    TransactionService.getDailyLedgerEntries({
-      fromDate: this.state.fromDate,
-      toDate: this.state.toDate
-    })
+    if (!this.state.fromDate) {
+      toast.error("Start Date is required");
+      return;
+    }
+
+    if (!this.state.toDate) {
+      toast.error("End Date is required ");
+      return;
+    }
+
+    let fromDate = this.state.fromDate;
+    let toDate = this.state.toDate;
+
+    if (typeof fromDate === "object") {
+      fromDate = this.state.fromDate.format("YYYY-MM-DD");
+    }
+
+    if (typeof toDate === "object") {
+      toDate = this.state.toDate.format("YYYY-MM-DD");
+    }
+
+    const params = {
+      fromDate: fromDate,
+      toDate: toDate
+    };
+
+    let promise;
+    if (this.state.selectedReportType === "MONTHLY") {
+      promise = TransactionService.getMonthlyLedgerEntries(params);
+    } else {
+      promise = TransactionService.getDailyLedgerEntries(params);
+    }
+
+    promise
       .then(response => {
         let data = response.data;
         let runningBalance = data.openingBalance;
@@ -52,10 +95,24 @@ export default class LedgerEntries extends Component {
   render() {
     return (
       <div>
-        <RightLayout title={"Ledger "}>
+        <RightLayout title={"Ledger Summary"}>
           <h4>Search</h4>
           <div className="ln_solid" />
           <div class="row">
+            <div class="col-xs-12 col-md-3">
+              <Select
+                name="form-field-name"
+                placeholder="Report Type"
+                value={this.state.selectedReportType}
+                onChange={selectedOption => {
+                  if (selectedOption) {
+                    this.setState({ selectedReportType: selectedOption.value });
+                  }
+                }}
+                multi={false}
+                options={this.state.reportType}
+              />
+            </div>
             <div class="col-xs-12 col-md-3">
               <DatePicker
                 id="fromDate"
@@ -68,6 +125,10 @@ export default class LedgerEntries extends Component {
                 }}
                 onBlur={date => {
                   this.setState({ fromDate: date });
+                }}
+                showQuickLinks={true}
+                onQuickLink={(fromDate, toDate) => {
+                  this.setState({ fromDate, toDate }, () => {});
                 }}
               />
             </div>
@@ -86,10 +147,9 @@ export default class LedgerEntries extends Component {
                 }}
               />
             </div>
-
-            <div class="col-xs-12 col-md-3">
+            <div class="col-xs-12 col-md-2">
               <button
-                id="send"
+                ref="btnSearch"
                 className="btn btn-success"
                 onClick={() => {
                   this.fetchTransactionEntries();
@@ -100,9 +160,11 @@ export default class LedgerEntries extends Component {
             </div>
           </div>
         </RightLayout>
-        <RightLayout>
-          <div>{this.renderTable()}</div>
-        </RightLayout>
+        {this.state.data && (
+          <RightLayout>
+            <div>{this.renderTable()}</div>
+          </RightLayout>
+        )}
       </div>
     );
   }
@@ -143,20 +205,28 @@ export default class LedgerEntries extends Component {
               accessor: "amount",
               filterable: showFilter,
               Cell: row =>
-                row.original.transactionType == 0 ? row.original.amount : ""
+                row.original.transactionType == 0 ? (
+                  <Amt value={row.original.amount} />
+                ) : (
+                  ""
+                )
             },
             {
               Header: "Debit",
               accessor: "amount",
               filterable: showFilter,
               Cell: row =>
-                row.original.transactionType == 1 ? row.original.amount : ""
+                row.original.transactionType == 1 ? (
+                  <Amt value={row.original.amount} />
+                ) : (
+                  ""
+                )
             },
             {
               Header: "Total",
               accessor: "total",
               filterable: showFilter,
-              Cell: row => row.original.total
+              Cell: row => <Amt value={row.original.total} />
             }
           ]}
           className="-striped -highlight"

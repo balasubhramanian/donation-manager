@@ -73,13 +73,102 @@ export default class Date extends Component {
           showMonthDropdown={this.props.showMonthDropdown ? true : false}
           showYearDropdown={this.props.showYearDropdown ? true : false}
           isClearable={true}
+          ref="datePicker"
           dateFormat="DD-MMM-YYYY"
           className="form-control col-md-7 col-xs-12"
           selected={this.state.date}
           onChange={date => {
             this.handleChange(date);
           }}
-        />
+        >
+          <div>
+            {this.props.children}
+            {this.props.showQuickLinks && (
+              <div class="quick-links">
+                <div>
+                  <a
+                    onClick={e => {
+                      this.props.onQuickLink(
+                        moment(),
+
+                        moment()
+                      );
+                    }}
+                  >
+                    Today
+                  </a>
+                  <a
+                    onClick={e => {
+                      this.props.onQuickLink(
+                        moment().subtract(1, "days"),
+
+                        moment().subtract(1, "days")
+                      );
+                    }}
+                  >
+                    Yesterday
+                  </a>
+                </div>
+                <div>
+                  <a
+                    onClick={e => {
+                      this.props.onQuickLink(
+                        moment().startOf("month"),
+
+                        moment().endOf("month")
+                      );
+                    }}
+                  >
+                    This Month
+                  </a>
+                  <a
+                    onClick={() => {
+                      this.props.onQuickLink(
+                        moment()
+                          .subtract(1, "months")
+                          .startOf("month"),
+
+                        moment()
+                          .subtract(1, "months")
+                          .endOf("month")
+                      );
+                    }}
+                  >
+                    Last Month
+                  </a>
+                </div>
+                <div>
+                  <a
+                    onClick={() => {
+                      this.props.onQuickLink(
+                        moment().startOf("year"),
+
+                        moment().endOf("year")
+                      );
+                    }}
+                  >
+                    This Year
+                  </a>
+                  <a
+                    onClick={() => {
+                      this.props.onQuickLink(
+                        moment()
+                          .subtract(1, "years")
+                          .startOf("year"),
+
+                        moment()
+                          .subtract(1, "years")
+                          .endOf("year")
+                      );
+                    }}
+                  >
+                    Last Year
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+        </DatePicker>
       </div>
     );
   }

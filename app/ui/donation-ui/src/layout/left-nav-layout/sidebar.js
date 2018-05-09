@@ -45,7 +45,7 @@ const Menus = [
         path: "/reports/campaign-pledges"
       },
       {
-        title: "Ledger",
+        title: "Ledger Summary",
         path: "/reports/daily-ledger"
       },
       {

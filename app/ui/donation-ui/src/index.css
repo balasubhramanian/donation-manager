@@ -72,3 +72,9 @@ body {
 .react-datepicker__header__dropdown.react-datepicker__header__dropdown--scroll {
     font-size: 13px !important;
 }
+
+.react-datepicker .quick-links a {
+    font-size: 12px;
+    display: inline-block;
+    padding: 10px;
+}
