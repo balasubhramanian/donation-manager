@@ -35,7 +35,7 @@ const ProtectedContainer = props => {
   }
   return (
     <AppLayout>
-      <Route exact path="/" component={Fundraising} />
+      <Route exact path="/" component={ListDonorPage} />
       <Route exact path="/user" component={ListUserPage} />
       <Route exact path="/user/add" component={AddUserPage} />
       <Route exact path="/user/:userId/edit" component={AddUserPage} />

@@ -57,7 +57,7 @@ class Confirm extends React.Component {
         keyboard={this.props.keyboard}
         backdrop={this.props.backdrop}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <Modal.Title>{this.props.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{this.props.body}</Modal.Body>

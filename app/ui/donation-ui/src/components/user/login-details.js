@@ -9,6 +9,7 @@ export const LoginDetails = props => {
       <h4>Login Details</h4>
       <div className="ln_solid" />
       <FormGroup
+        inputClassName="col-md-5 col-sm-5"
         label="Username"
         required={true}
         error={errors.username}
@@ -24,6 +25,7 @@ export const LoginDetails = props => {
         />
       </FormGroup>
       <FormGroup
+        inputClassName="col-md-5 col-sm-5"
         label="Password"
         required={true}
         error={errors.password}

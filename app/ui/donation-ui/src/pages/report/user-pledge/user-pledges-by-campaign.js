@@ -105,7 +105,11 @@ export default class UserPledgesByCampaign extends Component {
                 placeholder="Campaign"
                 value={this.state.selectedCampaign}
                 onChange={selectedOption => {
-                  this.setState({ selectedCampaign: selectedOption.value });
+                  this.setState({
+                    selectedCampaign: selectedOption
+                      ? selectedOption.value
+                      : null
+                  });
                 }}
                 multi={false}
                 options={this.state.campaigns}

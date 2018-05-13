@@ -1,5 +1,6 @@
 package com.bala.donation.transaction.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class LedgerEntryDTO {
@@ -8,7 +9,7 @@ public class LedgerEntryDTO {
     private String collectionType;
     private String type;
     private BigInteger transactionType;
-    private Double amount;
+    private BigDecimal amount;
 
     public String getDate() {
         return date;
@@ -50,11 +51,11 @@ public class LedgerEntryDTO {
         return transactionType;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

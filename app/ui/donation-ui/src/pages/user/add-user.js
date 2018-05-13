@@ -73,8 +73,15 @@ const AddUserForm = props => {
   );
 };
 
+const defaultData = {
+  city: "Chennai",
+  state: "Tamil Nadu",
+  country: "India"
+};
+
 const AddUserFormik = withFormik({
-  mapPropsToValues: props => ({ ...props.user }),
+  mapPropsToValues: props =>
+    props.isEdit ? props.user : Object.assign(defaultData, { ...props.user }),
   validationSchema: props =>
     Yup.object().shape({
       username: Yup.string().when("firstname", (isBig, schema) => {
@@ -89,12 +96,9 @@ const AddUserFormik = withFormik({
       }),
 
       firstname: Yup.string().required("Firstname is required!"),
-      lastname: Yup.string(),
       phone: Yup.string().required("Phone is required!"),
-      email: Yup.string(),
       doorno: Yup.string().required("Door no is required!"),
       street: Yup.string().required("Street is required!"),
-      area: Yup.string(),
       city: Yup.string().required("City is required!"),
       state: Yup.string().required("State is required!"),
       country: Yup.string().required("Country is required!"),

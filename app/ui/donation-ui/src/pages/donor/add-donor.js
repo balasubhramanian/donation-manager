@@ -49,18 +49,20 @@ const AddDonorForm = props => {
     </form>
   );
 };
-
-const AddDonorFormik = withFormik({
-  mapPropsToValues: props => ({ ...props.donor }),
+const defaultData = {
+  city: "Chennai",
+  state: "Tamil Nadu",
+  country: "India"
+};
+export const AddDonorFormik = withFormik({
+  mapPropsToValues: props =>
+    props.isEdit ? props.donor : Object.assign(defaultData, { ...props.donor }),
   validationSchema: props =>
     Yup.object().shape({
       firstname: Yup.string().required("Firstname is required!"),
-      lastname: Yup.string(),
       phone: Yup.string().required("Phone is required!"),
-      email: Yup.string(),
       doorno: Yup.string().required("Door no is required!"),
       street: Yup.string().required("Street is required!"),
-      area: Yup.string(),
       city: Yup.string().required("City is required!"),
       state: Yup.string().required("State is required!"),
       country: Yup.string().required("Country is required!")
@@ -102,7 +104,15 @@ const AddDonorFormik = withFormik({
 export default class AddDonor extends Component {
   constructor(props) {
     super(props);
-    this.state = { isEdit: false };
+    this.state = {
+      isEdit: false,
+      donor: {
+        area: "",
+        city: "Chennai",
+        state: "Tamil Nadu",
+        country: "India"
+      }
+    };
   }
   componentWillMount() {
     if (this.props.match.params.donorId) {

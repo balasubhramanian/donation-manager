@@ -2,9 +2,13 @@ package com.bala.donation.transaction.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class TransactionSearchModel {
     private Long id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fromDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date toDate;
     private TransactionType transactionType;
     private Long typeId;

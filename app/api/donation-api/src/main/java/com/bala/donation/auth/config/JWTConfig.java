@@ -28,8 +28,10 @@ import com.bala.donation.auth.service.AuthService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class JWTConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired AuthService authService;
-    @Autowired JWTAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    AuthService authService;
+    @Autowired
+    JWTAuthenticationFilter jwtAuthenticationFilter;
 
     // @Bean
     public WebMvcRegistrationsAdapter webMvcRegistrationsHandlerMapping() {
@@ -66,10 +68,11 @@ public class JWTConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/").permitAll().antMatchers("/console/**")
-                .permitAll().antMatchers("/swagger-ui.html").permitAll().antMatchers("/swagger-resources/**")
-                .permitAll().antMatchers("/webjars/**").permitAll().antMatchers("/v2/api-docs/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll().anyRequest().authenticated().and()
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/").permitAll().antMatchers("/static/**")
+                .permitAll().antMatchers("/console/**").permitAll().antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll().antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
+                .anyRequest().authenticated().and()
                 // We filter the api/login requests
                 // .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
                 // UsernamePasswordAuthenticationFilter.class)

@@ -69,7 +69,7 @@ export class RoleDetails extends Component {
         <div className="clearfix">
           <h4>Roles</h4>
           <div className="ln_solid" />
-          <FormGroup>
+          <FormGroup inputClassName="col-md-5 col-sm-5">
             <Select
               isLoading={isLoading}
               name="form-field-name"

@@ -20,13 +20,36 @@ export default class ListConfig extends Component {
       idToDelete: null,
       showFilter: false
     };
+    this.supportedModules = [
+      {
+        name: "Campaign Types",
+        value: "campaign_type"
+      },
+      {
+        name: "Income Types",
+        value: "income_type",
+        nameLabel: "Type"
+      },
+
+      {
+        name: "Expenses Types",
+        value: "expense_type",
+        nameLabel: "Type"
+      },
+      {
+        name: "SMS Notes",
+        value: "sms_notes",
+        nameLabel: "Notes",
+        type: "text"
+      }
+    ];
     this.modules = {};
-    AppConfig.modules.forEach(module => {
-      this.modules[module.value] = module.name;
+    this.supportedModules.forEach(module => {
+      this.modules[module.value] = module;
     });
     if (this.props.match.params.module) {
       this.state.module = this.props.match.params.module;
-      this.state.moduleName = this.modules[this.state.module];
+      this.state.moduleConfig = this.modules[this.state.module];
     }
     this.fetchData({});
   }
@@ -34,7 +57,7 @@ export default class ListConfig extends Component {
   componentWillReceiveProps(newProps) {
     const newModule = newProps.match.params.module;
     this.setState(
-      { module: newModule, moduleName: this.modules[newModule] },
+      { module: newModule, moduleConfig: this.modules[newModule] },
       this.fetchData
     );
   }
@@ -75,11 +98,11 @@ export default class ListConfig extends Component {
     if (!this.state.data) {
       return null;
     }
-    console.log(this.modules);
-    const { data, isLoading, showFilter } = this.state;
+    //console.log(this.modules);
+    const { data, isLoading, showFilter, moduleConfig } = this.state;
     return (
       <RightLayout
-        title={"Manage " + this.state.moduleName}
+        title={"Manage " + this.state.moduleConfig.name}
         linkText="Add"
         onClick={() => {
           this.toggleModal();
@@ -103,9 +126,12 @@ export default class ListConfig extends Component {
                 filterable: showFilter
               },
               {
-                Header: "Name",
+                Header: moduleConfig.nameLabel
+                  ? moduleConfig.nameLabel
+                  : "Name",
                 accessor: "name",
-                filterable: showFilter
+                filterable: showFilter,
+                className: "table-cell-wrap"
               },
               {
                 Header: "Status",
@@ -163,7 +189,9 @@ export default class ListConfig extends Component {
         <AddConfigModal
           showModal={this.state.showModal}
           module={this.state.module}
-          moduleName={this.state.moduleName}
+          moduleName={this.state.moduleConfig.name}
+          nameLabel={this.state.moduleConfig.nameLabel}
+          type={this.state.moduleConfig.type}
           toggleModal={() => {
             this.toggleModal();
           }}

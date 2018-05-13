@@ -9,6 +9,7 @@ export const PersonalDetails = props => {
       <h4>Personal Details</h4>
       <div className="ln_solid" />
       <FormGroup
+        inputClassName="col-md-5 col-sm-5"
         label="Firstname"
         required={true}
         error={errors.firstname}
@@ -24,6 +25,7 @@ export const PersonalDetails = props => {
         />
       </FormGroup>
       <FormGroup
+        inputClassName="col-md-5 col-sm-5"
         label="Lastname"
         error={errors.lastname}
         touched={touched.lastname}
@@ -39,6 +41,7 @@ export const PersonalDetails = props => {
       </FormGroup>
       <FormGroup
         label="Phone"
+        inputClassName="col-md-5 col-sm-5"
         required={true}
         error={errors.phone}
         touched={touched.phone}
@@ -52,7 +55,12 @@ export const PersonalDetails = props => {
           type="text"
         />
       </FormGroup>
-      <FormGroup label="Email" error={errors.email} touched={touched.email}>
+      <FormGroup
+        inputClassName="col-md-5 col-sm-5"
+        label="Email"
+        error={errors.email}
+        touched={touched.email}
+      >
         <input
           id="email"
           value={values.email}

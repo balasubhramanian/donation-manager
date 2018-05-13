@@ -11,25 +11,30 @@ const Menus = [
   },
   {
     title: "Donation",
+    icon: "fa fa-money",
     path: "/donation"
   },
   {
-    title: "Cash Flow",
-    icon: "fa-user-o",
-    children: [
-      {
-        title: "Income",
-        path: "/cashflow/income"
-      },
-      {
-        title: "Expense",
-        path: "/cashflow/expense"
-      }
-    ]
+    title: "Income",
+    icon: "fa fa-angle-double-right",
+    path: "/cashflow/income"
   },
   {
+    title: "Expense",
+    icon: "fa fa-angle-double-left",
+    path: "/cashflow/expense"
+  },
+  // {
+  //   title: "Cash Flow",
+  //   icon: "fa fa-sign-in",
+  //   children: [
+
+  //   ]
+  // },
+  {
     title: "Campaign",
-    path: "/campaign"
+    path: "/campaign",
+    icon: "fa fa-snowflake-o"
   },
 
   {
@@ -37,20 +42,12 @@ const Menus = [
     icon: "fa-line-chart",
     children: [
       {
-        title: "Income vs Expense",
-        path: "/user"
-      },
-      {
         title: "Campaign Pledges",
         path: "/reports/campaign-pledges"
       },
       {
         title: "Ledger Summary",
         path: "/reports/daily-ledger"
-      },
-      {
-        title: "Actual vs Expected ",
-        path: "/user"
       }
     ]
   },
@@ -63,10 +60,10 @@ const Menus = [
         icon: "fa-user-o",
         path: "/user"
       },
-      {
-        title: "Campaign Types",
-        path: "/config/campaign_type"
-      },
+      // {
+      //   title: "Campaign Types",
+      //   path: "/config/campaign_type"
+      // },
       {
         title: "Income Types",
         path: "/config/income_type"
@@ -74,6 +71,10 @@ const Menus = [
       {
         title: "Expense Types",
         path: "/config/expense_type"
+      },
+      {
+        title: "SMS Notes",
+        path: "/config/sms_notes"
       },
       {
         title: "Accounts",
@@ -136,8 +137,23 @@ const Menu = props => {
 export default class Sidebar extends Component {
   bindMenuHandlers() {
     var $SIDEBAR_MENU = $("#sidebar-menu");
+    var $BODY = $("#root-container");
 
     $SIDEBAR_MENU.find("a").on("click", function(ev) {
+      if ($BODY.hasClass("nav-sm")) {
+        $SIDEBAR_MENU.find("li.active ul").hide();
+        $SIDEBAR_MENU
+          .find("li.active")
+          .addClass("active-sm")
+          .removeClass("active");
+      } else {
+        $SIDEBAR_MENU.find("li.active-sm ul").show();
+        $SIDEBAR_MENU
+          .find("li.active-sm")
+          .addClass("active")
+          .removeClass("active-sm");
+      }
+
       var $li = $(this).parent();
 
       if ($li.is(".active")) {

@@ -113,7 +113,7 @@ export default class PledgeModal extends Component {
           this.hide();
         }}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <h4>{this.props.donor.firstname} Pledges</h4>
         </Modal.Header>
         <Modal.Body>

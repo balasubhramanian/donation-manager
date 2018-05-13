@@ -33,6 +33,7 @@ public class DonationRepoImpl implements DonationCustomRepo {
 
         Predicate predicate = specification.toPredicate(root, criteriaQuery, criteriaBuilder);
         criteriaQuery.where(predicate);
+        criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
         // criteriaQuery.join 
         return entityManager.createQuery(criteriaQuery).getResultList();
     }

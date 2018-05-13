@@ -8,6 +8,7 @@ export const AddressDetails = props => {
       <h4>Address</h4>
       <div className="ln_solid" />
       <FormGroup
+        inputClassName="col-md-5 col-sm-5"
         label="Door No"
         required={true}
         error={errors.doorno}
@@ -23,6 +24,7 @@ export const AddressDetails = props => {
         />
       </FormGroup>
       <FormGroup
+        inputClassName="col-md-5 col-sm-5"
         label="Street"
         required={true}
         error={errors.street}
@@ -37,7 +39,12 @@ export const AddressDetails = props => {
           type="text"
         />
       </FormGroup>
-      <FormGroup label="Area" error={errors.area} touched={touched.area}>
+      <FormGroup
+        inputClassName="col-md-5 col-sm-5"
+        label="Area"
+        error={errors.area}
+        touched={touched.area}
+      >
         <input
           id="area"
           value={values.area}
@@ -48,6 +55,7 @@ export const AddressDetails = props => {
         />
       </FormGroup>
       <FormGroup
+        inputClassName="col-md-5 col-sm-5"
         label="City"
         required={true}
         error={errors.city}
@@ -63,6 +71,7 @@ export const AddressDetails = props => {
         />
       </FormGroup>
       <FormGroup
+        inputClassName="col-md-5 col-sm-5"
         label="State"
         required={true}
         error={errors.state}
@@ -79,6 +88,7 @@ export const AddressDetails = props => {
       </FormGroup>
       <FormGroup
         label="Country"
+        inputClassName="col-md-5 col-sm-5"
         required={true}
         error={errors.country}
         touched={touched.country}

@@ -8,6 +8,12 @@ import ConfigService from "services/config-service";
 import { RightLayout } from "layout/right-layout";
 import DateUtils from "common/date-utils";
 import DonationCollection from "components/donation-collection";
+import Select from "react-select";
+import { Amt } from "common/formatter";
+import DatePicker from "components/date-picker";
+import moment from "moment";
+import { toast } from "react-toastify";
+import CampaignService from "services/campaign-service";
 
 export default class ListEntry extends Component {
   constructor(props) {
@@ -19,10 +25,25 @@ export default class ListEntry extends Component {
       pages: 1,
       showConfirm: false,
       idToDelete: null,
-      showFilter: false
+      showFilter: false,
+      fromDate: moment(),
+      toDate: moment()
     };
     this.fetchAccounts();
+    this.fetchAllCampaign();
     this.fetchData();
+  }
+
+  fetchAllCampaign() {
+    CampaignService.getActiveCampaign()
+      .then(res => {
+        this.setState({
+          campaigns: res.data.map(c => ({ label: c.name, value: c.id }))
+        });
+      })
+      .catch(err => {
+        console.log("erro fetching campaign", err);
+      });
   }
   fetchAccounts() {
     AccountService.getAllAccount()
@@ -37,10 +58,42 @@ export default class ListEntry extends Component {
   }
 
   fetchData() {
-    DonationService.getAllDonation({})
+    if (!this.state.fromDate) {
+      toast.error("Start Date is required");
+      return;
+    }
+
+    if (!this.state.toDate) {
+      toast.error("End Date is required ");
+      return;
+    }
+
+    let fromDate = this.state.fromDate;
+    let toDate = this.state.toDate;
+
+    if (typeof fromDate === "object") {
+      fromDate = this.state.fromDate.format("YYYY-MM-DD");
+    }
+
+    if (typeof toDate === "object") {
+      toDate = this.state.toDate.format("YYYY-MM-DD");
+    }
+
+    const params = {
+      fromDate: fromDate,
+      toDate: toDate,
+      campaignId: this.state.campaignId
+    };
+    this.setState({ isLoading: true });
+    DonationService.getAllDonation(params)
       .then(response => {
         let data = response.data;
-        this.setState({ data: data, isLoading: false });
+        let totalDonation = data.reduce((a, v) => a + v.amount, 0);
+        this.setState({
+          data: data,
+          totalDonation: totalDonation,
+          isLoading: false
+        });
       })
       .catch(err => {
         this.setState({ isLoading: false });
@@ -73,11 +126,82 @@ export default class ListEntry extends Component {
       <div>
         <RightLayout
           title="Manage Donation"
-          linkText="Add"
+          linkText="Collect Donation"
           onClick={() => {
             this.toggleModal();
           }}
         >
+          <h4>Search</h4>
+          <div className="ln_solid" />
+          <div class="row">
+            <div class="col-xs-12 col-md-3">
+              <Select
+                name="form-field-name"
+                placeholder="Campaign"
+                value={this.state.campaignId}
+                onChange={selectedOption => {
+                  this.setState({
+                    campaignId: selectedOption ? selectedOption.value : null
+                  });
+                }}
+                multi={false}
+                options={this.state.campaigns}
+              />
+            </div>
+            <div class="col-xs-12 col-md-3">
+              <DatePicker
+                id="fromDate"
+                defaultToday
+                placeholderText="Start Date"
+                showMonthDropdown
+                showYearDropdown
+                value={this.state.fromDate}
+                onChange={date => {
+                  this.setState({ fromDate: date });
+                }}
+                onBlur={date => {
+                  this.setState({ fromDate: date });
+                }}
+                showQuickLinks={true}
+                onQuickLink={(fromDate, toDate) => {
+                  this.setState({ fromDate, toDate }, () => {});
+                }}
+              />
+            </div>
+            <div class="col-xs-12 col-md-3">
+              <DatePicker
+                id="toDate"
+                placeholderText="End Date"
+                showMonthDropdown
+                showYearDropdown
+                value={this.state.toDate}
+                onChange={date => {
+                  this.setState({ toDate: date });
+                }}
+                onBlur={date => {
+                  this.setState({ toDate: date });
+                }}
+              />
+            </div>
+            <div class="col-xs-12 col-md-2">
+              <button
+                ref="btnSearch"
+                className="btn btn-success"
+                onClick={() => {
+                  this.fetchData();
+                }}
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </RightLayout>
+        {!this.state.isLoading && (
+          <h4>
+            Total Donation : <Amt value={this.state.totalDonation} />
+          </h4>
+        )}
+        <RightLayout>
           <div>{this.renderTable()}</div>
         </RightLayout>
       </div>
@@ -97,7 +221,8 @@ export default class ListEntry extends Component {
               : true;
           }}
           loading={isLoading}
-          defaultPageSize={10}
+          defaultPageSize={100}
+          minRows={5}
           columns={[
             {
               Header: "Id",
@@ -124,7 +249,7 @@ export default class ListEntry extends Component {
               Header: "Amount",
               accessor: "amount",
               filterable: showFilter,
-              Cell: rowMeta => rowMeta.row.amount
+              Cell: rowMeta => <Amt value={rowMeta.original.amount} />
             },
             {
               Header: "Account",

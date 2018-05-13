@@ -12,10 +12,10 @@ export default class SearchUser extends Component {
         hasData = true;
       }
     });
-    if (!hasData) {
-      toast.error("Enter Search Criteria");
-      return;
-    }
+    //if (!hasData) {
+    //toast.error("Enter Search Criteria");
+    //return;
+    //}
     this.props.onSearch(this.state);
   }
 

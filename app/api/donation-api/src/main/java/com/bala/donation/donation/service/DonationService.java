@@ -22,6 +22,7 @@ import com.bala.donation.donation.mapper.DonationMapper;
 import com.bala.donation.donation.model.DonationModel;
 import com.bala.donation.donation.model.DonationSearchModel;
 import com.bala.donation.donation.repo.DonationRepo;
+import com.bala.donation.notification.service.NotificationService;
 import com.bala.donation.user.entity.UserDetailsEntity;
 import com.bala.donation.user.repo.UserDetailsRepo;;
 
@@ -42,6 +43,9 @@ public class DonationService {
 
     @Autowired
     DonationMapper donationMapper;
+
+    @Autowired
+    NotificationService notificationService;
 
     public List<DonationModel> getAllDonation(DonationSearchModel donationSearchModel) {
 
@@ -118,6 +122,8 @@ public class DonationService {
                 accountEntity);
 
         donationRepo.save(donationEntity);
+
+        notificationService.onDonationRecieved(donationEntity);
     }
 
     public DonationModel getDonation(Long id) {

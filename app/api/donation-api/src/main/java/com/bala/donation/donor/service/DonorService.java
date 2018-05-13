@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -27,12 +28,6 @@ public class DonorService {
 
     @Autowired
     UserDetailsRepo userDetailsRepo;
-
-    public List<DonorModel> getAllDonor() {
-        List<UserDetailsEntity> userEntities = userDetailsRepo.findAll();
-        List<DonorModel> users = userMapper.toUserDetails(userEntities);
-        return users;
-    }
 
     @Transactional
     public void saveDonor(DonorModel donor) {
@@ -71,7 +66,9 @@ public class DonorService {
     }
 
     public List<DonorModel> getAllDonor(DonorSearchModel donor) {
-        List<UserDetailsEntity> userDetailsEntities = userDetailsRepo.findAll(findByIdOrNameOrStreetOrArea(donor));
+        Sort orderByIdDesc = new Sort(Sort.Direction.DESC, "id");
+        List<UserDetailsEntity> userDetailsEntities = userDetailsRepo.findAll(findByIdOrNameOrStreetOrArea(donor),
+                orderByIdDesc);
         return userMapper.toUserDetails(userDetailsEntities);
     }
 

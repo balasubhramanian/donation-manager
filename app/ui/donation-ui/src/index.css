@@ -78,3 +78,13 @@ body {
     display: inline-block;
     padding: 10px;
 }
+
+.ReactTable .rt-thead .rt-resizable-header-content {
+    font-weight: bold;
+    letter-spacing: 0.5px !important;
+}
+
+.table-cell-wrap,
+.ReactTable .rt-td {
+    white-space: normal !important;
+}

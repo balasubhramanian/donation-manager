@@ -15,6 +15,8 @@ import { Link } from "react-router-dom";
 import { RightLayout } from "layout/right-layout";
 import DonationCollection from "components/donation-collection";
 import PledgeModal from "pages/donor/pledges";
+import { AddDonorFormik } from "./add-donor";
+import { toast } from "react-toastify";
 
 export default class ListDonor extends Component {
   constructor(props) {
@@ -22,7 +24,8 @@ export default class ListDonor extends Component {
     this.state = {
       data: [],
       isLoading: true,
-      showModal: false,
+      showAddDonarModal: false,
+      showCollectModal: false,
       showPledgeModal: false,
       pages: 1,
       showConfirm: false,
@@ -63,7 +66,13 @@ export default class ListDonor extends Component {
   render() {
     return (
       <div>
-        <RightLayout title="Donors" linkTo="/donor/add" linkText="Add Donor" />
+        <RightLayout
+          title="Donors"
+          onClick={() => {
+            this.setState({ showAddDonarModal: true });
+          }}
+          linkText="Add Donor"
+        />
         <CollapsablePanel
           isOpen={this.state.data ? false : true}
           title="Search"
@@ -130,7 +139,7 @@ export default class ListDonor extends Component {
                       <a
                         onClick={() => {
                           this.setState({
-                            showModal: true,
+                            showCollectModal: true,
                             selectedDonor: rowMeta.original
                           });
                         }}
@@ -154,10 +163,10 @@ export default class ListDonor extends Component {
                           });
                         }}
                       >
-                        <i className="fa fa-money" />
+                        <i className="fa fa-hand-paper-o " />
                       </a>
                     </OverlayTrigger>
-                    <OverlayTrigger
+                    {/* <OverlayTrigger
                       placement="bottom"
                       overlay={
                         <Tooltip id={"edit" + rowMeta.original.id}>
@@ -180,7 +189,7 @@ export default class ListDonor extends Component {
                       <Link to={"/donor/" + rowMeta.original.id + "/details"}>
                         <i className="fa fa-money" />
                       </Link>
-                    </OverlayTrigger>
+                    </OverlayTrigger> */}
                   </div>
                 )
               },
@@ -232,12 +241,12 @@ export default class ListDonor extends Component {
         </div>
         <DonationCollection
           donor={this.state.selectedDonor}
-          showModal={this.state.showModal}
+          showModal={this.state.showCollectModal}
           onSuccess={() => {
-            this.setState({ showModal: false, selectedDonor: null });
+            this.setState({ showCollectModal: false, selectedDonor: null });
           }}
           onCancel={() => {
-            this.setState({ showModal: false, selectedDonor: null });
+            this.setState({ showCollectModal: false, selectedDonor: null });
           }}
         />
 
@@ -251,6 +260,30 @@ export default class ListDonor extends Component {
             this.setState({ showPledgeModal: false, selectedDonor: null });
           }}
         />
+
+        <Modal
+          id="donorModal"
+          show={this.state.showAddDonarModal}
+          onHide={() => {
+            this.setState({ showAddDonarModal: false });
+          }}
+        >
+          <Modal.Header closeButton>
+            <h4>Add Donor</h4>
+          </Modal.Header>
+          <Modal.Body>
+            <AddDonorFormik
+              layout="min"
+              onSuccess={() => {
+                this.setState({ showAddDonarModal: false });
+                this.fetchData();
+              }}
+              onCancel={() => {
+                this.setState({ showAddDonarModal: false });
+              }}
+            />
+          </Modal.Body>
+        </Modal>
       </RightLayout>
     );
   }

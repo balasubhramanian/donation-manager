@@ -48,7 +48,7 @@ export default class UpdatePasswordModal extends Component {
           this.hide();
         }}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <h4>Update Password</h4>
         </Modal.Header>
         <Modal.Body>

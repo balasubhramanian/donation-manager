@@ -40,7 +40,6 @@ public class TransactionMapper {
         model.setTransactionType(entity.getTransactionType());
         model.setTypeId(entity.getType().getId());
         model.setTypeName(entity.getType().getName());
-        model.setTypeDesc(entity.getType().getDescription());
         return model;
     }
 

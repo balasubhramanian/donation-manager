@@ -107,7 +107,10 @@ public class TransactionService {
             throw new AppException(errorType);
         }
 
-        AccountEntity accountEntity = accountRepo.findOne(transactionModel.getAccountId());
+        AccountEntity accountEntity = null;
+        if (transactionModel.getAccountId() != null) {
+            accountEntity = accountRepo.findOne(transactionModel.getAccountId());
+        }
 
         TransactionEntity transactionEntity = transactionMapper.toTransaction(transactionModel, configEntity,
                 accountEntity);

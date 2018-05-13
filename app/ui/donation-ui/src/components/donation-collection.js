@@ -10,6 +10,7 @@ import CampaignService from "services/campaign-service";
 import AccountService from "services/account-service";
 import DonorService from "services/donor-service";
 import DonationService from "services/donation-service";
+import moment from "moment";
 
 const DonationCollectionForm = props => {
   let {
@@ -56,6 +57,17 @@ const DonationCollectionForm = props => {
           <Select.Async
             name="form-field-name"
             loadOptions={props.fetchDonor}
+            optionRenderer={option => {
+              return (
+                <div>
+                  <b>{option.firstname}</b>
+                  <br />
+                  {option.doorno} {option.street} {option.area}
+                  <br />
+                  {option.phone}
+                </div>
+              );
+            }}
             value={values.donorId}
             onChange={value => {
               setFieldValue("donorId", value);
@@ -77,7 +89,10 @@ const DonationCollectionForm = props => {
           name="form-field-name"
           value={values.campaignId}
           onChange={selectedOption => {
-            setFieldValue("campaignId", selectedOption.value);
+            setFieldValue(
+              "campaignId",
+              selectedOption ? selectedOption.value : null
+            );
           }}
           multi={false}
           options={campaigns}
@@ -122,7 +137,7 @@ const DonationCollectionForm = props => {
 
       <FormGroup
         label="Account"
-        required={true}
+        required={false}
         inputClassName="col-md-5 col-sm-5"
         error={errors.accountId}
         touched={touched.accountId}
@@ -131,7 +146,11 @@ const DonationCollectionForm = props => {
           name="form-field-name"
           value={values.accountId}
           onChange={selectedOption => {
-            setFieldValue("accountId", selectedOption.value);
+            if (selectedOption) {
+              setFieldValue("accountId", selectedOption.value);
+            } else {
+              setFieldValue("accountId", selectedOption);
+            }
           }}
           multi={false}
           options={accounts}
@@ -176,8 +195,9 @@ const DonationCollectionForm = props => {
   );
 };
 
+let defaultData = { date: moment() };
 const DonationCollectionFormik = withFormik({
-  mapPropsToValues: props => ({}),
+  mapPropsToValues: props => defaultData,
   validationSchema: props =>
     Yup.object().shape({
       date: Yup.mixed().required("Date is required"),
@@ -297,7 +317,7 @@ export default class DonationCollection extends Component {
           this.props.onCancel();
         }}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <h4>Add Donation</h4>
         </Modal.Header>
         <Modal.Body>{this.renderForm()}</Modal.Body>

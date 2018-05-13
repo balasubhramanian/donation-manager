@@ -89,7 +89,7 @@ export default class Campaign extends Component {
         linkText="Add Campaign"
         linkTo="/campaign/add"
       >
-        <div className="table-responsive">
+        <div>
           <ReactTable
             data={data}
             defaultFilterMethod={(filter, row, column) => {

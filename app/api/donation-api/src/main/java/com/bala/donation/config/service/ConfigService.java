@@ -5,10 +5,14 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.bala.donation.common.constants.AppConstants;
 import com.bala.donation.config.model.ConfigModel;
+import com.bala.donation.config.model.ConfigModuleType;
+import com.bala.donation.config.model.ConfigType;
 import com.bala.donation.user.entity.ConfigEntity;
 import com.bala.donation.user.repo.ConfigRepo;
 
@@ -52,8 +56,22 @@ public class ConfigService {
         return toModel(entity);
     }
 
+    public boolean getBooleanOf(ConfigType config) {
+        String value = configRepo.findByModuleAndName(config.getModule(), config.getConfig());
+        return StringUtils.isNotBlank(value)
+                && ("true".equalsIgnoreCase(value) || "enable".equalsIgnoreCase(value) || "1".equalsIgnoreCase(value));
+
+    }
+
     public List<ConfigModel> getConfigByModule(String moduleName) {
         List<ConfigEntity> entities = configRepo.findByModule(moduleName);
+
+        return entities.stream().map(this::toModel).collect(Collectors.toList());
+    }
+
+    public List<ConfigModel> getConfigByModule(ConfigModuleType module) {
+        List<ConfigEntity> entities = configRepo.findByModuleAndStatus(module.getModuleName(),
+                AppConstants.STATUS_ACTIVE);
 
         return entities.stream().map(this::toModel).collect(Collectors.toList());
     }

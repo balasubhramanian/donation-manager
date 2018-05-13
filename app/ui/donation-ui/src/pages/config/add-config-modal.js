@@ -26,7 +26,7 @@ export default class UpdatePasswordModal extends Component {
           this.hide();
         }}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <h4>
             {this.props.config ? "Update" : "Add"} {this.props.moduleName}
           </h4>
@@ -37,6 +37,8 @@ export default class UpdatePasswordModal extends Component {
             isEdit={this.props.config ? true : false}
             module={this.props.module}
             moduleName={this.props.moduleName}
+            nameLabel={this.props.nameLabel}
+            type={this.props.type}
             onCancel={() => {
               this.hide();
             }}

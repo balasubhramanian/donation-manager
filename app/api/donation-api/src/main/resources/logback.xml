@@ -28,13 +28,13 @@
 		<!-- <appender-ref ref="STDOUT" /> -->
 		<!-- <appender-ref ref="hibernate_query_logs" /> -->
 	</logger>
-<!--
-	<logger name="org.hibernate.type" level="trace" additivity="false">
-		<appender-ref ref="STDOUT" />
-		<appender-ref ref="hibernate_query_logs" />
-	</logger> -->
 
-	<root level="INFO">
+	<logger name="org.hibernate.type" level="debug" additivity="false">
+		<appender-ref ref="STDOUT" />
+<!-- 		<appender-ref ref="hibernate_query_logs" /> -->
+	</logger>
+
+	<root level="WARN">
 		<appender-ref ref="STDOUT" />
 	</root>
 

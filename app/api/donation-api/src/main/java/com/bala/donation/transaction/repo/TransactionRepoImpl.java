@@ -1,5 +1,6 @@
 package com.bala.donation.transaction.repo;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -58,10 +59,10 @@ public class TransactionRepoImpl implements TransactionCustomRepo {
     @Override
     public Double findOpeningBalanceOn(LocalDate date) {
         Session session = (Session) entityManager.getDelegate();
-        Double result = (Double) session.getNamedQuery(RepoConstants.NQ_ROLLUP_BALANCE)
+        BigDecimal result = (BigDecimal) session.getNamedQuery(RepoConstants.NQ_ROLLUP_BALANCE)
                 .setParameter("date", date.format(RepoConstants.YEAR_MONTH_DATE_FORMATTER)).uniqueResult();
 
-        return Optional.ofNullable(result).orElse(Double.valueOf(0));
+        return Optional.ofNullable(result.doubleValue()).orElse(Double.valueOf(0));
 
     }
 

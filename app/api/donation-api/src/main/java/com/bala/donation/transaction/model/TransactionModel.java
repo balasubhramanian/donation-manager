@@ -16,7 +16,6 @@ public class TransactionModel {
     @NotNull
     private Long typeId;
     private String typeName;
-    private String typeDesc;
 
     @NotNull
     private long amount;
@@ -63,14 +62,6 @@ public class TransactionModel {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
-    }
-
-    public String getTypeDesc() {
-        return typeDesc;
-    }
-
-    public void setTypeDesc(String typeDesc) {
-        this.typeDesc = typeDesc;
     }
 
     public long getAmount() {

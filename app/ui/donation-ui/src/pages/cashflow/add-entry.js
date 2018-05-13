@@ -7,6 +7,7 @@ import { FormGroup } from "components/form-group";
 import DatePicker from "components/date-picker";
 import { Modal } from "react-bootstrap";
 import Select from "react-select";
+import moment from "moment";
 
 const AddTransactionForm = props => {
   let {
@@ -67,7 +68,10 @@ const AddTransactionForm = props => {
           name="form-field-name"
           value={values.typeId}
           onChange={selectedOption => {
-            setFieldValue("typeId", selectedOption.value);
+            setFieldValue(
+              "typeId",
+              selectedOption ? selectedOption.value : null
+            );
           }}
           multi={false}
           options={types}
@@ -109,7 +113,7 @@ const AddTransactionForm = props => {
 
       <FormGroup
         label="Account"
-        required={true}
+        required={false}
         inputClassName="col-md-5 col-sm-5"
         error={errors.accountId}
         touched={touched.accountId}
@@ -118,7 +122,10 @@ const AddTransactionForm = props => {
           name="form-field-name"
           value={values.accountId}
           onChange={selectedOption => {
-            setFieldValue("accountId", selectedOption.value);
+            setFieldValue(
+              "accountId",
+              selectedOption ? selectedOption.value : null
+            );
           }}
           multi={false}
           options={accounts}
@@ -163,8 +170,9 @@ const AddTransactionForm = props => {
   );
 };
 
+const defalutData = { date: moment() };
 const AddTransactionFormik = withFormik({
-  mapPropsToValues: props => ({}),
+  mapPropsToValues: props => defalutData,
   validationSchema: props =>
     Yup.object().shape({
       date: Yup.mixed().required(),
@@ -254,7 +262,7 @@ export default class AddUser extends Component {
           this.props.onCancel();
         }}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <h4>Add {this.props.type.title}</h4>
         </Modal.Header>
         <Modal.Body>{this.renderForm()}</Modal.Body>

@@ -55,7 +55,7 @@ const AddCampaignForm = props => {
           error={errors.description}
           touched={touched.description}
         >
-          <input
+          <textarea
             id="description"
             value={values.description}
             onChange={handleChange}
@@ -184,7 +184,6 @@ const AddCampaignFormik = withFormik({
   validationSchema: props =>
     Yup.object().shape({
       name: Yup.string().required("Name is required!"),
-      description: Yup.string(),
       typeId: Yup.number().required("Type is required!"),
       startDate: Yup.mixed().notRequired(),
       endDate: Yup.mixed().notRequired(),

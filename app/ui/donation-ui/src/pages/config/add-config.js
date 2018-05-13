@@ -26,24 +26,36 @@ const AddConfigForm = props => {
   };
 
   dirty = props.isEdit ? true : dirty;
+
   return (
     <form className="form-horizontal form-label-left" onSubmit={beforeSubmit}>
       <div>
         <FormGroup
-          label="Name"
+          label={props.nameLabel ? props.nameLabel : "Name"}
           required={true}
           error={errors.name}
           touched={touched.name}
           inputClassName="col-md-5 col-sm-5"
         >
-          <input
-            id="name"
-            value={values.name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className="form-control col-md-7 col-xs-12"
-            type="text"
-          />
+          {props.type === "text" ? (
+            <textarea
+              rows="10"
+              id="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="form-control col-md-7 col-xs-12"
+            />
+          ) : (
+            <input
+              type="text"
+              id="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="form-control col-md-7 col-xs-12"
+            />
+          )}
         </FormGroup>
 
         <FormGroup
@@ -97,11 +109,17 @@ const AddConfigForm = props => {
   );
 };
 
+let defaultData = { status: "A" };
 const AddConfigFormik = withFormik({
-  mapPropsToValues: props => ({ ...props.config }),
+  mapPropsToValues: props =>
+    props.isEdit
+      ? { ...props.config }
+      : Object.assign(defaultData, props.config),
   validationSchema: props =>
     Yup.object().shape({
-      name: Yup.string().required("Name is required!"),
+      name: Yup.string()
+        .required(" Required!")
+        .max(250, "Must be most 250 chars"),
       status: Yup.string().required("Status is required!")
     }),
   handleSubmit: (values, props) => {
@@ -170,6 +188,10 @@ export default class AddConfig extends Component {
           isEdit={this.state.isEdit}
           module={this.state.module}
           moduleName={this.state.moduleName}
+          nameLabel={this.props.nameLabel}
+          type={this.props.type}
+          valueLabel={this.props.valueLabel}
+          isValueRequired={this.props.isValueRequired}
           onSuccess={() => {
             this.props.onSuccess();
           }}
