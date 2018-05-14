@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style type="text/css">
+body {
+	font-size: 14px;
+}
+
+.report {
+	margin-top: 20px;
+	font-size: 16px;
+}
+.report th, .report td {
+	font-size: 14px;
+}
+.report th {
+	background-color: steelblue;
+	color: #ECF0F1;
+}
+</style>
+</head>
+<body>
+	<div class="page-content">
+		From Date : <span
+			th:text="${#dates.format(filter.fromDate,'dd-MMM-yyyy')}"></span> <br />
+		To Date : <span
+			th:text="${#dates.format(filter.toDate,'dd-MMM-yyyy')}"> </span><br />
+		Total : ₹ <span th:text="${#appFormatter.formatINR(total)}">
+		</span><br />
+	</div>
+	<br />
+	<div class="report">
+		<table border="1">
+			<tr>
+				<th>ID</th>
+				<th>Date</th>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Amount</th>
+				<th>Account</th>
+			</tr>
+			<tr th:each="t: ${data}">
+				<td th:text="${t.id}" />
+				<td th:text="${#dates.format(t.date,'dd-MMM-yyyy')}" />
+				<td th:text="${t.typeName}" />
+				<td th:text="${t.description}" />
+				<td th:text="${t.amount}" />
+				<td th:text="${t.accountName}" />
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

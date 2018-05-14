@@ -8,8 +8,23 @@ export default class BaseService {
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + this.getToken();
     }
-    let request = axios({ ...data, baseURL: window.app.api.baseURL });
+    let request = axios({ ...data, baseURL: this.getBaseUrl() });
     return request;
+  }
+
+  getDownloadUrl(path, param) {
+    let url = this.getBaseUrl() + path + "?";
+    let queryParam = Object.assign({ token: this.getToken() }, param);
+
+    let queryParamStr = Object.entries(queryParam)
+      .map(([key, value]) => key + "=" + (value ? value : ""))
+      .join("&");
+
+    return url + queryParamStr;
+  }
+
+  getBaseUrl() {
+    return window.app.api.baseURL;
   }
 
   getToken() {

@@ -101,13 +101,13 @@ public class DonationService {
 
     @Transactional
     public void saveDonation(DonationModel donationModel) {
-        CampaignEntity campaignEntity = campaignRepo.findOne(donationModel.getCampaignId());
+        CampaignEntity campaignEntity = campaignRepo.findById(donationModel.getCampaignId()).get();
 
         if (campaignEntity == null) {
             throw new AppException(DonationError.CAMPAIGN_NOT_FOUND);
         }
 
-        UserDetailsEntity userDetailsEntity = userDetailsRepo.findOne(donationModel.getDonorId());
+        UserDetailsEntity userDetailsEntity = userDetailsRepo.findById(donationModel.getDonorId()).get();
 
         if (userDetailsEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
@@ -115,7 +115,7 @@ public class DonationService {
 
         AccountEntity accountEntity = null;
         if (donationModel.getAccountId() != null) {
-            accountEntity = accountRepo.findOne(donationModel.getAccountId());
+            accountEntity = accountRepo.findById(donationModel.getAccountId()).get();
         }
 
         DonationEntity donationEntity = donationMapper.toDonation(donationModel, campaignEntity, userDetailsEntity,
@@ -127,7 +127,7 @@ public class DonationService {
     }
 
     public DonationModel getDonation(Long id) {
-        DonationEntity donationEntity = donationRepo.findOne(id);
+        DonationEntity donationEntity = donationRepo.getOne(id);
         if (donationEntity == null) {
             throw new AppException(DonationError.DONATION_NOT_FOUND);
         }
@@ -137,18 +137,18 @@ public class DonationService {
 
     @Transactional
     public void updateDonation(Long id, DonationModel donationModel) {
-        DonationEntity donationEntity = donationRepo.findOne(id);
+        DonationEntity donationEntity = donationRepo.getOne(id);
         if (donationEntity == null) {
             throw new AppException(DonationError.DONATION_NOT_FOUND);
         }
 
-        CampaignEntity campaignEntity = campaignRepo.findOne(donationModel.getCampaignId());
+        CampaignEntity campaignEntity = campaignRepo.getOne(donationModel.getCampaignId());
 
         if (campaignEntity == null) {
             throw new AppException(DonationError.CAMPAIGN_NOT_FOUND);
         }
 
-        UserDetailsEntity userDetailsEntity = userDetailsRepo.findOne(donationModel.getDonorId());
+        UserDetailsEntity userDetailsEntity = userDetailsRepo.getOne(donationModel.getDonorId());
 
         if (userDetailsEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
@@ -156,7 +156,7 @@ public class DonationService {
 
         AccountEntity accountEntity = null;
         if (donationModel.getAccountId() != null) {
-            accountEntity = accountRepo.findOne(donationModel.getAccountId());
+            accountEntity = accountRepo.getOne(donationModel.getAccountId());
         }
 
         donationEntity = donationMapper.toDonation(donationModel, donationEntity, campaignEntity, userDetailsEntity,
@@ -165,7 +165,7 @@ public class DonationService {
     }
 
     public void deleteDonation(Long id) {
-        DonationEntity donationEntity = donationRepo.findOne(id);
+        DonationEntity donationEntity = donationRepo.getOne(id);
         if (donationEntity == null) {
             throw new AppException(DonationError.DONATION_NOT_FOUND);
         }

@@ -26,7 +26,7 @@ import com.bala.donation.user.entity.UserDetailsEntity;
 public class DonationEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(TemporalType.DATE)
     private Date date;

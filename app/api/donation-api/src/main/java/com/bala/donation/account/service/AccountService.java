@@ -39,7 +39,7 @@ public class AccountService {
     }
 
     public AccountModel get(Long id) {
-        AccountEntity accountEntity = accountRepo.findOne(id);
+        AccountEntity accountEntity = accountRepo.getOne(id);
         if (accountEntity == null) {
             throw new AppException(AccountError.ACCOUNT_NOT_FOUNT);
         }
@@ -49,7 +49,7 @@ public class AccountService {
 
     @Transactional
     public void update(Long id, AccountModel campaign) {
-        AccountEntity accountEntity = accountRepo.findOne(id);
+        AccountEntity accountEntity = accountRepo.getOne(id);
         if (accountEntity == null) {
             throw new AppException(AccountError.ACCOUNT_NOT_FOUNT);
         }
@@ -58,7 +58,7 @@ public class AccountService {
     }
 
     public void delete(Long id) {
-        AccountEntity accountEntity = accountRepo.findOne(id);
+        AccountEntity accountEntity = accountRepo.getOne(id);
         if (accountEntity == null) {
             throw new AppException(AccountError.ACCOUNT_NOT_FOUNT);
         }

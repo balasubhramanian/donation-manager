@@ -22,7 +22,7 @@
 		    
 			    select 
 			      sum(
-			        case when transaction_type = 0 then amount when transaction_type = 1 then amount *-1 end
+			        case when transaction_type = 1 then amount when transaction_type = -1 then amount *-1 end
 			      ) 'amount' 
 			    from 
 			      transaction 
@@ -31,7 +31,7 @@
 		  ) a
 			
 	]]>
-	
+
 	</sql-query>
 	<sql-query name="MONTLY_TRANSACTION_SUMMARY">
 	<![CDATA[
@@ -44,7 +44,7 @@
 			      campaign.id collectionTypeId, 
 			      campaign.name collectionType, 
 			      'donation' type, 
-			      0 transactionType, 
+			      1 transactionType, 
 			      sum(amount) amount 
 			    from 
 			      donation 
@@ -79,6 +79,7 @@
 	]]>
 	</sql-query>
 
+	<!-- 1 - Credit -1 - Debit -->
 
 	<sql-query name="DAILY_LEDGER_ENTRIES">
 	<![CDATA[
@@ -91,7 +92,7 @@
 		      campaign.id collectionTypeId, 
 		      campaign.name collectionType, 
 		      'donation' type, 
-		      0 transactionType, 
+		      1 transactionType, 
 		      sum(amount) amount 
 		    from 
 		      donation 
@@ -136,6 +137,7 @@
 		  up.period, 
 		  up.user_id 'userId', 
 		  ud.firstname 'firstname', 
+		  ud.phone 'phone',
 		  up.campaign_id 'campaignId', 
 		  c.name 'campaignName' , 
 		  up.amount 'pledgedAmount', 
@@ -167,6 +169,124 @@
   		) d 
   	on up.campaign_id = d.campaign_id 
   	and up.period = date_format(d.date,'%Y-%m')
+  	and up.user_id = d.user_id 
+  	join 
+  		user_details ud 
+  	on up.user_id = ud.id 
+  	join 
+  		campaign c 
+  	on up.campaign_id = c.id 
+  		and up.campaign_id = :campaignId
+	group by 
+	  up.period, 
+	  up.user_id, 
+	  up.campaign_id, 
+	  up.amount 
+	order by 
+	  up.period, 
+	  up.campaign_id, 
+	  up.user_id
+	]]>
+
+	</sql-query>
+
+	<sql-query name="USER_PLEDGE_PAYMENT_STATUS_FOR_YEARLY_CAMPAIGN">
+	<![CDATA[
+	select 
+		  up.period, 
+		  up.user_id 'userId', 
+		  ud.firstname 'firstname', 
+		  ud.phone 'phone',
+		  up.campaign_id 'campaignId', 
+		  c.name 'campaignName' , 
+		  up.amount 'pledgedAmount', 
+		  sum(d.amount) 'paidAmount'
+	from 
+		  (
+		    select 
+		      distinct(year) 'period', 
+		      campaign_id, 
+		      user_id, 
+		      amount 
+		    from 
+		      dim_month_year, 
+		      user_pledge 
+		    where 
+		      concat(year) >= :fromYear 
+		      and concat(year) <= :toYear
+		  ) up 
+  	left outer join (
+		    select 
+		      campaign_id, 
+		      user_id, 
+		      date, 
+		      amount 
+		    from 
+		      donation 
+		    where 
+		      date >= :fromDate and date< :toDate
+  		) d 
+  	on up.campaign_id = d.campaign_id 
+  	and up.period = date_format(d.date,'%Y')
+  	and up.user_id = d.user_id 
+  	join 
+  		user_details ud 
+  	on up.user_id = ud.id 
+  	join 
+  		campaign c 
+  	on up.campaign_id = c.id 
+  		and up.campaign_id = :campaignId
+	group by 
+	  up.period, 
+	  up.user_id, 
+	  up.campaign_id, 
+	  up.amount 
+	order by 
+	  up.period, 
+	  up.campaign_id, 
+	  up.user_id
+	]]>
+
+	</sql-query>
+
+	<sql-query name="USER_PLEDGE_PAYMENT_STATUS_FOR_ONCE_CAMPAIGN">
+	<![CDATA[
+	select 
+		  up.period, 
+		  up.user_id 'userId', 
+		  ud.firstname 'firstname', 
+		  ud.phone 'phone',
+		  up.campaign_id 'campaignId', 
+		  c.name 'campaignName' , 
+		  up.amount 'pledgedAmount', 
+		  sum(d.amount) 'paidAmount'
+	from 
+		  (
+		    select 
+		      concat(year) 'period', 
+		      campaign_id, 
+		      user_id, 
+		      amount 
+		    from 
+		      dim_month_year, 
+		      user_pledge 
+		    where 
+		      concat(year) >= :fromMonthYear 
+		      and concat(year) <= :toMonthYear
+		  ) up 
+  	left outer join (
+		    select 
+		      campaign_id, 
+		      user_id, 
+		      date, 
+		      amount 
+		    from 
+		      donation 
+		    where 
+		      date >= :fromDate and date< :toDate
+  		) d 
+  	on up.campaign_id = d.campaign_id 
+  	and up.period = date_format(d.date,'%Y')
   	and up.user_id = d.user_id 
   	join 
   		user_details ud 

@@ -12,7 +12,7 @@ import com.bala.donation.common.entity.BaseEntity;
 @Table(name = "config")
 public class ConfigEntity extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
     private String module; // Module which config belong to
     private String name; //
     private String description;//

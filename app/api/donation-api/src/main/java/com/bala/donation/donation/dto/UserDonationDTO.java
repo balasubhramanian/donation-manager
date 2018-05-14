@@ -7,6 +7,7 @@ public class UserDonationDTO {
     private String period;
     private BigInteger userId;
     private String firstname;
+    private String phone;
     private String lastname;
     private BigInteger campaignId;
     private String campaignName;
@@ -84,6 +85,14 @@ public class UserDonationDTO {
 
     public void setDifference(BigInteger difference) {
         this.difference = difference;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
 }

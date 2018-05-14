@@ -6,6 +6,7 @@ import DatePicker from "components/date-picker";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import { Amt } from "common/formatter";
+import { Transaction } from "constant";
 import "../report.css";
 
 export default class LedgerReport extends Component {
@@ -30,7 +31,7 @@ export default class LedgerReport extends Component {
     };
   }
 
-  fetchTransactionEntries() {
+  fetchTransactionEntries(isExport) {
     if (!this.state.fromDate) {
       toast.error("Start Date is required");
       return;
@@ -57,6 +58,16 @@ export default class LedgerReport extends Component {
       toDate: toDate
     };
 
+    if (isExport) {
+      const url =
+        this.state.selectedReportType === "MONTHLY"
+          ? TransactionService.getMonthlyLedgerEntriesReportUrl(params)
+          : TransactionService.getDailyLedgerEntriesReportUrl(params);
+
+      window.open(url, "_blank");
+      return;
+    }
+
     let promise;
     if (this.state.selectedReportType === "MONTHLY") {
       promise = TransactionService.getMonthlyLedgerEntries(params);
@@ -75,7 +86,7 @@ export default class LedgerReport extends Component {
         };
         data.entries.forEach(r => {
           const tranasctionAmt =
-            r.transactionType == 0 ? r.amount : r.amount * -1;
+            r.transactionType === Transaction.CREDIT ? r.amount : r.amount * -1;
           runningBalance = runningBalance + tranasctionAmt;
           r.total = runningBalance;
         });
@@ -157,6 +168,15 @@ export default class LedgerReport extends Component {
               >
                 Search
               </button>
+              <button
+                ref="btnSearch"
+                className="btn btn-default"
+                onClick={() => {
+                  this.fetchTransactionEntries(true);
+                }}
+              >
+                <i className="fa fa-download" /> Export
+              </button>
             </div>
           </div>
         </RightLayout>
@@ -205,7 +225,7 @@ export default class LedgerReport extends Component {
               accessor: "amount",
               filterable: showFilter,
               Cell: row =>
-                row.original.transactionType == 0 ? (
+                row.original.transactionType === Transaction.CREDIT ? (
                   <Amt value={row.original.amount} />
                 ) : (
                   ""
@@ -216,7 +236,7 @@ export default class LedgerReport extends Component {
               accessor: "amount",
               filterable: showFilter,
               Cell: row =>
-                row.original.transactionType == 1 ? (
+                row.original.transactionType === Transaction.DEBIT ? (
                   <Amt value={row.original.amount} />
                 ) : (
                   ""

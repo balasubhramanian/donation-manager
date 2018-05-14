@@ -5,6 +5,10 @@ class DonationService extends BaseService {
     return this.get("/donation", param);
   }
 
+  getAllDonationUrl(param) {
+    return this.getDownloadUrl("/donation/report", param);
+  }
+
   deleteDonation(id) {
     return this.delete("/donation/" + id);
   }

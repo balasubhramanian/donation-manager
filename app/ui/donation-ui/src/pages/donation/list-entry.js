@@ -57,7 +57,7 @@ export default class ListEntry extends Component {
       });
   }
 
-  fetchData() {
+  fetchData(isExport) {
     if (!this.state.fromDate) {
       toast.error("Start Date is required");
       return;
@@ -84,6 +84,12 @@ export default class ListEntry extends Component {
       toDate: toDate,
       campaignId: this.state.campaignId
     };
+
+    if (isExport) {
+      window.open(DonationService.getAllDonationUrl(params), "_blank");
+      return;
+    }
+
     this.setState({ isLoading: true });
     DonationService.getAllDonation(params)
       .then(response => {
@@ -192,6 +198,15 @@ export default class ListEntry extends Component {
                 }}
               >
                 Search
+              </button>
+              <button
+                ref="btnSearch"
+                className="btn btn-default"
+                onClick={() => {
+                  this.fetchData(true);
+                }}
+              >
+                <i className="fa fa-download" /> Export
               </button>
             </div>
           </div>

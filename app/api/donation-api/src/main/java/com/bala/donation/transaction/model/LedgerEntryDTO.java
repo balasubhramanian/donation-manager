@@ -10,6 +10,7 @@ public class LedgerEntryDTO {
     private String type;
     private BigInteger transactionType;
     private BigDecimal amount;
+    private BigDecimal runningBalance;
 
     public String getDate() {
         return date;
@@ -57,6 +58,14 @@ public class LedgerEntryDTO {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public BigDecimal getRunningBalance() {
+        return runningBalance;
+    }
+
+    public void setRunningBalance(BigDecimal runningBalance) {
+        this.runningBalance = runningBalance;
     }
 
 }

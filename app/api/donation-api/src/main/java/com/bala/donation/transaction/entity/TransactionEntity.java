@@ -2,6 +2,7 @@ package com.bala.donation.transaction.entity;
 
 import java.util.Date;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ import org.hibernate.annotations.FetchMode;
 import com.bala.donation.account.entity.AccountEntity;
 import com.bala.donation.common.entity.BaseEntity;
 import com.bala.donation.transaction.model.TransactionType;
+import com.bala.donation.transaction.model.TransactionTypeConvertor;
 import com.bala.donation.user.entity.ConfigEntity;
 
 @Entity
@@ -26,7 +28,7 @@ import com.bala.donation.user.entity.ConfigEntity;
 public class TransactionEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Temporal(TemporalType.DATE)
@@ -42,6 +44,7 @@ public class TransactionEntity extends BaseEntity {
     @Fetch(FetchMode.JOIN)
     private ConfigEntity type;
 
+    @Convert(converter = TransactionTypeConvertor.class)
     private TransactionType transactionType;
 
     private long amount;

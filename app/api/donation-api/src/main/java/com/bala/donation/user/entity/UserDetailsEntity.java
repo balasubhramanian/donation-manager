@@ -14,7 +14,7 @@ import com.bala.donation.common.entity.BaseEntity;
 @Entity
 @Table(name = "user_details")
 public class UserDetailsEntity extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
     private String firstname;
     private String lastname;
     private String email;

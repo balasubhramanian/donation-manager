@@ -5,11 +5,10 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
@@ -24,14 +23,9 @@ public class TransactionRepoImpl implements TransactionCustomRepo {
 
     @SuppressWarnings("unchecked")
     @Override
+    @Transactional
     public List<LedgerEntryDTO> findDailyLedgerTransaction(LocalDate fromDate, LocalDate toDate) {
 
-        return findDailyLedgerTransaction(fromDate, toDate, entityManager);
-
-    }
-
-    private List<LedgerEntryDTO> findDailyLedgerTransaction(LocalDate fromDate, LocalDate toDate,
-            EntityManager entityManager) {
         Session session = (Session) entityManager.getDelegate();
         return session.getNamedQuery(RepoConstants.NQ_DAILY_LEDGER_ENTRIES)
                 .setParameter("fromDate", fromDate.format(RepoConstants.YEAR_MONTH_DATE_FORMATTER))
@@ -39,13 +33,9 @@ public class TransactionRepoImpl implements TransactionCustomRepo {
                 .setResultTransformer(Transformers.aliasToBean(LedgerEntryDTO.class)).list();
     }
 
-    @Override
-    public Future<List<LedgerEntryDTO>> findDailyLedgerTransactionAsync(LocalDate fromDate, LocalDate toDate) {
-        return CompletableFuture.supplyAsync(() -> findDailyLedgerTransaction(fromDate, toDate, entityManager));
-    }
-
     @SuppressWarnings("unchecked")
     @Override
+    @Transactional
     public List<LedgerEntryDTO> findMonthlyLedgerTransaction(LocalDate fromDate, LocalDate toDate) {
         Session session = (Session) entityManager.getDelegate();
 
@@ -57,12 +47,13 @@ public class TransactionRepoImpl implements TransactionCustomRepo {
     }
 
     @Override
-    public Double findOpeningBalanceOn(LocalDate date) {
+    @Transactional
+    public BigDecimal findOpeningBalanceOn(LocalDate date) {
         Session session = (Session) entityManager.getDelegate();
         BigDecimal result = (BigDecimal) session.getNamedQuery(RepoConstants.NQ_ROLLUP_BALANCE)
                 .setParameter("date", date.format(RepoConstants.YEAR_MONTH_DATE_FORMATTER)).uniqueResult();
 
-        return Optional.ofNullable(result.doubleValue()).orElse(Double.valueOf(0));
+        return Optional.ofNullable(result).orElse(BigDecimal.valueOf(0));
 
     }
 

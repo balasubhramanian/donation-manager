@@ -15,7 +15,7 @@ import com.bala.donation.common.entity.BaseEntity;
 public class UserRoleEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

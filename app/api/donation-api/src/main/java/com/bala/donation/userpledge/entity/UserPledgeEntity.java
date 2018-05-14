@@ -20,7 +20,7 @@ import com.bala.donation.user.entity.UserDetailsEntity;
 @Table(name = "user_pledge")
 public class UserPledgeEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)

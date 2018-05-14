@@ -1,13 +1,10 @@
 package com.bala.donation.auth.config;
 
-import java.lang.reflect.Method;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.WebMvcRegistrationsAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,10 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import com.bala.donation.auth.service.AuthService;
 
@@ -34,37 +27,46 @@ public class JWTConfig extends WebSecurityConfigurerAdapter {
     JWTAuthenticationFilter jwtAuthenticationFilter;
 
     // @Bean
-    public WebMvcRegistrationsAdapter webMvcRegistrationsHandlerMapping() {
-        return new WebMvcRegistrationsAdapter() {
-            @Override
-            public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
-                return new RequestMappingHandlerMapping() {
-                    private final static String API_BASE_PATH = "api";
-
-                    @Override
-                    protected void registerHandlerMethod(Object handler, Method method, RequestMappingInfo mapping) {
-                        Class<?> beanType = method.getDeclaringClass();
-                        if (AnnotationUtils.findAnnotation(beanType, RestController.class) != null) {
-                            PatternsRequestCondition apiPattern = new PatternsRequestCondition(API_BASE_PATH)
-                                    .combine(mapping.getPatternsCondition());
-
-                            mapping = new RequestMappingInfo(mapping.getName(), apiPattern,
-                                    mapping.getMethodsCondition(), mapping.getParamsCondition(),
-                                    mapping.getHeadersCondition(), mapping.getConsumesCondition(),
-                                    mapping.getProducesCondition(), mapping.getCustomCondition());
-                        }
-
-                        super.registerHandlerMethod(handler, method, mapping);
-                    }
-                };
-            }
-        };
-    }
+    // public WebMvcRegistrationsAdapter webMvcRegistrationsHandlerMapping() {
+    // return new WebMvcRegistrationsAdapter() {
+    // @Override
+    // public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
+    // return new RequestMappingHandlerMapping() {
+    // private final static String API_BASE_PATH = "api";
+    //
+    // @Override
+    // protected void registerHandlerMethod(Object handler, Method method,
+    // RequestMappingInfo mapping) {
+    // Class<?> beanType = method.getDeclaringClass();
+    // if (AnnotationUtils.findAnnotation(beanType, RestController.class) != null) {
+    // PatternsRequestCondition apiPattern = new
+    // PatternsRequestCondition(API_BASE_PATH)
+    // .combine(mapping.getPatternsCondition());
+    //
+    // mapping = new RequestMappingInfo(mapping.getName(), apiPattern,
+    // mapping.getMethodsCondition(), mapping.getParamsCondition(),
+    // mapping.getHeadersCondition(), mapping.getConsumesCondition(),
+    // mapping.getProducesCondition(), mapping.getCustomCondition());
+    // }
+    //
+    // super.registerHandlerMethod(handler, method, mapping);
+    // }
+    // };
+    // }
+    // };
+    // }
 
     // @Bean
     // public JWTAuthenticationFilter JWTAuthenticationFilter(){
     // return new JWTAuthenticationFilter();
     // }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        // TODO Auto-generated method stub
+        return super.authenticationManagerBean();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -79,7 +79,7 @@ export default class ListEntry extends Component {
       });
   }
 
-  fetchData() {
+  fetchData(isExport) {
     if (!this.state.fromDate) {
       toast.error("Start Date is required");
       return;
@@ -107,6 +107,14 @@ export default class ListEntry extends Component {
       typeId: this.state.selectedType,
       transactionType: this.cashflow[this.state.type].transactionType
     };
+
+    if (isExport) {
+      window.open(
+        TransactionService.getAllTransactionReportUrl(params),
+        "_blank"
+      );
+      return;
+    }
 
     this.setState({ isLoading: true });
 
@@ -219,6 +227,15 @@ export default class ListEntry extends Component {
                 }}
               >
                 Search
+              </button>
+              <button
+                ref="btnSearch"
+                className="btn btn-default"
+                onClick={() => {
+                  this.fetchData(true);
+                }}
+              >
+                <i className="fa fa-download" /> Export
               </button>
             </div>
           </div>

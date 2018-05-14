@@ -90,10 +90,16 @@ CREATE TABLE `config` (
 LOCK TABLES `config` WRITE;
 /*!40000 ALTER TABLE `config` DISABLE KEYS */;
 
-INSERT INTO `config` (`id`, `created_at`, `created_by`, `updated_at`, `updated_by`, `description`, `module`, `name`, `status`, `value`)
+INSERT INTO `config` ( `created_at`, `created_by`, `updated_at`, `updated_by`, `description`, `module`, `name`, `status`, `value`)
 VALUES
-	(12,'2018-04-28 10:20:25',1,NULL,NULL,NULL,'sms_donation_text','Thanks for donating ${amount}.\n','A',NULL),
-	(14,'2018-05-13 10:01:43',1,NULL,NULL,'','notification','sms_enabled','A','1');
+	('2018-04-28 10:20:25',1,NULL,NULL,NULL,'sms_donation_text','Thanks for donating ${amount}.\n','A',NULL),
+	('2018-05-13 10:01:43',1,NULL,NULL,'','notification','sms_enabled','A','1');
+
+INSERT INTO `config` ( `created_at`, `created_by`, `updated_at`, `updated_by`, `description`, `module`, `name`, `status`, `value`)
+VALUES
+	( '2018-05-13 15:22:12', 1, '2018-05-13 15:22:26', 1, NULL, 'campaign_type', 'Monthly', 'A', NULL),
+	( '2018-05-13 15:22:12', 1, '2018-05-13 15:22:26', 1, NULL, 'campaign_type', 'Yearly', 'A', NULL),
+	( '2018-05-13 15:22:12', 1, '2018-05-13 15:22:26', 1, NULL, 'campaign_type', 'Once', 'A', NULL);
 
 /*!40000 ALTER TABLE `config` ENABLE KEYS */;
 UNLOCK TABLES;

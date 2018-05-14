@@ -41,7 +41,7 @@ public class CampaignService {
 
     @Transactional
     public void saveCampaign(CampaignModel campaign) {
-        ConfigEntity configEntity = configRepo.findOne(campaign.getTypeId());
+        ConfigEntity configEntity = configRepo.getOne(campaign.getTypeId());
 
         if (configEntity == null) {
             throw new AppException(DonationError.CAMPAIGN_TYPE_NOT_FOUND);
@@ -52,7 +52,7 @@ public class CampaignService {
     }
 
     public CampaignModel getCampaign(Long id) {
-        CampaignEntity campaignEntity = campaignRepo.findOne(id);
+        CampaignEntity campaignEntity = campaignRepo.getOne(id);
         if (campaignEntity == null) {
             throw new AppException(DonationError.CAMPAIGN_NOT_FOUND);
         }
@@ -62,13 +62,13 @@ public class CampaignService {
 
     @Transactional
     public void updateCampaign(Long id, CampaignModel campaign) {
-        CampaignEntity campaignEntity = campaignRepo.findOne(id);
+        CampaignEntity campaignEntity = campaignRepo.getOne(id);
         if (campaignEntity == null) {
             throw new AppException(DonationError.CAMPAIGN_NOT_FOUND);
         }
         ConfigEntity configEntity = campaignEntity.getType();
         if (campaignEntity.getType() == null || campaignEntity.getType().getId() != campaign.getTypeId()) {
-            configEntity = configRepo.findOne(campaign.getTypeId());
+            configEntity = configRepo.getOne(campaign.getTypeId());
         }
 
         campaignEntity = campaignMapper.toCampaign(campaign, campaignEntity, configEntity);
@@ -76,7 +76,7 @@ public class CampaignService {
     }
 
     public void deleteCampaign(Long id) {
-        CampaignEntity campaignEntity = campaignRepo.findOne(id);
+        CampaignEntity campaignEntity = campaignRepo.getOne(id);
         if (campaignEntity == null) {
             throw new AppException(DonationError.CAMPAIGN_NOT_FOUND);
         }

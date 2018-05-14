@@ -75,7 +75,7 @@ public class UserService {
     }
 
     public UserModel getUsers(Long userId) {
-        UserLoginEntity userEntity = userLoginRepo.findOne(userId);
+        UserLoginEntity userEntity = userLoginRepo.getOne(userId);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
@@ -86,7 +86,7 @@ public class UserService {
 
     @Transactional
     public void updatePassword(Long id, UserModel user) {
-        UserLoginEntity userEntity = userLoginRepo.findOne(id);
+        UserLoginEntity userEntity = userLoginRepo.getOne(id);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
@@ -96,7 +96,7 @@ public class UserService {
 
     @Transactional
     public void updateUser(Long id, UserModel user) {
-        UserLoginEntity userEntity = userLoginRepo.findOne(id);
+        UserLoginEntity userEntity = userLoginRepo.getOne(id);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
@@ -113,7 +113,7 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long id) {
-        UserLoginEntity userEntity = userLoginRepo.findOne(id);
+        UserLoginEntity userEntity = userLoginRepo.getOne(id);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
@@ -141,13 +141,13 @@ public class UserService {
             return;
         }
 
-        UserLoginEntity userEntity = userRepo.findOne(userId);
+        UserLoginEntity userEntity = userRepo.getOne(userId);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
 
         roleModels.forEach((roleModel) -> {
-            RoleEntity roleEntity = roleRepo.findOne(roleModel.getId());
+            RoleEntity roleEntity = roleRepo.getOne(roleModel.getId());
             if (roleEntity == null) {
                 throw new AppException(UserError.ROLE_NOT_FOUND);
             }
@@ -162,13 +162,13 @@ public class UserService {
 
     @Transactional
     public void removeRoleFromUser(Long userId, List<RoleModel> roleModels) {
-        UserLoginEntity userEntity = userRepo.findOne(userId);
+        UserLoginEntity userEntity = userRepo.getOne(userId);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }
 
         roleModels.forEach((roleModel) -> {
-            RoleEntity roleEntity = roleRepo.findOne(roleModel.getId());
+            RoleEntity roleEntity = roleRepo.getOne(roleModel.getId());
             if (roleEntity == null) {
                 throw new AppException(UserError.ROLE_NOT_FOUND);
             }
@@ -214,7 +214,7 @@ public class UserService {
     }
 
     public List<RoleModel> getAllRoleForUser(Long userId) {
-        UserLoginEntity userEntity = userRepo.findOne(userId);
+        UserLoginEntity userEntity = userRepo.getOne(userId);
         if (userEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
         }

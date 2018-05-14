@@ -20,7 +20,7 @@ import com.bala.donation.user.entity.ConfigEntity;
 @Table(name = "campaign")
 public class CampaignEntity extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
 
     private String name;
     private String description;

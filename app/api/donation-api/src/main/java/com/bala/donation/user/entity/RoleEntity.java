@@ -13,7 +13,7 @@ import com.bala.donation.common.entity.BaseEntity;
 public class RoleEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;

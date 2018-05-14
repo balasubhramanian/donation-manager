@@ -22,6 +22,7 @@
 
 	<logger name="com.bala" level="debug" additivity="false">
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="hibernate_query_logs" />
 	</logger>
 
 	 <logger name="org.hibernate.SQL" level="debug" additivity="false">

@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style type="text/css">
+body {
+	font-size: 14px;
+}
+
+.report {
+	margin-top: 20px;
+}
+
+.report th, .report td {
+	font-size: 14px;
+}
+
+.report th{
+	background-color: steelblue;
+	color: #ECF0F1;
+}
+</style>
+</head>
+<body>
+	<div class="page-content">
+		<h3 th:text="${reportType}">Report</h3>
+		From Date : <span
+			th:text="${#temporals.format(fromDate,'dd-MMM-yyyy')}"></span> <br />
+		To Date : <span th:text="${#temporals.format(toDate,'dd-MMM-yyyy')}">
+		</span><br /> Total : ₹ <span th:text="${#appFormatter.formatINR(total)}">
+		</span><br />
+	</div>
+	<br />
+	<div class="report">
+
+		<table border="1">
+			<tr>
+				<th>Date</th>
+				<th>Title</th>
+				<th>Credit</th>
+				<th>Debit</th>
+				<th>Total</th>
+			</tr>
+			<tr>
+				<td />
+				<td>Opening Balance</td>
+				<td />
+				<td />
+				<td th:text="${openingBalance}"></td>
+			</tr>
+
+			<tr th:each="t: ${data}">
+				<td th:text="${t.date}" />
+				<td th:text="${t.collectionType}" />
+				<td th:text="${t.transactionType == 1 ? t.amount : ''}" />
+				<td th:text="${t.transactionType == -1 ? t.amount : ''}" />
+
+				<td th:text="${t.runningBalance}"></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

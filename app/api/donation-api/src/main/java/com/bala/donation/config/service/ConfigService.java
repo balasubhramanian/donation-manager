@@ -40,19 +40,19 @@ public class ConfigService {
 
     @Transactional
     public void updateConfig(Long id, ConfigModel config) {
-        ConfigEntity entity = configRepo.findOne(id);
+        ConfigEntity entity = configRepo.getOne(id);
         toEntity(config, entity);
         configRepo.save(entity);
     }
 
     public void deleteConfig(Long id) {
-        ConfigEntity entity = configRepo.findOne(id);
+        ConfigEntity entity = configRepo.getOne(id);
 
         configRepo.delete(entity);
     }
 
     public ConfigModel getConfigById(Long id) {
-        ConfigEntity entity = configRepo.findOne(id);
+        ConfigEntity entity = configRepo.getOne(id);
         return toModel(entity);
     }
 

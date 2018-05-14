@@ -36,7 +36,7 @@ public class DonorService {
     }
 
     public DonorModel getDonor(Long donorId) {
-        UserDetailsEntity donorEntity = userDetailsRepo.findOne(donorId);
+        UserDetailsEntity donorEntity = userDetailsRepo.getOne(donorId);
         if (donorEntity == null) {
             throw new AppException(DonationError.DONOR_NOT_FOUND);
         }
@@ -47,7 +47,7 @@ public class DonorService {
     @Transactional
     public void updateDonor(Long id, DonorModel user) {
 
-        UserDetailsEntity userDetailsEntity = userDetailsRepo.findOne(id);
+        UserDetailsEntity userDetailsEntity = userDetailsRepo.getOne(id);
         if (userDetailsEntity == null) {
             throw new AppException(DonationError.DONOR_NOT_FOUND);
         }
@@ -58,7 +58,7 @@ public class DonorService {
 
     @Transactional
     public void deleteDonor(Long id) {
-        UserDetailsEntity userEntity = userDetailsRepo.findOne(id);
+        UserDetailsEntity userEntity = userDetailsRepo.getOne(id);
         if (userEntity == null) {
             throw new AppException(DonationError.DONOR_NOT_FOUND);
         }

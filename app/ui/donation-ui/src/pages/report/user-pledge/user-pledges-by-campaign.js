@@ -8,6 +8,10 @@ import DatePicker from "components/date-picker";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import "../report.css";
+import { Amt } from "common/formatter";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+
+const exportBtn = props => {};
 
 export default class UserPledgesByCampaign extends Component {
   constructor(props) {
@@ -72,7 +76,7 @@ export default class UserPledgesByCampaign extends Component {
       .then(response => {
         let data = response.data;
         let pending = data.filter(d => d.paidAmount == null);
-        let paid = data.filter(d => d.paidAmount === d.pledgedAmount);
+        let paid = data.filter(d => d.paidAmount >= d.pledgedAmount);
         let partiallyPaid = data.filter(
           d =>
             d.paidAmount &&
@@ -90,6 +94,32 @@ export default class UserPledgesByCampaign extends Component {
         console.log("error fetching fetchUserPledgesForCampaign", err);
         this.setState({ isLoading: false });
       });
+  }
+  exportToCsv(data, showPending) {
+    let csvContent = "data:text/csv;charset=utf-8,";
+
+    csvContent +=
+      "Period,User,Phone,Pledged,Paid" +
+      (showPending ? ",Pending" : "") +
+      "\r\n";
+
+    let rows = data.map(d => {
+      let row = [];
+      row.push(d.period);
+      row.push(d.firstname);
+      row.push(d.phone);
+      row.push(d.pledgedAmount);
+      row.push(d.paidAmount);
+      if (showPending) {
+        row.push(d.pledgedAmount - d.paidAmount);
+      }
+      return row.join(",");
+    });
+
+    csvContent += rows.join("\r\n");
+
+    var encodedUri = encodeURI(csvContent);
+    window.open(encodedUri);
   }
 
   render() {
@@ -165,13 +195,37 @@ export default class UserPledgesByCampaign extends Component {
         </RightLayout>
 
         {!this.state.isLoading && (
-          <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
+          <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
             <Tab
               eventKey={1}
               title={"Pending Donation (" + this.state.pending.length + ")"}
             >
               <RightLayout>
-                <div>{this.renderTable(this.state.pending)}</div>
+                <h4>
+                  Pending Amount &nbsp;
+                  <Amt
+                    value={this.state.pending.reduce(
+                      (a, c) => a + c.pledgedAmount,
+                      0
+                    )}
+                  />
+                  &nbsp;
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={<Tooltip id={"1"}>Download</Tooltip>}
+                  >
+                    <button
+                      style={{ border: "none" }}
+                      class="btn btn-default"
+                      onClick={() => {
+                        this.exportToCsv(this.state.pending);
+                      }}
+                    >
+                      <i className="fa fa-download"> </i>
+                    </button>
+                  </OverlayTrigger>
+                </h4>
+                <div>{this.renderTable(this.state.pending, true)}</div>
               </RightLayout>
             </Tab>
             <Tab
@@ -181,6 +235,41 @@ export default class UserPledgesByCampaign extends Component {
               }
             >
               <RightLayout>
+                <h4>
+                  Pending Amount &nbsp;
+                  <Amt
+                    value={this.state.partiallyPaid.reduce(
+                      (a, c) => a + (c.pledgedAmount - c.paidAmount),
+                      0
+                    )}
+                  />
+                  &nbsp;
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={<Tooltip id={"1"}>Download</Tooltip>}
+                  >
+                    <button
+                      style={{ border: "none" }}
+                      class="btn btn-default"
+                      onClick={() => {
+                        this.exportToCsv(this.state.partiallyPaid, true);
+                      }}
+                    >
+                      <i className="fa fa-download"> </i>
+                    </button>
+                  </OverlayTrigger>
+                </h4>
+
+                <h4>
+                  Collected Amount &nbsp;
+                  <Amt
+                    value={this.state.partiallyPaid.reduce(
+                      (a, c) => a + c.paidAmount,
+                      0
+                    )}
+                  />
+                  &nbsp;
+                </h4>
                 <div>{this.renderTable(this.state.partiallyPaid)}</div>
               </RightLayout>
             </Tab>
@@ -189,7 +278,31 @@ export default class UserPledgesByCampaign extends Component {
               title={"Fully Donated (" + this.state.paid.length + ")"}
             >
               <RightLayout>
-                <div>{this.renderTable(this.state.paid)}</div>
+                <h4>
+                  Collected Amount &nbsp;
+                  <Amt
+                    value={this.state.paid.reduce(
+                      (a, c) => a + c.paidAmount,
+                      0
+                    )}
+                  />
+                  &nbsp;
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={<Tooltip id={"1"}>Download</Tooltip>}
+                  >
+                    <button
+                      style={{ border: "none" }}
+                      class="btn btn-default"
+                      onClick={() => {
+                        this.exportToCsv(this.state.paid);
+                      }}
+                    >
+                      <i className="fa fa-download"> </i>
+                    </button>
+                  </OverlayTrigger>
+                </h4>
+                <div>{this.renderTable(this.state.paid, true)}</div>
               </RightLayout>
             </Tab>
           </Tabs>
@@ -198,7 +311,7 @@ export default class UserPledgesByCampaign extends Component {
     );
   }
 
-  renderTable(data) {
+  renderTable(data, hidePending) {
     const { isLoading, showFilter } = this.state;
 
     if (isLoading) return null;
@@ -252,22 +365,36 @@ export default class UserPledgesByCampaign extends Component {
               sortable: true
             },
             {
+              Header: "Phone",
+              accessor: "phone",
+              filterable: showFilter,
+              sortable: true
+            },
+            {
               Header: "Pledged ",
               accessor: "pledgedAmount",
-              sortable: true
+              sortable: true,
+              Cell: rowMeta => <Amt value={rowMeta.original.pledgedAmount} />
             },
             {
               Header: "Paid",
               accessor: "paidAmount",
               filterable: showFilter,
-              Cell: row =>
-                row.original.paidAmount ? row.original.paidAmount : 0
+              Cell: row => (
+                <Amt
+                  value={row.original.paidAmount ? row.original.paidAmount : 0}
+                />
+              )
             },
             {
               Header: "Pending",
-              Cell: row =>
-                row.original.pledgedAmount -
-                (row.original.paidAmount ? row.original.paidAmount : 0)
+              show: !hidePending,
+              Cell: row => {
+                let pendingAmount =
+                  row.original.pledgedAmount -
+                  (row.original.paidAmount ? row.original.paidAmount : 0);
+                return pendingAmount > 0 ? <Amt value={pendingAmount} /> : "";
+              }
             }
           ]}
           className="-striped -highlight"

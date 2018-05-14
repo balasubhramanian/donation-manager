@@ -45,13 +45,13 @@ public class UserPledgeService {
     @Transactional
     public void saveUserPledge(UserPledgeModel userPledge) {
 
-        CampaignEntity campaignEntity = campaignRepo.findOne(userPledge.getCampaignId());
+        CampaignEntity campaignEntity = campaignRepo.getOne(userPledge.getCampaignId());
 
         if (campaignEntity == null) {
             throw new AppException(DonationError.CAMPAIGN_NOT_FOUND);
         }
 
-        UserDetailsEntity userDetailsEntity = userDetailsRepo.findOne(userPledge.getDonorId());
+        UserDetailsEntity userDetailsEntity = userDetailsRepo.getOne(userPledge.getDonorId());
 
         if (userDetailsEntity == null) {
             throw new AppException(UserError.USER_NOT_FOUND);
@@ -77,12 +77,24 @@ public class UserPledgeService {
     }
 
     public List<UserDonationDTO> findUserPledgePaymentForMonthlyCampaign(UserPledgeSearchModel searchModel) {
-        CampaignEntity campaignEntity = campaignRepo.findOne(searchModel.getCampaignId());
+        CampaignEntity campaignEntity = campaignRepo.findById(searchModel.getCampaignId()).get();
         if (campaignEntity == null) {
             throw new AppException(DonationError.CAMPAIGN_NOT_FOUND);
         }
 
-        return userPledgeRepo.findUserPledgePaymentForMonthlyCampaign(searchModel);
+        switch (campaignEntity.getType().getName().toUpperCase()) {
+        case "MONTHLY":
+            return userPledgeRepo.findUserPledgePaymentForMonthlyCampaign(searchModel);
+
+        case "YEARLY":
+            return userPledgeRepo.findUserPledgePaymentForYearlyCampaign(searchModel);
+
+        case "ONCE":
+            return userPledgeRepo.findUserPledgePaymentForOnceCampaign(searchModel);
+
+        default:
+            throw new AppException(DonationError.CAMPAIGN_TYPE_NOT_FOUND);
+        }
     }
 
 }

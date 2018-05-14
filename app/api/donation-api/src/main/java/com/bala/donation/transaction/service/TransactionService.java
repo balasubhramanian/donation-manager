@@ -1,5 +1,6 @@
 package com.bala.donation.transaction.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,7 @@ public class TransactionService {
 
     @Transactional
     public void saveTransaction(TransactionModel transactionModel) {
-        ConfigEntity configEntity = configRepo.findOne(transactionModel.getTypeId());
+        ConfigEntity configEntity = configRepo.getOne(transactionModel.getTypeId());
 
         if (configEntity == null) {
             AppError errorType = TransactionType.CREDIT.equals(transactionModel.getTransactionType())
@@ -109,7 +110,7 @@ public class TransactionService {
 
         AccountEntity accountEntity = null;
         if (transactionModel.getAccountId() != null) {
-            accountEntity = accountRepo.findOne(transactionModel.getAccountId());
+            accountEntity = accountRepo.getOne(transactionModel.getAccountId());
         }
 
         TransactionEntity transactionEntity = transactionMapper.toTransaction(transactionModel, configEntity,
@@ -119,7 +120,7 @@ public class TransactionService {
     }
 
     public TransactionModel getTransaction(Long id) {
-        TransactionEntity transactionEntity = transactionRepo.findOne(id);
+        TransactionEntity transactionEntity = transactionRepo.getOne(id);
         if (transactionEntity == null) {
             throw new AppException(TransactionError.TRANSACTION_NOT_FOUND);
         }
@@ -129,13 +130,13 @@ public class TransactionService {
 
     @Transactional
     public void updateTransaction(Long id, TransactionModel transactionModel) {
-        TransactionEntity transactionEntity = transactionRepo.findOne(id);
+        TransactionEntity transactionEntity = transactionRepo.getOne(id);
 
         if (transactionEntity == null) {
             throw new AppException(TransactionError.TRANSACTION_NOT_FOUND);
         }
 
-        ConfigEntity configEntity = configRepo.findOne(transactionModel.getTypeId());
+        ConfigEntity configEntity = configRepo.getOne(transactionModel.getTypeId());
 
         if (configEntity == null) {
             AppError errorType = TransactionType.CREDIT.equals(transactionModel.getTransactionType())
@@ -145,7 +146,7 @@ public class TransactionService {
             throw new AppException(errorType);
         }
 
-        AccountEntity accountEntity = accountRepo.findOne(transactionModel.getAccountId());
+        AccountEntity accountEntity = accountRepo.getOne(transactionModel.getAccountId());
 
         transactionEntity = transactionMapper.toTransaction(transactionModel, transactionEntity, configEntity,
                 accountEntity);
@@ -154,7 +155,7 @@ public class TransactionService {
     }
 
     public void deleteTransaction(Long id) {
-        TransactionEntity transactionEntity = transactionRepo.findOne(id);
+        TransactionEntity transactionEntity = transactionRepo.getOne(id);
         if (transactionEntity == null) {
             throw new AppException(TransactionError.TRANSACTION_NOT_FOUND);
         }
@@ -164,23 +165,37 @@ public class TransactionService {
 
     public TransactionReportModel findDailyLedgerEntries(LocalDate fromDate, LocalDate toDate) {
         List<LedgerEntryDTO> ledgerEntries = transactionRepo.findDailyLedgerTransaction(fromDate, toDate);
-        Double openingBalance = transactionRepo.findOpeningBalanceOn(fromDate);
+        BigDecimal openingBalance = transactionRepo.findOpeningBalanceOn(fromDate);
+
+        return toTransactionReportModel(ledgerEntries, openingBalance);
+
+    }
+
+    private TransactionReportModel toTransactionReportModel(List<LedgerEntryDTO> ledgerEntries,
+            BigDecimal openingBalance) {
+        BigDecimal balance = openingBalance;
+
+        for (LedgerEntryDTO ledger : ledgerEntries) {
+            if (TransactionType.CREDIT.getCode() == ledger.getTransactionType().intValue()) {
+                balance = balance.add(ledger.getAmount());
+            } else {
+                balance = balance.subtract(ledger.getAmount());
+            }
+            ledger.setRunningBalance(balance);
+        }
 
         TransactionReportModel transactionReportModel = new TransactionReportModel();
         transactionReportModel.setOpeningBalance(openingBalance);
+        transactionReportModel.setClosingBalance(balance);
         transactionReportModel.setEntries(ledgerEntries);
         return transactionReportModel;
-
     }
 
     public TransactionReportModel findMonthlyLedgerTransaction(LocalDate fromDate, LocalDate toDate) {
         List<LedgerEntryDTO> ledgerEntries = transactionRepo.findMonthlyLedgerTransaction(fromDate, toDate);
-        Double openingBalance = transactionRepo.findOpeningBalanceOn(fromDate);
+        BigDecimal openingBalance = transactionRepo.findOpeningBalanceOn(fromDate);
 
-        TransactionReportModel transactionReportModel = new TransactionReportModel();
-        transactionReportModel.setOpeningBalance(openingBalance);
-        transactionReportModel.setEntries(ledgerEntries);
-        return transactionReportModel;
+        return toTransactionReportModel(ledgerEntries, openingBalance);
 
     }
 

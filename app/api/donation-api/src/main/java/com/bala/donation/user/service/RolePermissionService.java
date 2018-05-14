@@ -60,7 +60,7 @@ public class RolePermissionService {
 
     @Transactional
     public void disablePermission(Long permissionId) {
-        PermissionEntity permissionEntity = permissionRepo.findOne(permissionId);
+        PermissionEntity permissionEntity = permissionRepo.getOne(permissionId);
         if (permissionEntity == null) {
             throw new AppException(UserError.PERMISSION_NOT_FOUND);
         }
@@ -84,13 +84,13 @@ public class RolePermissionService {
 
     @Transactional
     public void addPermissionToRole(Long roleId, List<PermissionModel> permissionModels) {
-        RoleEntity roleEntity = roleRepo.findOne(roleId);
+        RoleEntity roleEntity = roleRepo.getOne(roleId);
         if (roleEntity == null) {
             throw new AppException(UserError.ROLE_NOT_FOUND);
         }
 
         permissionModels.forEach((permissionModel) -> {
-            PermissionEntity permissionEntity = permissionRepo.findOne(permissionModel.getId());
+            PermissionEntity permissionEntity = permissionRepo.getOne(permissionModel.getId());
             if (permissionEntity == null) {
                 throw new AppException(UserError.PERMISSION_NOT_FOUND);
             }
@@ -104,13 +104,13 @@ public class RolePermissionService {
 
     @Transactional
     public void removePermissionFromRole(Long roleId, List<PermissionModel> permissionModels) {
-        RoleEntity roleEntity = roleRepo.findOne(roleId);
+        RoleEntity roleEntity = roleRepo.getOne(roleId);
         if (roleEntity == null) {
             throw new AppException(UserError.ROLE_NOT_FOUND);
         }
 
         permissionModels.forEach((permissionModel) -> {
-            PermissionEntity permissionEntity = permissionRepo.findOne(permissionModel.getId());
+            PermissionEntity permissionEntity = permissionRepo.getOne(permissionModel.getId());
             if (permissionEntity == null) {
                 throw new AppException(UserError.PERMISSION_NOT_FOUND);
             }

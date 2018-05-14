@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -25,6 +26,7 @@ public class UserPledgeRepoImpl implements UserPledgeCustomRepo {
     EntityManager entityManager;
 
     @Override
+    @Transactional
     public List<UserDonationDTO> findUserDonations(UserPledgeSearchModel searchModel) {
 
         if (searchModel == null) {
@@ -114,6 +116,37 @@ public class UserPledgeRepoImpl implements UserPledgeCustomRepo {
                 .setParameter("campaignId", searchModel.getCampaignId())
                 .setResultTransformer(Transformers.aliasToBean(UserDonationDTO.class)).list();
 
+    }
+
+    @Override
+    public List<UserDonationDTO> findUserPledgePaymentForYearlyCampaign(UserPledgeSearchModel searchModel) {
+        Session session = (Session) entityManager.getDelegate();
+
+        DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyy");
+        DateTimeFormatter yearMonthDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return session.getNamedQuery(RepoConstants.NQ_USER_PLEDGE_PAYMENT_STATUS_FOR_YEARLY_CAMPAIGN)
+                .setParameter("fromDate", searchModel.getFromDate().format(yearMonthDateFormat))
+                .setParameter("toDate", searchModel.getToDate().plus(1, ChronoUnit.DAYS).format(yearMonthDateFormat))
+                .setParameter("fromYear", searchModel.getFromDate().format(yearFormat))
+                .setParameter("toYear", searchModel.getToDate().format(yearFormat))
+                .setParameter("campaignId", searchModel.getCampaignId())
+                .setResultTransformer(Transformers.aliasToBean(UserDonationDTO.class)).list();
+    }
+
+    @Override
+    public List<UserDonationDTO> findUserPledgePaymentForOnceCampaign(UserPledgeSearchModel searchModel) {
+
+        DateTimeFormatter yearMonthFormat = DateTimeFormatter.ofPattern("yyyy-MM");
+        DateTimeFormatter yearMonthDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        Session session = (Session) entityManager.getDelegate();
+        return session.getNamedQuery(RepoConstants.NQ_USER_PLEDGE_PAYMENT_STATUS_FOR_ONCE_CAMPAIGN)
+                .setParameter("fromDate", searchModel.getFromDate().format(yearMonthDateFormat))
+                .setParameter("toDate", searchModel.getToDate().plus(1, ChronoUnit.DAYS).format(yearMonthDateFormat))
+                .setParameter("fromMonthYear", searchModel.getFromDate().format(yearMonthFormat))
+                .setParameter("toMonthYear", searchModel.getToDate().format(yearMonthFormat))
+                .setParameter("campaignId", searchModel.getCampaignId())
+                .setResultTransformer(Transformers.aliasToBean(UserDonationDTO.class)).list();
     }
 
 }
