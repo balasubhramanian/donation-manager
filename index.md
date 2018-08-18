@@ -1,5 +1,5 @@
 # Donation Manager
-Application to Manage Funds/ Donation of Users again Campaign
+Application to Manage Funds/ Donation of Users against Campaign
 
 ## Features
 1. User Management
