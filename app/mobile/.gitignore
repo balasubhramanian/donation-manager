@@ -1,0 +1,5 @@
+node_modules/**
+node_modules
+
+#ios not supported as of now
+ios
