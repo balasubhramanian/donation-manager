@@ -1,1 +1,1 @@
-# donation-manager
+# Donation Manager
