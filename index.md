@@ -9,7 +9,7 @@ Application to Manage Funds/ Donation of Users against Campaign
 5. Reports
 
 ## Demo
-<video width="100%" height="600">
+<video width="100%" height="600" controls>
   <source src="https://github.com/balasubhramanian/donation-manager/blob/gh-pages/donation-v1.mp4?raw=true" type="video/mp4">
   Your browser does not support the video tag.
 </video>
