@@ -7,6 +7,8 @@ Application to Manage Funds/ Donation of Users against Campaign
 3. Campaign Management
 4. Donation Management
 5. Reports
+6. Income Management
+7. Expense Management
 
 ## Demo
 <https://donation-manager.herokuapp.com/>
