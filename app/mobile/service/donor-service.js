@@ -2,8 +2,20 @@ import moment from "moment";
 import BaseService from "./base-service";
 
 class DonorService extends BaseService {
-  getAllDonors() {
-    return this.execute(`select * from user_details`);
+  getAllDonors(filter) {
+    if (!filter) {
+      return this.execute(`select * from user_details`);
+    }
+    if (filter.street)
+      return this.execute(
+        `select * from user_details where street like '` + filter.street + `%'`
+      );
+  }
+
+  getAllStreet() {
+    return this.execute(
+      `select distinct street,area from user_details order by 1`
+    );
   }
 
   addUser(userDetails) {
