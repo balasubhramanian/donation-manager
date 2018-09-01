@@ -1,4 +1,5 @@
 import React, { Component, Touch } from "react";
+import { AsyncStorage } from "react-native";
 import { View, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import {
   Text,
@@ -38,10 +39,22 @@ export default class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false
+      isLoading: false,
+      selectedStreet: null,
+      selectedCampaign: null
     };
   }
-  componentDidMount() {}
+
+  componentDidMount() {
+    AsyncStorage.getItem("defaultStreet").then(street => {
+      console.log("async storage", street);
+      this.setState({ selectedStreet: JSON.parse(street) });
+    });
+
+    AsyncStorage.getItem("defaultCampaign").then(campaign => {
+      this.setState({ selectedCampaign: JSON.parse(campaign) });
+    });
+  }
 
   importCampaign() {
     return this.readJson().then(data => {
@@ -283,6 +296,72 @@ export default class Settings extends Component {
                   <Icon active name="cloud-upload" style={{ fontSize: 26 }} />
                 </Button>
               </Right>
+            </ListItem>
+            <ListItem
+              noIndent
+              itemHeader
+              style={{ paddingBottom: 0, marginBottom: 0 }}
+            >
+              <Text>DEFAULT</Text>
+            </ListItem>
+            <ListItem icon stackedLabel>
+              <Body>
+                <TouchableOpacity
+                  first
+                  onPress={() => {
+                    this.props.navigation.push("CampaignSelect", {
+                      onSelect: campaign => {
+                        AsyncStorage.setItem(
+                          "defaultCampaign",
+                          JSON.stringify(campaign)
+                        ).then(() => {
+                          console.log("async set");
+                        });
+                        this.setState({ selectedCampaign: campaign });
+                      },
+                      showDrawer: false
+                    });
+                  }}
+                >
+                  <Text style={{ fontSize: 14 }}>Campaign</Text>
+                  <Text style={{ fontSize: 14, color: "grey" }}>
+                    {this.state.selectedCampaign &&
+                      this.state.selectedCampaign.name}
+                  </Text>
+                </TouchableOpacity>
+              </Body>
+              <Right />
+            </ListItem>
+            <ListItem icon stackedLabel>
+              <Body>
+                <TouchableOpacity
+                  first
+                  onPress={() => {
+                    console.log("on donation street press");
+                    this.props.navigation.push("StreetSelect", {
+                      onSelect: street => {
+                        AsyncStorage.setItem(
+                          "defaultStreet",
+                          JSON.stringify(street)
+                        ).then(() => {
+                          console.log("async set");
+                        });
+                        this.setState({ selectedStreet: street });
+                      },
+                      showDrawer: false
+                    });
+                  }}
+                >
+                  <Text style={{ fontSize: 14 }}>
+                    Donation Collection Street
+                  </Text>
+                  <Text style={{ fontSize: 14, color: "grey" }}>
+                    {this.state.selectedStreet &&
+                      this.state.selectedStreet.street}
+                  </Text>
+                </TouchableOpacity>
+              </Body>
+              <Right />
             </ListItem>
           </List>
         </Content>
