@@ -8,7 +8,8 @@ import {
   Label,
   Button,
   ActionSheet,
-  Container,Spinner,
+  Container,
+  Spinner,
   Content,
   Icon,
   List,
@@ -29,12 +30,13 @@ export default class UserList extends Component {
     };
   }
   componentDidMount() {
-    this.fetchDonor();
+    this.fetchDonor(this.props);
   }
 
-  fetchDonor() {
+  fetchDonor(props) {
+    console.log("userlist-fetch donor", props);
     this.setState({ isLoading: true });
-    DonorService.getAllDonors().then(donors => {
+    DonorService.getAllDonors(props.filter).then(donors => {
       console.log("fetch donors", donors);
       this.setState({ donors, data: donors, isLoading: false });
     });
@@ -42,6 +44,9 @@ export default class UserList extends Component {
   componentWillReceiveProps(newProps) {
     if (this.props.searchText != newProps.searchText) {
       this.onSearch(newProps.searchText);
+    }
+    if (this.props.filter != newProps.filter) {
+      this.fetchDonor(newProps);
     }
   }
 
@@ -76,9 +81,9 @@ export default class UserList extends Component {
 
   render() {
     const getAddress = this.getAddress;
-    console.log(this.state);
-    if(this.state.isLoading){
-      return <Spinner color='blue' />
+
+    if (this.state.isLoading) {
+      return <Spinner color="blue" />;
     }
     return (
       <List noIndent style={{ padding: 0 }}>

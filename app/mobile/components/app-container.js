@@ -1,15 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
 import {
-  Text,
   Input,
-  Form,
   Item,
-  Label,
   Button,
   Container,
   Header,
-  Content,
   Left,
   Icon,
   Right,
@@ -26,7 +21,10 @@ export default class AppContainer extends Component {
       showDrawer:
         this.props.showDrawer != undefined ? this.props.showDrawer : true,
       showSearch: this.props.showSearch,
-      showFab: this.props.showFab != undefined ? this.props.showFab : true
+      //showFab: this.props.showFab != undefined ? this.props.showFab : true,
+      showFab: false,
+      showSettings:
+        this.props.showSettings != undefined ? this.props.showSettings : false
     };
   }
 
@@ -62,8 +60,18 @@ export default class AppContainer extends Component {
           <Title>{this.props.title}</Title>
         </Body>
 
-        {this.state.showSearch && (
-          <Right>
+        <Right>
+          {this.state.showSettings && (
+            <Icon
+              style={{ color: "#fff", marginRight: 20 }}
+              name={this.props.settingsIcon}
+              onPress={() => {
+                this.props.onSettings();
+              }}
+            />
+          )}
+
+          {this.state.showSearch && (
             <Icon
               style={{ color: "#fff" }}
               name="ios-search"
@@ -71,8 +79,8 @@ export default class AppContainer extends Component {
                 this.toggleSearchBar();
               }}
             />
-          </Right>
-        )}
+          )}
+        </Right>
       </Header>
     );
   }
@@ -121,7 +129,6 @@ export default class AppContainer extends Component {
             }}
             position="bottomRight"
             onPress={() => {
-              console.log("fab press");
               this.props.navigation.navigate("Collect Donation");
             }}
           >

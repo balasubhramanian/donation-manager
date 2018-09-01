@@ -1,23 +1,13 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Keyboard } from "react-native";
+import { StyleSheet, View, Keyboard, AsyncStorage } from "react-native";
 import {
   Text,
   Input,
   DatePicker,
-  Form,
   Item,
   Label,
   Button,
-  Container,
-  Header,
   Content,
-  Left,
-  Icon,
-  Right,
-  Body,
-  Title,
-  H1,
-  ListItem,
   Toast
 } from "native-base";
 import moment from "moment";
@@ -58,6 +48,19 @@ export default class DonationForm extends Component {
   }
   componentDidMount() {
     this.refs.dpDate.state.chosenDate = new Date();
+    AsyncStorage.getItem("defaultCampaign").then(campaign => {
+      this.setState({ selectedCampaign: JSON.parse(campaign) });
+    });
+
+    AsyncStorage.getItem("defaultStreet").then(street => {
+      this.setState({ selectedStreet: JSON.parse(street) });
+    });
+  }
+
+  getDefaultStreet() {
+    AsyncStorage.getItem("defaultStreet").then(street => {
+      this.setState({ selectedStreet: JSON.parse(street) });
+    });
   }
 
   save() {
@@ -131,11 +134,12 @@ export default class DonationForm extends Component {
             style={styles.input}
             onFocus={() => {
               console.log("onfocus", this.props);
-              // Keyboard.dismiss();
               this.props.navigation.push("UserSelect", {
                 onSelect: user => {
                   this.setState({ selectedUser: user });
+                  this.getDefaultStreet();
                 },
+                filter: this.state.selectedStreet,
                 showDrawer: false
               });
             }}
