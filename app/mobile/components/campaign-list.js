@@ -1,19 +1,6 @@
 import React, { Component } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
-import {
-  Text,
-  Input,
-  Form,
-  Item,
-  Label,
-  Button,
-  ActionSheet,
-  Container,
-  Content,
-  Icon,
-  List,
-  ListItem
-} from "native-base";
+import { Text, List, ListItem } from "native-base";
 
 import CampaignService from "../service/campaign-service";
 
@@ -82,20 +69,6 @@ export default class CampaignList extends Component {
                     </Text>
                   </View>
                 </View>
-                {/* <View style={{ flex: 1, alignContent: "flex-start" }}>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          padding: 10,
-                          alignSelf: "flex-start",
-                          textAlign: "right",
-                          color: "steelblue"
-                        }}
-                      >
-                        ₹
-                        {item.amount}
-                      </Text>
-                    </View> */}
               </ListItem>
             );
           }}

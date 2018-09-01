@@ -6,35 +6,7 @@
 import React, { Component } from "react";
 import Login from "./screen/login";
 import Home from "./screen/home";
-import {
-  Container,
-  Icon,
-  Right,
-  Left,
-  Title,
-  Header,
-  Button,
-  CheckBox,
-  Form,
-  Item,
-  List,
-  Label,
-  ListItem,
-  Content,
-  Input,
-  ActionSheet,
-  Text,
-  Root,
-  Card,
-  CardItem,
-  Body,
-  Fab,
-  View,
-  Badge,
-  Footer,
-  FooterTab,
-  Toast
-} from "native-base";
+import { Container, Root, Toast } from "native-base";
 import { StyleSheet } from "react-native";
 import { initDatabase } from "./common/db";
 
@@ -42,6 +14,7 @@ console.disableYellowBox = true;
 class App extends Component {
   constructor(props) {
     super(props);
+    //this.state = {}
     this.state = { user: { firstname: "Bala" }, isLoading: true };
   }
 

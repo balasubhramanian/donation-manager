@@ -1,21 +1,6 @@
 import React, { Component } from "react";
-import {
-  Text,
-  Input,
-  Form,
-  Item,
-  Label,
-  Button,
-  Container,
-  Content,
-  ListItem,
-  List,
-  Spinner
-} from "native-base";
+import { Content } from "native-base";
 
-import { View, FlatList, StyleSheet } from "react-native";
-
-import UserService from "../service/user-service";
 import AppContainer from "../components/app-container";
 import CampaignService from "../service/campaign-service";
 import CampaignList from "../components/campaign-list";

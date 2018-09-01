@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import {
   Text,
-  Input,
-  Form,
-  Item,
-  Label,
-  Button,
-  Container,
   Content,
   ListItem,
   List,
@@ -39,19 +33,6 @@ export default class Donation extends Component {
           donations: data,
           isLoading: false
         });
-
-        // data.forEach(d => {
-        //   for (let i = 0; i < 1000; i++) {
-        //     DonationService.addDonation({
-        //       campaignId: d.campaignId,
-        //       userId: d.userId,
-        //       date: d.date,
-        //       amount: d.amount,
-        //       createdAt: d.created_at,
-        //       createdBy: 1
-        //     });
-        //   }
-        // });
       }).catch(e => {
         console.log(arguments);
       });
@@ -64,17 +45,6 @@ export default class Donation extends Component {
         <AppContainer key="3" title="Donation" {...this.props}>
           <Content>
             <View style={{ flex: 1, alignContent: "flex-start" }}>
-              {/* <Text
-                style={{
-                  fontSize: 20,
-                  padding: 10,
-                  alignSelf: "flex-start",
-                  textAlign: "right",
-                  color: "steelblue"
-                }}
-              >
-                Loading ₹
-              </Text> */}
               <Spinner color="blue" />
             </View>
           </Content>
