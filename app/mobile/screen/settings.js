@@ -3,20 +3,12 @@ import { AsyncStorage } from "react-native";
 import { View, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import {
   Text,
-  Input,
-  Form,
-  Item,
-  Label,
   Button,
-  ActionSheet,
-  Container,
   Content,
   Icon,
   List,
   ListItem,
-  Separator,
   Body,
-  Left,
   Right,
   Toast
 } from "native-base";
@@ -24,16 +16,19 @@ import RNFetchBlob from "react-native-fetch-blob";
 import Share from "react-native-share";
 
 const { fs } = RNFetchBlob;
+
 import {
   DocumentPicker,
   DocumentPickerUtil
 } from "react-native-document-picker";
+
 var RNFS = require("react-native-fs");
 
 import AppContainer from "../components/app-container";
 import donorService from "../service/donor-service";
 import campaignService from "../service/campaign-service";
 import donationService from "../service/donation-service";
+import Config from "../common/config";
 
 export default class Settings extends Component {
   constructor(props) {
@@ -46,49 +41,55 @@ export default class Settings extends Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem("defaultStreet").then(street => {
-      console.log("async storage", street);
-      this.setState({ selectedStreet: JSON.parse(street) });
+    Config.getDefaultStreet().then(street => {
+      this.setState({ selectedStreet: street });
     });
 
-    AsyncStorage.getItem("defaultCampaign").then(campaign => {
-      this.setState({ selectedCampaign: JSON.parse(campaign) });
+    Config.getDefaultCampaign().then(campaign => {
+      this.setState({ selectedCampaign: campaign });
     });
   }
 
   importCampaign() {
-    return this.readJson().then(data => {
-      data.records.forEach(e => {
-        campaignService.addCampaign(e);
+    return this.readJson()
+      .then(data => {
+        data.records.forEach(e => {
+          campaignService.addCampaign(e);
+        });
+      })
+      .then(() => {
+        Toast.show({ text: "Campaign data Imported" });
+      })
+      .catch(e => {
+        console.log("Error Importing Campaign", e);
+        Toast.show({
+          text: "Error Importing Campaign data",
+          type: "danger"
+        });
       });
-    });
   }
 
   importUser() {
-    return this.readJson().then(data => {
-      data.records.forEach(e => {
-        donorService.addUser(e);
+    return this.readJson()
+      .then(data => {
+        data.records.forEach(e => {
+          donorService.addUser(e);
+        });
+        console.log("insert success");
+      })
+      .then(() => {
+        Toast.show({ text: "User data Imported" });
+      })
+      .catch(e => {
+        console.log("Error Importing user", e);
+        Toast.show({
+          text: "Error Importing User data",
+          type: "danger"
+        });
       });
-      console.log("insert success");
-    });
   }
 
   exportDonation() {
-    {
-      /* DocumentPicker.show(
-  {
-    filetype: [DocumentPickerUtil.allFiles()]
-  },
-  (error, res) => {
-    // Android
-    console.log(
-      res.uri,
-      res.type, // mime type
-      res.fileName,
-      res.fileSize
-    ); */
-    }
-
     return donationService.getAllDonation().then(data => {
       var jsonString = JSON.stringify(data);
       return RNFS.writeFile(fs.dirs.DownloadDir + "/donation.txt", jsonString)
@@ -111,7 +112,6 @@ export default class Settings extends Component {
         },
         (error, res) => {
           if (!res) return;
-
           return RNFS.readFile(res.uri, "utf8")
             .then(d => {
               let data = JSON.parse(d);
@@ -126,205 +126,153 @@ export default class Settings extends Component {
     });
   }
 
+  deleteAllDonation() {
+    donationService
+      .deleteAll()
+      .then(() => {
+        alert("success");
+        Toast.show({ text: "Donation data deleted" });
+      })
+      .catch(e => {
+        console.log("Error deleting Donation", e);
+        Toast.show({
+          text: "Error deleting Donation data",
+          type: "danger"
+        });
+      });
+  }
+
+  deleteAllUser() {
+    donorService
+      .deleteAll()
+      .then(() => {
+        alert("success");
+        Toast.show({ text: "User data deleted" });
+      })
+      .catch(e => {
+        console.log("Error deleting user", e);
+        Toast.show({
+          text: "Error deleting User data",
+          type: "danger"
+        });
+      });
+  }
+
+  deleteAllCampaign() {
+    campaignService
+      .deleteAll()
+      .then(() => {
+        alert("success");
+        Toast.show({ text: "Campaign data deleted" });
+      })
+      .catch(e => {
+        console.log("Error deleting Campaign", e);
+        Toast.show({
+          text: "Error deleting Campaign data",
+          type: "danger"
+        });
+      });
+  }
+
+  showCampaignSelect() {
+    this.props.navigation.push("CampaignSelect", {
+      onSelect: campaign => {
+        Config.setDefaultCampaign(campaign);
+        this.setState({ selectedCampaign: campaign });
+      },
+      showDrawer: false
+    });
+  }
+
+  showStreetSelect() {
+    this.props.navigation.push("StreetSelect", {
+      onSelect: street => {
+        Config.setDefaultStreet(street);
+        this.setState({ selectedStreet: street });
+      },
+      showDrawer: false
+    });
+  }
+
   render() {
     return (
       <AppContainer title="Settings" {...this.props}>
         <Content style={{ padding: 0 }}>
           <List>
-            <ListItem
-              noIndent
-              itemHeader
-              style={{ paddingBottom: 0, marginBottom: 0 }}
-            >
-              <Text>EXPORT</Text>
-            </ListItem>
+            <ListHeader text="EXPORT" />
             <ListItem icon stackedLabel>
               <Body>
-                <TouchableOpacity first>
-                  <Text style={{ fontSize: 14 }}>Donation</Text>
-                </TouchableOpacity>
+                <Text style={styles.listItemText}>Donation</Text>
               </Body>
               <Right>
-                <Button
-                  transparent
-                  primary
+                <IconButton
+                  icon="trash"
                   onPress={() => {
-                    donationService
-                      .deleteAll()
-
-                      .then(() => {
-                        alert("success");
-                        Toast.show({ text: "Donation data deleted" });
-                      })
-                      .catch(e => {
-                        console.log("Error deleting Donation", e);
-                        Toast.show({
-                          text: "Error deleting Donation data",
-                          type: "danger"
-                        });
-                      });
+                    this.deleteAllDonation();
                   }}
-                >
-                  <Icon
-                    active
-                    name="trash"
-                    style={{ fontSize: 22, marginRight: 15 }}
-                  />
-                </Button>
-                <Button
-                  transparent
-                  primary
+                />
+                <IconButton
+                  icon="cloud-download"
                   onPress={() => {
                     this.exportDonation();
                   }}
-                >
-                  <Icon active name="cloud-download" style={{ fontSize: 26 }} />
-                </Button>
+                />
               </Right>
             </ListItem>
 
-            <ListItem
-              noIndent
-              itemHeader
-              style={{ paddingBottom: 0, marginBottom: 0 }}
-            >
-              <Text>IMPORT</Text>
+            <ListHeader text="IMPORT" />
+            <ListItem icon stackedLabel>
+              <Body>
+                <Text style={styles.listItemText}> User</Text>
+              </Body>
+              <Right>
+                <IconButton
+                  icon="trash"
+                  onPress={() => {
+                    this.deleteAllUser();
+                  }}
+                />
+                <IconButton
+                  icon="cloud-upload"
+                  onPress={() => {
+                    this.importUser();
+                  }}
+                />
+              </Right>
             </ListItem>
 
             <ListItem icon stackedLabel>
               <Body>
-                <TouchableOpacity first>
-                  <Text style={{ fontSize: 14 }}> User</Text>
-                </TouchableOpacity>
-              </Body>
-              <Right>
-                <Button
-                  transparent
-                  primary
-                  onPress={() => {
-                    donorService
-                      .deleteAll()
-                      .then(() => {
-                        alert("success");
-                        Toast.show({ text: "User data deleted" });
-                      })
-                      .catch(e => {
-                        console.log("Error deleting user", e);
-                        Toast.show({
-                          text: "Error deleting User data",
-                          type: "danger"
-                        });
-                      });
-                  }}
-                >
-                  <Icon
-                    active
-                    name="trash"
-                    style={{ fontSize: 22, marginRight: 15 }}
-                  />
-                </Button>
-                <Button
-                  transparent
-                  primary
-                  onPress={() => {
-                    this.importUser()
-                      .then(() => {
-                        Toast.show({ text: "User data Imported" });
-                      })
-                      .catch(e => {
-                        console.log("Error Importing user", e);
-                        Toast.show({
-                          text: "Error Importing User data",
-                          type: "danger"
-                        });
-                      });
-                  }}
-                >
-                  <Icon active name="cloud-upload" style={{ fontSize: 26 }} />
-                </Button>
-              </Right>
-            </ListItem>
-            <ListItem icon stackedLabel>
-              <Body>
-                <TouchableOpacity first>
-                  <Text style={{ fontSize: 14 }}> Campaign</Text>
-                </TouchableOpacity>
+                <Text style={styles.listItemText}> Campaign</Text>
               </Body>
 
               <Right>
-                <Button
-                  transparent
-                  primary
+                <IconButton
+                  icon="trash"
                   onPress={() => {
-                    campaignService
-                      .deleteAll()
-                      .then(() => {
-                        alert("success");
-                        Toast.show({ text: "Campaign data deleted" });
-                      })
-                      .catch(e => {
-                        console.log("Error deleting Campaign", e);
-                        Toast.show({
-                          text: "Error deleting Campaign data",
-                          type: "danger"
-                        });
-                      });
+                    this.deleteAllCampaign();
                   }}
-                >
-                  <Icon
-                    name="trash"
-                    style={{ fontSize: 22, marginRight: 15 }}
-                  />
-                </Button>
-                <Button
-                  transparent
-                  primary
+                />
+                <IconButton
+                  icon="cloud-upload"
                   onPress={() => {
-                    this.importCampaign()
-                      .then(() => {
-                        Toast.show({ text: "Campaign data Imported" });
-                      })
-                      .catch(e => {
-                        console.log("Error Importing Campaign", e);
-                        Toast.show({
-                          text: "Error Importing Campaign data",
-                          type: "danger"
-                        });
-                      });
+                    this.importCampaign();
                   }}
-                >
-                  <Icon active name="cloud-upload" style={{ fontSize: 26 }} />
-                </Button>
+                />
               </Right>
             </ListItem>
-            <ListItem
-              noIndent
-              itemHeader
-              style={{ paddingBottom: 0, marginBottom: 0 }}
-            >
-              <Text>DEFAULT</Text>
-            </ListItem>
-            <ListItem icon stackedLabel>
+
+            <ListHeader text="DEFAULT" />
+            <ListItem icon stackedLabel style={styles.listItem}>
               <Body>
                 <TouchableOpacity
                   first
                   onPress={() => {
-                    this.props.navigation.push("CampaignSelect", {
-                      onSelect: campaign => {
-                        AsyncStorage.setItem(
-                          "defaultCampaign",
-                          JSON.stringify(campaign)
-                        ).then(() => {
-                          console.log("async set");
-                        });
-                        this.setState({ selectedCampaign: campaign });
-                      },
-                      showDrawer: false
-                    });
+                    this.showCampaignSelect();
                   }}
                 >
-                  <Text style={{ fontSize: 14 }}>Campaign</Text>
-                  <Text style={{ fontSize: 14, color: "grey" }}>
+                  <Text style={styles.listItemText}>Campaign</Text>
+                  <Text style={styles.listItemSubText}>
                     {this.state.selectedCampaign &&
                       this.state.selectedCampaign.name}
                   </Text>
@@ -332,30 +280,18 @@ export default class Settings extends Component {
               </Body>
               <Right />
             </ListItem>
-            <ListItem icon stackedLabel>
+            <ListItem icon stackedLabel style={styles.listItem}>
               <Body>
                 <TouchableOpacity
                   first
                   onPress={() => {
-                    console.log("on donation street press");
-                    this.props.navigation.push("StreetSelect", {
-                      onSelect: street => {
-                        AsyncStorage.setItem(
-                          "defaultStreet",
-                          JSON.stringify(street)
-                        ).then(() => {
-                          console.log("async set");
-                        });
-                        this.setState({ selectedStreet: street });
-                      },
-                      showDrawer: false
-                    });
+                    this.showStreetSelect();
                   }}
                 >
-                  <Text style={{ fontSize: 14 }}>
+                  <Text style={styles.listItemText}>
                     Donation Collection Street
                   </Text>
-                  <Text style={{ fontSize: 14, color: "grey" }}>
+                  <Text style={styles.listItemSubText}>
                     {this.state.selectedStreet &&
                       this.state.selectedStreet.street}
                   </Text>
@@ -369,3 +305,42 @@ export default class Settings extends Component {
     );
   }
 }
+
+const ListHeader = props => {
+  return (
+    <ListItem noIndent itemHeader style={styles.listHeader}>
+      <Text>{props.text}</Text>
+    </ListItem>
+  );
+};
+
+const IconButton = props => {
+  return (
+    <Button transparent primary onPress={props.onPress}>
+      <Icon active name={props.icon} style={styles.listItemIcon} />
+    </Button>
+  );
+};
+
+const styles = StyleSheet.create({
+  listHeader: {
+    paddingBottom: 0,
+    marginBottom: 0
+  },
+  listItem: {
+    marginBottom: 15,
+    marginTop: 15
+  },
+  listItemText: {
+    fontSize: 14
+  },
+  listItemSubText: {
+    fontSize: 14,
+    color: "grey",
+    paddingBottom: 10
+  },
+  listItemIcon: {
+    fontSize: 22,
+    marginRight: 15
+  }
+});

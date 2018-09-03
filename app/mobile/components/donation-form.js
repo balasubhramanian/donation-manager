@@ -14,7 +14,7 @@ import moment from "moment";
 import SendSMS from "react-native-sms";
 
 import DonationService from "../service/donation-service";
-
+import Config from "../common/config";
 const styles = StyleSheet.create({
   label: {
     fontWeight: "bold"
@@ -48,18 +48,17 @@ export default class DonationForm extends Component {
   }
   componentDidMount() {
     this.refs.dpDate.state.chosenDate = new Date();
-    AsyncStorage.getItem("defaultCampaign").then(campaign => {
-      this.setState({ selectedCampaign: JSON.parse(campaign) });
+
+    Config.getDefaultCampaign().then(campaign => {
+      this.setState({ selectedCampaign: campaign });
     });
 
-    AsyncStorage.getItem("defaultStreet").then(street => {
-      this.setState({ selectedStreet: JSON.parse(street) });
-    });
+    this.getDefaultStreet();
   }
 
   getDefaultStreet() {
-    AsyncStorage.getItem("defaultStreet").then(street => {
-      this.setState({ selectedStreet: JSON.parse(street) });
+    Config.getDefaultStreet().then(street => {
+      this.setState({ selectedStreet: street });
     });
   }
 

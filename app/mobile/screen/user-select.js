@@ -17,6 +17,7 @@ import {
 
 import AppContainer from "../components/app-container";
 import UserList from "../components/user-list";
+import Config from "../common/config";
 
 export default class UserSelect extends Component {
   constructor(props) {
@@ -42,10 +43,7 @@ export default class UserSelect extends Component {
         onSettings={() => {
           this.props.navigation.push("StreetSelect", {
             onSelect: street => {
-              AsyncStorage.setItem(
-                "defaultStreet",
-                JSON.stringify(street)
-              ).then(() => {});
+              Config.setDefaultStreet(street);
               console.log("setting filter", street);
               this.setState({ filter: street });
             },
