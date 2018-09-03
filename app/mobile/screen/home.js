@@ -1,21 +1,25 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
-import { Text } from "native-base";
 import {
   TabNavigator,
   createStackNavigator,
   createDrawerNavigator
 } from "react-navigation";
 
-import User from "./user";
-import UserSelect from "./user-select";
-import CampaignSelect from "./campaign-select";
 import Campaign from "./campaign";
 import CollectDonation from "./collection-donation";
-import StreetSelect from "./street-select";
 import Donation from "./donation";
 import Settings from "./settings";
+import User from "./user";
+import Login from "./custom-login";
+import Login1 from "./login";
 
+import CampaignSelect from "./campaign-select";
+import StreetSelect from "./street-select";
+import UserSelect from "./user-select";
+
+/*
+* Drawer Navigator to add drawer with links to screen
+*/
 const Drawer = createDrawerNavigator(
   {
     "Collect Donation": {
@@ -23,6 +27,9 @@ const Drawer = createDrawerNavigator(
     },
     Donation: {
       screen: Donation
+    },
+    Login: {
+      screen: Login
     },
     User: {
       screen: User,
@@ -40,6 +47,9 @@ const Drawer = createDrawerNavigator(
   { initialRouteName: "Collect Donation" }
 );
 
+/*
+* Stack Navigator to open screens as stacks
+*/
 const AppNavigator = createStackNavigator(
   {
     Drawer: {

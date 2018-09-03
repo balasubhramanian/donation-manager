@@ -2,9 +2,12 @@ import SQLite from "react-native-sqlite-2";
 
 const sqlLiteDB = SQLite.openDatabase("donation.db", "1.0", "", 1);
 
+/**
+ * Executes given sql in sqlLite & returns promise
+ */
 export const executeSQL = (sql, args = []) => {
   return new Promise((resolve, reject) => {
-    console.log("executing sql ", sql);
+    console.log("DB::Executing SQL ", sql);
     try {
       sqlLiteDB.transaction(txn => {
         txn.executeSql(
@@ -15,17 +18,17 @@ export const executeSQL = (sql, args = []) => {
             for (let i = 0; i < res.rows.length; ++i) {
               result.push(res.rows.item(i));
             }
-            console.log("succes execution", result);
+            console.log("DB::Query executed", result);
             resolve(result);
           },
           (tx, err) => {
-            console.log("Error executing : " + sql, err);
+            console.log("DB::Error executing : " + sql, err);
             reject(err);
           }
         );
       });
     } catch (e) {
-      console.log("error executeSQL", e);
+      console.log("DB::Error executing " + sql, e);
       reject(e);
     }
   });
@@ -38,7 +41,6 @@ export const initDatabase = () => {
 
   let p = new Promise((resolve, reject) => {
     try {
-      //executeSQL("Delete from donation");
       executeSQL(CREATE_CAMPAIGN_SQL);
       executeSQL(CREATE_USER_DETAILS_SQL);
       executeSQL(CREATE_DONATION_SQL);

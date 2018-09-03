@@ -1,19 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
-import {
-  Text,
-  Input,
-  Form,
-  Item,
-  Label,
-  Button,
-  ActionSheet,
-  Container,
-  Content,
-  Icon,
-  List,
-  ListItem
-} from "native-base";
+import { Content } from "native-base";
 
 import AppContainer from "../components/app-container";
 import StreetList from "../components/street-list";

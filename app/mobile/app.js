@@ -1,8 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 import React, { Component } from "react";
 import Login from "./screen/login";
 import Home from "./screen/home";
@@ -19,43 +14,32 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log("init database");
-    //initDatabase();
-    var p = initDatabase();
-    console.log(p);
-    p.then(() => {
-      Toast.show({
-        text: "Database connected",
-        textStyle: { color: "green" },
-        buttonText: "OK",
-        position: "bottom"
+    initDatabase()
+      .then(() => {
+        this.setState({ isLoading: false });
+      })
+      .catch(e => {
+        this.setState({
+          isLoading: false,
+          isAppError: true,
+          msg: "Failed to connect database"
+        });
+        Toast.show({
+          text: "Failed to connect database",
+          textStyle: { color: "red" },
+          buttonText: "Okay",
+          position: "top"
+        });
       });
-      this.setState({ isLoading: false });
-    }).catch(e => {
-      alert("init db failed");
-      console.log("init db error", e);
-      this.setState({
-        isLoading: false,
-        isAppError: true,
-        msg: "Failed to connect database"
-      });
-      Toast.show({
-        text: "Failed to connect database",
-        textStyle: { color: "red" },
-        buttonText: "Okay",
-        position: "top"
-      });
-    });
   }
 
   onLoginSuccess(user) {
-    console.log("onsucces", user);
     this.setState({ user });
   }
 
   render() {
     return (
-      <Container key="2">
+      <Container>
         {this.state.user ? (
           <Home />
         ) : (
@@ -69,23 +53,6 @@ class App extends Component {
     );
   }
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "blue"
-  },
-  layout: {
-    margin: 5,
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.05)"
-  },
-  box: {
-    padding: 25,
-    backgroundColor: "steelblue",
-    margin: 5
-  }
-});
 
 export default () => (
   <Root>

@@ -1,5 +1,8 @@
 import BaseService from "./base-service";
 
+/*
+* Service to hanlde operations on user login 
+*/
 class UserService extends BaseService {
   login(username, password) {
     return new Promise((resolve, reject) => {

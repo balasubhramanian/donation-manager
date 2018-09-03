@@ -1,6 +1,8 @@
-import moment from "moment";
 import BaseService from "./base-service";
 
+/*
+* Service to hanlde operations on Donor 
+*/
 class DonorService extends BaseService {
   getAllDonors(filter) {
     if (!filter) {
@@ -19,7 +21,6 @@ class DonorService extends BaseService {
   }
 
   addUser(userDetails) {
-    console.log("userdetais", userDetails);
     return this.execute(
       `
           insert into user_details
@@ -50,70 +51,5 @@ class DonorService extends BaseService {
     return this.execute(`DELETE FROM  user_details`);
   }
 }
-function createRecords() {
-  var data = [
-    {
-      id: 1,
-      firstname: "Bala",
-      lastname: "",
-      doorno: "8/5",
-      street: "Mary Helan Street",
-      area: "Vetri nagar",
-      city: "Chennai",
-      state: "Tamil Nadu",
-      country: "India",
-      phone: "1298893297"
-    },
-    {
-      id: 2,
-      firstname: "Subash",
-      lastname: "",
-      doorno: "22",
-      street: "Sakthi Street",
-      area: "Vetri nagar",
-      city: "Chennai",
-      state: "Tamil Nadu",
-      country: "India",
-      phone: "9003247362"
-    },
-    {
-      id: 3,
-      firstname: "Karthick",
-      lastname: "",
-      doorno: "5",
-      street: "Sarojini - Vetrivel Main Street",
-      area: "Vetri nagar",
-      city: "Chennai",
-      state: "Tamil Nadu",
-      country: "India",
-      phone: "2983792"
-    },
-    {
-      id: 4,
-      firstname: "Gaffor",
-      lastname: "",
-      doorno: "2",
-      street: "Adda Street",
-      area: "Redhills",
-      city: "Chennai",
-      state: "Tamil Nadu",
-      country: "India",
-      phone: "887328781"
-    },
-    {
-      id: 5,
-      firstname: "Rahim",
-      lastname: "",
-      doorno: "32",
-      street: "1st Street",
-      area: "Redhills",
-      city: "Chennai",
-      state: "Tamil Nadu",
-      country: "India",
-      phone: "98962387678"
-    }
-  ];
 
-  return data;
-}
 export default new DonorService();

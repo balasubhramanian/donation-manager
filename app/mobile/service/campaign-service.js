@@ -1,5 +1,8 @@
 import BaseService from "./base-service";
 
+/*
+* Service to hanlde operations on campaign 
+*/
 class CampaignService extends BaseService {
   addCampaign(campaign) {
     return this.execute(
@@ -21,9 +24,11 @@ class CampaignService extends BaseService {
       ]
     );
   }
+
   deleteAll() {
     return this.execute(`DELETE FROM  campaign`);
   }
+
   getAllCampaign() {
     return this.execute(`select * from campaign`);
   }

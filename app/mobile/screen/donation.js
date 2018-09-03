@@ -74,7 +74,7 @@ export default class Donation extends Component {
                 <List>
                   <ListItem itemDivider>
                     <Left>
-                      <Text>{e}</Text>
+                      <Text>{moment(e).format("DD-MMM-YY")}</Text>
                     </Left>
 
                     <Right>

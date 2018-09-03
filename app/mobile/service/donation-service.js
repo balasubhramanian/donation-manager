@@ -1,43 +1,8 @@
 import BaseService from "./base-service";
-//import Realm from "realm";
-import moment from "moment";
 
-// const TBL_DONATION = "donation";
-// let repository = new Realm({
-//   schema: [
-//     {
-//       name: TBL_DONATION,
-//       primaryKey: "id",
-//       properties: {
-//         id: { type: "int" },
-//         userId: "int",
-//         campaignId: "int",
-//         date: "date",
-//         amount: "int",
-//         createdAt: "date",
-//         updatedAt: "date"
-//       }
-//     }
-//   ]
-// });
-// getAllDonation() {
-//   return repository.objects(TBL_DONATION);
-// }
-
-// saveDonation(donationEntry) {
-//   repository.write(() => {
-//     donationEntry.userId = parseInt(donationEntry.userId);
-//     donationEntry.campaignId = parseInt(donationEntry.campaignId);
-//     donationEntry.amount = parseInt(donationEntry.amount);
-//     donationEntry.date = moment(donationEntry.date).toDate();
-
-//     donationEntry.id = this.getMaxId(repository, TBL_DONATION);
-//     donationEntry.updatedAt = new Date();
-//     donationEntry.createdAt = new Date();
-
-//     repository.create(TBL_DONATION, donationEntry);
-//   });
-// }
+/*
+* Service to hanlde operations on Donation 
+*/
 class DonationService extends BaseService {
   addDonation(donation) {
     console.log("Donation data", donation);
@@ -56,6 +21,7 @@ class DonationService extends BaseService {
       ]
     );
   }
+
   getAllDonation() {
     return this.execute(
       `
@@ -74,6 +40,7 @@ class DonationService extends BaseService {
       return data;
     });
   }
+
   deleteAll() {
     return this.execute(`DELETE FROM  donation`);
   }
