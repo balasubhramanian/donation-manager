@@ -18,6 +18,7 @@ import {
   DocumentPickerUtil
 } from "react-native-document-picker";
 import RNFS from "react-native-fs";
+import Csv2Json from "csvtojson";
 
 import AppContainer from "../components/app-container";
 import donorService from "../service/donor-service";
@@ -50,7 +51,7 @@ export default class Settings extends Component {
   importCampaign() {
     return this.readJson()
       .then(data => {
-        data.records.forEach(e => {
+        data.forEach(e => {
           campaignService.addCampaign(e);
         });
       })
@@ -69,7 +70,7 @@ export default class Settings extends Component {
   importUser() {
     return this.readJson()
       .then(data => {
-        data.records.forEach(e => {
+        data.forEach(e => {
           donorService.addUser(e);
         });
         console.log("insert success");
@@ -112,8 +113,19 @@ export default class Settings extends Component {
           if (res) {
             return RNFS.readFile(res.uri, "utf8")
               .then(d => {
-                const data = JSON.parse(d);
-                resolve(data);
+                if (res.uri.indexOf(".csv") >= 0) {
+                  console.log(Csv2Json)
+                  Csv2Json()
+                    .fromString(d)
+                    .then(jsonObj => {
+                      resolve(jsonObj);
+                    });
+                } else {
+                  const data = JSON.parse(d);
+                  resolve(data);
+                }
+              }).catch((...args)=>{
+                console.log('csvtojson err',args)
               })
               .catch(err => {
                 console.log(err);
