@@ -1,7 +1,7 @@
 import BaseService from "./base-service";
 
 /*
-* Service to hanlde operations on Donation 
+* Service to hanlde operations on Donation
 */
 class DonationService extends BaseService {
   addDonation(donation) {
@@ -42,7 +42,7 @@ class DonationService extends BaseService {
   }
 
   deleteAll() {
-    return this.execute(`DELETE FROM  donation`);
+    return this.execute("DELETE FROM  donation");
   }
 }
 

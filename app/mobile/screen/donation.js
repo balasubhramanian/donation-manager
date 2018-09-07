@@ -8,11 +8,11 @@ import {
   Left,
   Right
 } from "native-base";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList } from "react-native";
+import moment from "moment";
 
 import AppContainer from "../components/app-container";
 import DonationService from "../service/donation-service";
-import moment from "moment";
 
 export default class Donation extends Component {
   constructor(props) {
@@ -26,16 +26,17 @@ export default class Donation extends Component {
   componentDidMount() {
     setTimeout(() => {
       console.log("quering donations");
-      let p = DonationService.getAllDonation();
-      p.then(data => {
-        console.log("Get all donations", data);
-        this.setState({
-          donations: data,
-          isLoading: false
+      DonationService.getAllDonation()
+        .then(data => {
+          console.log("Get all donations", data);
+          this.setState({
+            donations: data,
+            isLoading: false
+          });
+        })
+        .catch((e, ...args) => {
+          console.log(args);
         });
-      }).catch(e => {
-        console.log(arguments);
-      });
     }, 0);
   }
 
@@ -51,9 +52,8 @@ export default class Donation extends Component {
         </AppContainer>
       );
     }
-    const sumDonation = (a, r) => {
-      return a + r.amount;
-    };
+    const sumDonation = (a, r) => a + r.amount;
+
     const total = this.state.donations.reduce(sumDonation, 0);
     const groupByField = "created_at";
     const groupByDate = this.state.donations.reduce((a, r) => {
@@ -69,87 +69,83 @@ export default class Donation extends Component {
       <AppContainer key="3" title="Donation" {...this.props}>
         <Content>
           <List noIndent style={{ padding: 0 }}>
-            {Object.keys(groupByDate).map(e => {
-              return (
-                <List>
-                  <ListItem itemDivider>
-                    <Left>
-                      <Text>{moment(e).format("DD-MMM-YY")}</Text>
-                    </Left>
+            {Object.keys(groupByDate).map(e => (
+              <List>
+                <ListItem itemDivider>
+                  <Left>
+                    <Text>{moment(e).format("DD-MMM-YY")}</Text>
+                  </Left>
 
-                    <Right>
-                      <Text> ₹{groupByDate[e].reduce(sumDonation, 0)}</Text>
-                    </Right>
-                  </ListItem>
-                  {this.renderDonations(groupByDate[e], true)}
-                </List>
-              );
-            })}
+                  <Right>
+                    <Text>{groupByDate[e].reduce(sumDonation, 0)}</Text>
+                  </Right>
+                </ListItem>
+                <DonationList items={groupByDate[e]} showDate />
+              </List>
+            ))}
           </List>
         </Content>
       </AppContainer>
     );
   }
+}
 
-  renderDonations(items, showDate = true) {
-    return (
-      <FlatList
-        data={items}
-        renderItem={row => {
-          let item = row.item;
+const DonationList = props => {
+  const { items, showDate } = props;
+  return (
+    <FlatList
+      data={items}
+      renderItem={row => {
+        const { item } = row;
 
-          return (
-            <ListItem
-              key={item.id}
-              style={{
-                flex: 4,
-                flexDirection: "row",
-                alignItems: "flex-start"
-              }}
-            >
-              <View style={{ flex: 3 }}>
-                <View>
-                  <Text style={{ textAlign: "left", alignSelf: "stretch" }}>
-                    {item.userName} test
-                  </Text>
-                </View>
-                <View>
-                  <Text
-                    note
-                    style={{ textAlign: "left", alignSelf: "stretch" }}
-                  >
-                    {item.campaignName}
-                  </Text>
-                </View>
+        return (
+          <ListItem
+            key={item.id}
+            style={{
+              flex: 4,
+              flexDirection: "row",
+              alignItems: "flex-start"
+            }}
+          >
+            <View style={{ flex: 3 }}>
+              <View>
+                <Text style={{ textAlign: "left", alignSelf: "stretch" }}>
+                  {item.userName}
+                </Text>
               </View>
+              <View>
+                <Text note style={{ textAlign: "left", alignSelf: "stretch" }}>
+                  {item.campaignName}
+                </Text>
+              </View>
+            </View>
+            <View style={{ flex: 1 }}>
               <View style={{ flex: 1 }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    alignSelf: "stretch",
+                    textAlign: "right",
+                    color: "steelblue"
+                  }}
+                >
+                  {item.amount}
+                </Text>
+              </View>
+              {showDate && (
                 <View style={{ flex: 1 }}>
                   <Text
-                    style={{
-                      fontSize: 20,
-                      alignSelf: "stretch",
-                      textAlign: "right",
-                      color: "steelblue"
-                    }}
+                    note
+                    style={{ textAlign: "right", alignSelf: "stretch" }}
                   >
-                    ₹{item.amount}
+                    {moment(item.date).format("DD-MMM-YY")}
                   </Text>
                 </View>
-                {showDate && (
-                  <View style={{ flex: 1 }}>
-                    <Text
-                      note
-                      style={{ textAlign: "right", alignSelf: "stretch" }}
-                    >
-                      {moment(item.date).format("DD-MMM-YY")}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </ListItem>
-          );
-        }}
-      />
-    );
-  }
-}
+              )}
+            </View>
+          </ListItem>
+        );
+      }}
+    />
+  );
+};

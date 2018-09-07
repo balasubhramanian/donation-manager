@@ -1,33 +1,16 @@
 import React, { Component } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
-import {
-  Text,
-  Input,
-  Form,
-  Item,
-  Label,
-  Button,
-  ActionSheet,
-  Container,
-  Content,
-  Icon,
-  List,
-  ListItem
-} from "native-base";
+import { ActionSheet, Content } from "native-base";
 
 import AppContainer from "../components/app-container";
 import UserList from "../components/user-list";
-import DonorService from "../service/donor-service";
 
-var BUTTONS = ["Collect Donation", "Edit", "Cancel"];
-var CANCEL_INDEX = 2;
+const BUTTONS = ["Collect Donation", "Edit", "Cancel"];
+const CANCEL_INDEX = 2;
+
 export default class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
-      donors: [],
-      data: [],
       searchText: ""
     };
   }
@@ -37,14 +20,11 @@ export default class User extends Component {
   }
 
   render() {
-    const getAddress = this.getAddress;
-    console.log(this.state);
-
     return (
       <AppContainer
         key="2"
         title="User"
-        showSearch={true}
+        showSearch
         onSearchTextChange={text => {
           this.onSearch(text);
         }}
@@ -58,12 +38,13 @@ export default class User extends Component {
               ActionSheet.show(
                 {
                   options: BUTTONS,
-                  cancelButtonIndex: 2,
+                  cancelButtonIndex: CANCEL_INDEX,
                   title: item.firstname
-                },
-                buttonIndex => {
-                  this.setState({ clicked: BUTTONS[buttonIndex] });
                 }
+                // ,
+                // buttonIndex => {
+                //  this.setState({ clicked: BUTTONS[buttonIndex] });
+                // }
               );
             }}
           />

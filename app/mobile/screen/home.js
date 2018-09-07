@@ -1,17 +1,12 @@
-import React, { Component } from "react";
-import {
-  TabNavigator,
-  createStackNavigator,
-  createDrawerNavigator
-} from "react-navigation";
+import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 
 import Campaign from "./campaign";
 import CollectDonation from "./collection-donation";
 import Donation from "./donation";
 import Settings from "./settings";
 import User from "./user";
-import Login from "./custom-login";
-import Login1 from "./login";
+// import Login from "./custom-login";
+// import Login1 from "./login";
 
 import CampaignSelect from "./campaign-select";
 import StreetSelect from "./street-select";
@@ -28,9 +23,9 @@ const Drawer = createDrawerNavigator(
     Donation: {
       screen: Donation
     },
-    Login: {
-      screen: Login
-    },
+    // Login: {
+    //  screen: Login
+    // },
     User: {
       screen: User,
       navigationOptions: {
@@ -66,7 +61,7 @@ const AppNavigator = createStackNavigator(
     }
   },
   {
-    navigationOptions: ({ navigation }) => ({
+    navigationOptions: () => ({
       headerStyle: {
         height: 0
       }

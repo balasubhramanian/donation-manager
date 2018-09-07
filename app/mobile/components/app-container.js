@@ -19,12 +19,12 @@ export default class AppContainer extends Component {
     this.state = {
       showSearchBar: false,
       showDrawer:
-        this.props.showDrawer != undefined ? this.props.showDrawer : true,
+        this.props.showDrawer !== undefined ? this.props.showDrawer : true,
       showSearch: this.props.showSearch,
-      //showFab: this.props.showFab != undefined ? this.props.showFab : true,
+      // showFab: this.props.showFab != undefined ? this.props.showFab : true,
       showFab: false,
       showSettings:
-        this.props.showSettings != undefined ? this.props.showSettings : false
+        this.props.showSettings !== undefined ? this.props.showSettings : false
     };
   }
 

@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Button
-} from "react-native";
+import { StyleSheet, Text, TextInput, View, Button } from "react-native";
 
 class Login extends Component {
   render() {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList } from "react-native";
 import { Text, Spinner, List, ListItem } from "native-base";
 
 import DonorService from "../service/donor-service";
@@ -13,8 +13,22 @@ export default class StreetList extends Component {
       data: []
     };
   }
+
   componentDidMount() {
     this.fetchStreets();
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.searchText !== newProps.searchText) {
+      this.onSearch(newProps.searchText);
+    }
+  }
+
+  onSearch(text) {
+    const filteredStreets = this.state.data.filter(
+      d => d.street.indexOf(text) >= 0
+    );
+    this.setState({ streets: filteredStreets });
   }
 
   fetchStreets() {
@@ -23,18 +37,6 @@ export default class StreetList extends Component {
       console.log("fetch streets", streets);
       this.setState({ streets, data: streets, isLoading: false });
     });
-  }
-  componentWillReceiveProps(newProps) {
-    if (this.props.searchText != newProps.searchText) {
-      this.onSearch(newProps.searchText);
-    }
-  }
-
-  onSearch(text) {
-    let filteredStreets = this.state.data.filter(d => {
-      return d.street.indexOf(text) >= 0;
-    });
-    this.setState({ streets: filteredStreets });
   }
 
   render() {
@@ -47,7 +49,7 @@ export default class StreetList extends Component {
         <FlatList
           data={this.state.streets}
           renderItem={row => {
-            let item = row.item;
+            const { item } = row;
 
             return (
               <ListItem
@@ -59,7 +61,8 @@ export default class StreetList extends Component {
                 <View>
                   <View>
                     <Text style={{ textAlign: "left", alignSelf: "stretch" }}>
-                      {item.street} {item.area ? ", " + item.area : null}
+                      {item.street}
+                      {item.area ? `, ${item.area}` : null}
                     </Text>
                   </View>
                 </View>

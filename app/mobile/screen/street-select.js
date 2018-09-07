@@ -11,13 +11,14 @@ export default class StreetSelect extends Component {
       searchText: ""
     };
   }
+
   render() {
     return (
       <AppContainer
         key="14"
         title="Streets"
         showDrawer={false}
-        showSearch={true}
+        showSearch
         onSearchTextChange={text => {
           this.setState({ searchText: text });
         }}

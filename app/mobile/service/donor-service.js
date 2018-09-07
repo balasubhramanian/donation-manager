@@ -1,22 +1,22 @@
 import BaseService from "./base-service";
 
 /*
-* Service to hanlde operations on Donor 
+* Service to hanlde operations on Donor
 */
 class DonorService extends BaseService {
   getAllDonors(filter) {
-    if (!filter) {
-      return this.execute(`select * from user_details`);
-    }
-    if (filter.street)
+    if (filter && filter.street) {
       return this.execute(
-        `select * from user_details where street like '` + filter.street + `%'`
+        `select * from user_details where street like '${filter.street}%'`
       );
+    }
+
+    return this.execute("select * from user_details");
   }
 
   getAllStreet() {
     return this.execute(
-      `select distinct street,area from user_details order by 1`
+      "select distinct street,area from user_details order by 1"
     );
   }
 
@@ -48,7 +48,7 @@ class DonorService extends BaseService {
   }
 
   deleteAll() {
-    return this.execute(`DELETE FROM  user_details`);
+    return this.execute("DELETE FROM  user_details");
   }
 }
 

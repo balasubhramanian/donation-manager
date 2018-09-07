@@ -1,15 +1,16 @@
 import React, { Component } from "react";
+import { Container, Root, Toast } from "native-base";
+
 import Login from "./screen/login";
 import Home from "./screen/home";
-import { Container, Root, Toast } from "native-base";
-import { StyleSheet } from "react-native";
 import { initDatabase } from "./common/db";
 
-console.disableYellowBox = true;
 class App extends Component {
   constructor(props) {
     super(props);
-    //this.state = {}
+    console.disableYellowBox = true;
+
+    // this.state = {}
     this.state = { user: { firstname: "Bala" }, isLoading: true };
   }
 

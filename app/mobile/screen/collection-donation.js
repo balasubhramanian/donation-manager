@@ -5,10 +5,6 @@ import DonationForm from "../components/donation-form";
 import AppContainer from "../components/app-container";
 
 export default class CollectDonation extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <AppContainer title="Collect Donation" {...this.props} showFab={false}>

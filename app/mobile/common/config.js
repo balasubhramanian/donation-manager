@@ -18,9 +18,7 @@ class Config {
   }
 
   getJsonItem(key) {
-    return AsyncStorage.getItem(key).then(data => {
-      return JSON.parse(data);
-    });
+    return AsyncStorage.getItem(key).then(data => JSON.parse(data));
   }
 
   setJsonItem(key, value) {

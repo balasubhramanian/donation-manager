@@ -1,25 +1,9 @@
 import React, { Component } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
-import {
-  Text,
-  Input,
-  Form,
-  Item,
-  Label,
-  Button,
-  ActionSheet,
-  Container,
-  Spinner,
-  Content,
-  Icon,
-  List,
-  ListItem
-} from "native-base";
+import { View, FlatList } from "react-native";
+import { Text, Spinner, Icon, List, ListItem } from "native-base";
 
 import DonorService from "../service/donor-service";
 
-var BUTTONS = ["Collect Donation", "Edit", "Cancel"];
-var CANCEL_INDEX = 2;
 export default class UserList extends Component {
   constructor(props) {
     super(props);
@@ -29,29 +13,29 @@ export default class UserList extends Component {
       data: []
     };
   }
+
   componentDidMount() {
     this.fetchDonor(this.props);
   }
 
-  fetchDonor(props) {
-    console.log("userlist-fetch donor", props);
-    this.setState({ isLoading: true });
-    DonorService.getAllDonors(props.filter).then(donors => {
-      console.log("fetch donors", donors);
-      this.setState({ donors, data: donors, isLoading: false });
-    });
-  }
   componentWillReceiveProps(newProps) {
-    if (this.props.searchText != newProps.searchText) {
+    if (this.props.searchText !== newProps.searchText) {
       this.onSearch(newProps.searchText);
     }
-    if (this.props.filter != newProps.filter) {
+    if (this.props.filter !== newProps.filter) {
       this.fetchDonor(newProps);
     }
   }
 
+  onSearch(text) {
+    const filteredDonors = this.state.data.filter(
+      d => d.firstname.indexOf(text) >= 0
+    );
+    this.setState({ donors: filteredDonors });
+  }
+
   getAddress(item) {
-    let address = [];
+    const address = [];
     if (item.doorNo) {
       address.push(item.doorNo);
     }
@@ -72,15 +56,18 @@ export default class UserList extends Component {
     }
     return address.join(", ");
   }
-  onSearch(text) {
-    let filteredDonors = this.state.data.filter(d => {
-      return d.firstname.indexOf(text) >= 0;
+
+  fetchDonor(props) {
+    console.log("userlist-fetch donor", props);
+    this.setState({ isLoading: true });
+    DonorService.getAllDonors(props.filter).then(donors => {
+      console.log("fetch donors", donors);
+      this.setState({ donors, data: donors, isLoading: false });
     });
-    this.setState({ donors: filteredDonors });
   }
 
   render() {
-    const getAddress = this.getAddress;
+    const { getAddress } = this;
 
     if (this.state.isLoading) {
       return <Spinner color="blue" />;
@@ -90,7 +77,7 @@ export default class UserList extends Component {
         <FlatList
           data={this.state.donors}
           renderItem={row => {
-            let item = row.item;
+            const { item } = row;
 
             return (
               <ListItem

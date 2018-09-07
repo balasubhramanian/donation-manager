@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Keyboard, AsyncStorage } from "react-native";
+import PropTypes from "prop-types";
+import { StyleSheet, View, Keyboard } from "react-native";
 import {
   Text,
   Input,
@@ -15,6 +16,7 @@ import SendSMS from "react-native-sms";
 
 import DonationService from "../service/donation-service";
 import Config from "../common/config";
+
 const styles = StyleSheet.create({
   label: {
     fontWeight: "bold"
@@ -36,19 +38,10 @@ export default class DonationForm extends Component {
       selectedUser: null,
       selectedCampaign: null
     };
-    this.baseState = this.state;
+    this.datePickerRef = React.createRef();
   }
-  showSuccess() {
-    Toast.show({
-      text: "Donation Saved",
-      textStyle: { color: "green" },
-      buttonText: "OK",
-      position: "bottom"
-    });
-  }
-  componentDidMount() {
-    this.refs.dpDate.state.chosenDate = new Date();
 
+  componentDidMount() {
     Config.getDefaultCampaign().then(campaign => {
       this.setState({ selectedCampaign: campaign });
     });
@@ -62,11 +55,20 @@ export default class DonationForm extends Component {
     });
   }
 
-  save() {
-    this.state.date = this.refs.dpDate.state.chosenDate;
-    console.log("donation daa", this.state);
+  showSuccess() {
+    this.setState({});
+    Toast.show({
+      text: "Donation Saved",
+      textStyle: { color: "green" },
+      buttonText: "OK",
+      position: "bottom"
+    });
+  }
 
-    let donationData = {
+  save() {
+    if (this.isFormInvalid()) {
+
+    const donationData = {
       campaignId: this.state.selectedCampaign.id,
       userId: this.state.selectedUser.id,
       date: moment(this.state.date).format("YYYY-MM-DD"),
@@ -76,40 +78,39 @@ export default class DonationForm extends Component {
     };
 
     DonationService.addDonation(donationData)
-      .then(() => {
-        console.log("donation saved", arguments);
+      .then((...args) => {
+        console.log("donation saved", args);
+
+        this.showSuccess();
+        const blankState = {
+          selectedUser: null,
+          date: new Date(),
+          amount: null
+        };
+
+        this.datePickerRef.current.state.chosenDate = blankState.date;
 
         this.sendMessage(
           this.state.selectedUser,
           this.state.selectedCampaign,
           this.state.amount
         );
-        this.showSuccess();
-        const blankState = {};
-        Object.keys(this.state).forEach(stateKey => {
-          blankState[stateKey] = undefined;
-        });
-        this.refs.dpDate.state.chosenDate = new Date();
 
         this.setState(blankState);
       })
-      .catch(() => {
-        console.log("donation saved failed", arguments);
+      .catch((...args) => {
+        console.log("donation saved failed", args);
       });
-    //console.log(DonationService.getAllDonation());
-    /* onChangeText={userId => {
-                  this.setState({ userId });
-                }} */
   }
 
   sendMessage(user, campaign, amount) {
     SendSMS.send(
       {
-        body: "Thanks for donating Rs." + amount,
+        body: `Thanks for donating Rs.${amount}`,
         recipients: [user.phone],
         successTypes: ["sent", "queued"]
-      },
-      (completed, cancelled, error) => {}
+      }
+      // (completed, cancelled, error) => {}
     );
   }
 
@@ -173,24 +174,22 @@ export default class DonationForm extends Component {
           <View
             style={{
               alignSelf: "stretch",
-              textAlign: "right",
-              flex: 1,
-              color: "#ddd"
+              flex: 1
             }}
           >
             <DatePicker
-              ref="dpDate"
+              ref={this.datePickerRef}
               textStyle={{ fontSize: 16 }}
               modalTransparent={false}
               defaultDate={this.state.date}
-              animationType={"fade"}
-              androidMode={"default"}
+              animationType="fade"
+              androidMode="default"
               placeHolderText=""
               placeHolderTextStyle={{ opacity: 0 }}
               onDateChange={date => {
-                console.log("ddate set ", date);
                 this.setState({ date });
               }}
+              formatChosenDate={date => moment(date).format("DD-MMM-YY")}
             />
           </View>
         </Item>
@@ -209,3 +208,7 @@ export default class DonationForm extends Component {
     );
   }
 }
+
+DonationForm.propTypes = {
+  navigation: PropTypes.element.isRequired
+};

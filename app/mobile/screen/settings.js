@@ -1,6 +1,5 @@
-import React, { Component, Touch } from "react";
-import { AsyncStorage } from "react-native";
-import { View, FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import React, { Component } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import {
   Text,
   Button,
@@ -14,15 +13,11 @@ import {
 } from "native-base";
 import RNFetchBlob from "react-native-fetch-blob";
 import Share from "react-native-share";
-
-const { fs } = RNFetchBlob;
-
 import {
   DocumentPicker,
   DocumentPickerUtil
 } from "react-native-document-picker";
-
-var RNFS = require("react-native-fs");
+import RNFS from "react-native-fs";
 
 import AppContainer from "../components/app-container";
 import donorService from "../service/donor-service";
@@ -30,11 +25,12 @@ import campaignService from "../service/campaign-service";
 import donationService from "../service/donation-service";
 import Config from "../common/config";
 
+const { fs } = RNFetchBlob;
+
 export default class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
       selectedStreet: null,
       selectedCampaign: null
     };
@@ -91,12 +87,12 @@ export default class Settings extends Component {
 
   exportDonation() {
     return donationService.getAllDonation().then(data => {
-      var jsonString = JSON.stringify(data);
-      return RNFS.writeFile(fs.dirs.DownloadDir + "/donation.txt", jsonString)
+      const jsonString = JSON.stringify(data);
+      return RNFS.writeFile(`${fs.dirs.DownloadDir}/donation.txt`, jsonString)
         .then(d => {
           Toast.show({ text: "File written to downloads " });
           Share.open({
-            url: "file://" + fs.dirs.DownloadDir + "/donation.txt"
+            url: `file://${fs.dirs.DownloadDir}/donation.txt`
           });
           console.log(d, "log writter");
         })
@@ -106,21 +102,24 @@ export default class Settings extends Component {
 
   readJson() {
     return new Promise((resolve, reject) => {
+      console.log("showing picker");
       return DocumentPicker.show(
         {
           filetype: [DocumentPickerUtil.allFiles()]
         },
         (error, res) => {
-          if (!res) return;
-          return RNFS.readFile(res.uri, "utf8")
-            .then(d => {
-              let data = JSON.parse(d);
-              resolve(data);
-            })
-            .catch(err => {
-              console.log(err);
-              reject(err);
-            });
+          if (res) {
+            return RNFS.readFile(res.uri, "utf8")
+              .then(d => {
+                const data = JSON.parse(d);
+                resolve(data);
+              })
+              .catch(err => {
+                console.log(err);
+                reject(err);
+              });
+          }
+          return null;
         }
       );
     });
@@ -130,7 +129,6 @@ export default class Settings extends Component {
     donationService
       .deleteAll()
       .then(() => {
-        alert("success");
         Toast.show({ text: "Donation data deleted" });
       })
       .catch(e => {
@@ -146,7 +144,6 @@ export default class Settings extends Component {
     donorService
       .deleteAll()
       .then(() => {
-        alert("success");
         Toast.show({ text: "User data deleted" });
       })
       .catch(e => {
@@ -162,7 +159,6 @@ export default class Settings extends Component {
     campaignService
       .deleteAll()
       .then(() => {
-        alert("success");
         Toast.show({ text: "Campaign data deleted" });
       })
       .catch(e => {
@@ -306,21 +302,16 @@ export default class Settings extends Component {
   }
 }
 
-const ListHeader = props => {
-  return (
-    <ListItem noIndent itemHeader style={styles.listHeader}>
-      <Text>{props.text}</Text>
-    </ListItem>
-  );
-};
-
-const IconButton = props => {
-  return (
-    <Button transparent primary onPress={props.onPress}>
-      <Icon active name={props.icon} style={styles.listItemIcon} />
-    </Button>
-  );
-};
+const ListHeader = props => (
+  <ListItem noIndent itemHeader style={styles.listHeader}>
+    <Text>{props.text}</Text>
+  </ListItem>
+);
+const IconButton = props => (
+  <Button transparent primary onPress={props.onPress}>
+    <Icon active name={props.icon} style={styles.listItemIcon} />
+  </Button>
+);
 
 const styles = StyleSheet.create({
   listHeader: {

@@ -1,19 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, StyleSheet, AsyncStorage } from "react-native";
-import {
-  Text,
-  Input,
-  Form,
-  Item,
-  Label,
-  Button,
-  ActionSheet,
-  Container,
-  Content,
-  Icon,
-  List,
-  ListItem
-} from "native-base";
+import { Content } from "native-base";
 
 import AppContainer from "../components/app-container";
 import UserList from "../components/user-list";
@@ -27,18 +13,19 @@ export default class UserSelect extends Component {
       filter: this.props.navigation.state.params.filter
     };
   }
+
   render() {
     return (
       <AppContainer
         key="2"
         title="User"
         showDrawer={false}
-        showSearch={true}
+        showSearch
         onSearchTextChange={text => {
           this.setState({ searchText: text });
         }}
         showFab={false}
-        showSettings={true}
+        showSettings
         settingsIcon="md-locate"
         onSettings={() => {
           this.props.navigation.push("StreetSelect", {

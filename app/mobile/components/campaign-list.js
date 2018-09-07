@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList } from "react-native";
 import { Text, List, ListItem } from "native-base";
 
 import CampaignService from "../service/campaign-service";
@@ -8,27 +8,24 @@ export default class CampaignList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
-      campaigns: [],
-      data: []
+      campaigns: []
     };
   }
+
   componentDidMount() {
     this.fetchCampaign();
   }
 
-  fetchCampaign() {
-    this.setState({ isLoading: true });
-    CampaignService.getAllCampaign().then(campaigns => {
-      console.log("fetch campaign", campaigns);
-      this.setState({ campaigns, data: campaigns, isLoading: false });
-    });
-  }
-
   componentWillReceiveProps(newProps) {
-    if (this.props.searchText != newProps.searchText) {
+    if (this.props.searchText !== newProps.searchText) {
       this.onSearch(newProps.searchText);
     }
+  }
+
+  fetchCampaign() {
+    CampaignService.getAllCampaign().then(campaigns => {
+      this.setState({ campaigns });
+    });
   }
 
   render() {
@@ -37,7 +34,7 @@ export default class CampaignList extends Component {
         <FlatList
           data={this.state.campaigns}
           renderItem={row => {
-            let item = row.item;
+            const { item } = row;
 
             return (
               <ListItem
