@@ -56,17 +56,54 @@ export default class DonationForm extends Component {
   }
 
   showSuccess() {
-    this.setState({});
     Toast.show({
       text: "Donation Saved",
-      textStyle: { color: "green" },
-      buttonText: "OK",
+      type: "success",
       position: "bottom"
     });
   }
 
+  showErrorMsg(msg) {
+    Toast.show({
+      text: msg,
+      textStyle: { color: "white" },
+      buttonText: "OK",
+      position: "bottom",
+      duration: 0,
+      type: "danger"
+    });
+  }
+
+  isFormInvalid() {
+    const { amount, selectedCampaign, selectedUser, date } = this.state;
+
+    if (amount <= 0) {
+      this.showErrorMsg("Amount should be greater than 0");
+      return true;
+    }
+
+    if (!selectedUser) {
+      this.showErrorMsg("Please select user");
+      return true;
+    }
+
+    if (!selectedCampaign) {
+      this.showErrorMsg("Please select campaign");
+      return true;
+    }
+
+    if (!date) {
+      this.showErrorMsg("Please select date");
+      return true;
+    }
+
+    return false;
+  }
+
   save() {
     if (this.isFormInvalid()) {
+      return;
+    }
 
     const donationData = {
       campaignId: this.state.selectedCampaign.id,
