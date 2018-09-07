@@ -32,7 +32,8 @@ export default class Settings extends Component {
     super(props);
     this.state = {
       selectedStreet: null,
-      selectedCampaign: null
+      selectedCampaign: null,
+      hideDelete: true
     };
   }
 
@@ -202,6 +203,7 @@ export default class Settings extends Component {
               </Body>
               <Right>
                 <IconButton
+                  hide={this.state.hideDelete}
                   icon="trash"
                   onPress={() => {
                     this.deleteAllDonation();
@@ -223,6 +225,7 @@ export default class Settings extends Component {
               </Body>
               <Right>
                 <IconButton
+                  hide={this.state.hideDelete}
                   icon="trash"
                   onPress={() => {
                     this.deleteAllUser();
@@ -244,6 +247,7 @@ export default class Settings extends Component {
 
               <Right>
                 <IconButton
+                  hide={this.state.hideDelete}
                   icon="trash"
                   onPress={() => {
                     this.deleteAllCampaign();
@@ -295,6 +299,23 @@ export default class Settings extends Component {
               </Body>
               <Right />
             </ListItem>
+            <ListItem icon stackedLabel>
+              <Body>
+                <TouchableOpacity
+                  first
+                  onPress={() => {
+                    this.setState(prevState => ({
+                      hideDelete: !prevState.hideDelete
+                    }));
+                  }}
+                >
+                  <Text style={styles.listItemText}>
+                    {this.state.hideDelete ? "Show Advanced" : "Hide Advanced"}
+                  </Text>
+                </TouchableOpacity>
+              </Body>
+              <Right />
+            </ListItem>
           </List>
         </Content>
       </AppContainer>
@@ -307,11 +328,17 @@ const ListHeader = props => (
     <Text>{props.text}</Text>
   </ListItem>
 );
-const IconButton = props => (
-  <Button transparent primary onPress={props.onPress}>
-    <Icon active name={props.icon} style={styles.listItemIcon} />
-  </Button>
-);
+
+const IconButton = props => {
+  if (!props.hide) {
+    return (
+      <Button transparent primary onPress={props.onPress}>
+        <Icon active name={props.icon} style={styles.listItemIcon} />
+      </Button>
+    );
+  }
+  return null;
+};
 
 const styles = StyleSheet.create({
   listHeader: {
