@@ -10,6 +10,8 @@ public class DonationModel {
     @NotNull
     private Date date;
 
+    private Date createdAt;
+
     @NotNull
     private Long donorId;
 
@@ -95,5 +97,13 @@ public class DonationModel {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
