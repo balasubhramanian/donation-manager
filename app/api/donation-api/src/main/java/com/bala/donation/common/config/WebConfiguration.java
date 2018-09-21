@@ -9,6 +9,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.bala.donation.common.constants.AppConstants;
+
 @Configuration
 public class WebConfiguration extends WebMvcConfigurerAdapter {
     /*
@@ -31,7 +33,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public Jackson2ObjectMapperBuilder jacksonBuilder() {
         Jackson2ObjectMapperBuilder b = new Jackson2ObjectMapperBuilder();
-        b.indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        b.indentOutput(true).dateFormat(new SimpleDateFormat(AppConstants.DATE_FORMAT));
         return b;
     }
 }
