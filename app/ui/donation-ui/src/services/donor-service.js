@@ -5,6 +5,10 @@ class DonorService extends BaseService {
     return this.get("/donor", donor);
   }
 
+  getAllDonorDownloadUrl(param) {
+    return this.getDownloadUrl("/donor/export/csv", param);
+  }
+
   getDonor(id) {
     return this.get("/donor/" + id);
   }

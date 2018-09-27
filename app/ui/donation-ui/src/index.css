@@ -60,11 +60,6 @@ body {
     background-color: #2b3f54;
 }
 
-.react-datepicker__close-icon {
-    position: absolute;
-    margin: 18px 0px;
-}
-
 .react-datepicker__header__dropdown select {
     font-size: 13px !important;
 }

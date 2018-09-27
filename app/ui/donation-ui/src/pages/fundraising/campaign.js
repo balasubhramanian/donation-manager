@@ -14,6 +14,7 @@ import CampaignService from "services/campaign-service";
 import { Link } from "react-router-dom";
 import { RightLayout } from "layout/right-layout";
 import DateUtils from "common/date-utils";
+import campaignService from "services/campaign-service";
 export default class Campaign extends Component {
   constructor(props) {
     super(props);
@@ -89,6 +90,22 @@ export default class Campaign extends Component {
         linkText="Add Campaign"
         linkTo="/campaign/add"
       >
+        <div class="row">
+          <div class="pull-right">
+            <button
+              type="submit"
+              className="btn btn-default"
+              onClick={() => {
+                window.open(
+                  campaignService.getAllCampaignDownloadUrl(),
+                  "_blank"
+                );
+              }}
+            >
+              <i class="fa fa-download" />
+            </button>
+          </div>
+        </div>
         <div>
           <ReactTable
             data={data}

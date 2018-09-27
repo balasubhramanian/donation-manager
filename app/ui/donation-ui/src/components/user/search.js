@@ -1,5 +1,8 @@
 import React, { Component } from "react";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { RightLayout } from "layout/right-layout";
+import donorService from "services/donor-service";
 export default class SearchUser extends Component {
   constructor(props) {
     super(props);
@@ -21,103 +24,94 @@ export default class SearchUser extends Component {
 
   render() {
     return (
-      <form
-        className="form-horizontal form-label-left"
-        onSubmit={e => {
-          e.preventDefault();
-          this.onSearch();
-        }}
-      >
-        <div className="item form-group">
-          <label
-            className="control-label col-md-3 col-sm-3 col-xs-12"
-            htmlFor="name"
-          >
-            Id <span className="required" />
-          </label>
-          <div className="col-md-6 col-sm-6 col-xs-12">
-            <input
-              id="name"
-              className="form-control col-md-7 col-xs-12"
-              onChange={e => {
-                this.setState({ id: e.target.value });
-              }}
-              name="name"
-              type="text"
-            />
-          </div>
-          <div className="alert" />
-        </div>
-        <div className="item form-group">
-          <label
-            className="control-label col-md-3 col-sm-3 col-xs-12"
-            htmlFor="name"
-          >
-            Name <span className="required" />
-          </label>
-          <div className="col-md-6 col-sm-6 col-xs-12">
-            <input
-              id="name"
-              onChange={e => {
-                this.setState({ name: e.target.value });
-              }}
-              className="form-control col-md-7 col-xs-12"
-              name="name"
-              type="text"
-            />
-          </div>
-          <div className="alert" />
-        </div>
-        <div className="item form-group">
-          <label
-            className="control-label col-md-3 col-sm-3 col-xs-12"
-            htmlFor="name"
-          >
-            Phone <span className="required" />
-          </label>
-          <div className="col-md-6 col-sm-6 col-xs-12">
-            <input
-              id="name"
-              onChange={e => {
-                this.setState({ phone: e.target.value });
-              }}
-              className="form-control col-md-7 col-xs-12"
-              name="name"
-              type="text"
-            />
-          </div>
-          <div className="alert" />
-        </div>
-        <div className="item form-group">
-          <label
-            className="control-label col-md-3 col-sm-3 col-xs-12"
-            htmlFor="name"
-          >
-            Street <span className="required" />
-          </label>
-          <div className="col-md-6 col-sm-6 col-xs-12">
-            <input
-              onChange={e => {
-                this.setState({ street: e.target.value });
-              }}
-              id="name"
-              className="form-control col-md-7 col-xs-12"
-              name="name"
-              type="text"
-            />
-          </div>
-          <div className="alert" />
-        </div>
-
+      <RightLayout>
+        <h4>Search</h4>
         <div className="ln_solid" />
-        <div className="form-group">
-          <div className="col-md-6 col-md-offset-3">
-            <button id="send" type="submit" className="btn btn-success">
-              Search
-            </button>
+
+        <form
+          className="form-horizontal"
+          onSubmit={e => {
+            e.preventDefault();
+            this.onSearch();
+          }}
+        >
+          <div className="item form-group">
+            <div className="col-md-1 col-sm-12 col-xs-12">
+              <input
+                placeholder="ID"
+                className="form-control"
+                onChange={e => {
+                  this.setState({ id: e.target.value });
+                }}
+                type="text"
+              />
+            </div>
+
+            <div className="col-md-3 col-sm-12 col-xs-12">
+              <input
+                placeholder="Name"
+                onChange={e => {
+                  this.setState({ name: e.target.value });
+                }}
+                className="form-control "
+                type="text"
+              />
+            </div>
+            <div className="col-md-2 col-sm-12 col-xs-12">
+              <input
+                placeholder="Phone"
+                onChange={e => {
+                  this.setState({ phone: e.target.value });
+                }}
+                className="form-control "
+                type="text"
+              />
+            </div>
+
+            <div className="col-md-3 col-sm-12 col-xs-12">
+              <input
+                onChange={e => {
+                  this.setState({ street: e.target.value });
+                }}
+                placeholder="Street"
+                className="form-control "
+                type="text"
+              />
+            </div>
+
+            <div className="col-md-2">
+              <button id="send" type="submit" className="btn btn-success">
+                Search
+              </button>
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip>Download</Tooltip>}
+              >
+                <button
+                  type="submit"
+                  className="btn btn-default"
+                  onClick={() => {
+                    window.open(
+                      donorService.getAllDonorDownloadUrl(),
+                      "_blank"
+                    );
+                  }}
+                >
+                  <i class="fa fa-download" />
+                </button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip>Upload</Tooltip>}
+              >
+                <button type="submit" className="btn btn-default">
+                  <i class="fa fa-upload" />
+                </button>
+              </OverlayTrigger>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </RightLayout>
     );
   }
 }

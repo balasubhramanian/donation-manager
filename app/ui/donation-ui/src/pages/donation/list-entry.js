@@ -206,7 +206,7 @@ export default class ListEntry extends Component {
                   this.fetchData(true);
                 }}
               >
-                <i className="fa fa-download" /> Export
+                <i className="fa fa-download" />
               </button>
             </div>
           </div>

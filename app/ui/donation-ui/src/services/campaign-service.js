@@ -5,6 +5,10 @@ class CampaignService extends BaseService {
     return this.get("/campaign", campaign);
   }
 
+  getAllCampaignDownloadUrl(param) {
+    return this.getDownloadUrl("/campaign/export/csv", param);
+  }
+
   getActiveCampaign() {
     return this.get("/campaign", { is_active: true });
   }

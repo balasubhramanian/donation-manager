@@ -73,12 +73,9 @@ export default class ListDonor extends Component {
           }}
           linkText="Add Donor"
         />
-        <CollapsablePanel
-          isOpen={this.state.data ? false : true}
-          title="Search"
-        >
-          <SearchUser onSearch={param => this.fetchData(param)} />
-        </CollapsablePanel>
+
+        <SearchUser onSearch={param => this.fetchData(param)} />
+
         {this.renderTable()}
       </div>
     );
