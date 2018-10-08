@@ -59,6 +59,17 @@ export default class BaseService {
       url: path
     });
   }
+
+  upload(path, data) {
+    return this.request({
+      method: "post",
+      url: path,
+      data: data,
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+  }
 }
 
 // let q = new Promise((resolve, reject) => {

@@ -14,6 +14,8 @@ import DatePicker from "components/date-picker";
 import moment from "moment";
 import { toast } from "react-toastify";
 import CampaignService from "services/campaign-service";
+import UploadModal from "components/upload-modal";
+import donationService from "services/donation-service";
 
 export default class ListEntry extends Component {
   constructor(props) {
@@ -208,6 +210,15 @@ export default class ListEntry extends Component {
               >
                 <i className="fa fa-download" />
               </button>
+              <button
+                ref="btnSearch"
+                className="btn btn-default"
+                onClick={() => {
+                  this.setState({ showUploadModal: true });
+                }}
+              >
+                <i className="fa fa-upload" />
+              </button>
             </div>
           </div>
         </RightLayout>
@@ -305,6 +316,17 @@ export default class ListEntry extends Component {
           onSuccess={() => {
             this.toggleModal();
             this.fetchData();
+          }}
+        />
+        <UploadModal
+          showModal={this.state.showUploadModal}
+          onCancel={() => {
+            this.setState({ showUploadModal: false });
+          }}
+          onUpload={file => {
+            console.log(file);
+            donationService.uploadDonation(file);
+            //this.fetchData();
           }}
         />
       </div>

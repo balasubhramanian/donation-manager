@@ -19,6 +19,12 @@ class DonationService extends BaseService {
   updateDonation(id, payload) {
     return this.post("/donation/" + id, payload);
   }
+
+  uploadDonation(files) {
+    let formData = new FormData();
+    formData.append("file", files[0]);
+    return this.upload("/donation/import", formData);
+  }
 }
 
 export default new DonationService();
