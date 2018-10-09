@@ -3,6 +3,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { RightLayout } from "layout/right-layout";
 import donorService from "services/donor-service";
+import UploadModal from "components/upload-modal";
 export default class SearchUser extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +30,7 @@ export default class SearchUser extends Component {
         <div className="ln_solid" />
 
         <form
+          autocomplete="false"
           className="form-horizontal"
           onSubmit={e => {
             e.preventDefault();
@@ -38,6 +40,7 @@ export default class SearchUser extends Component {
           <div className="item form-group">
             <div className="col-md-1 col-sm-12 col-xs-12">
               <input
+                autocomplete="false"
                 placeholder="ID"
                 className="form-control"
                 onChange={e => {
@@ -49,6 +52,7 @@ export default class SearchUser extends Component {
 
             <div className="col-md-3 col-sm-12 col-xs-12">
               <input
+                autocomplete="false"
                 placeholder="Name"
                 onChange={e => {
                   this.setState({ name: e.target.value });
@@ -59,6 +63,7 @@ export default class SearchUser extends Component {
             </div>
             <div className="col-md-2 col-sm-12 col-xs-12">
               <input
+                autocomplete="off"
                 placeholder="Phone"
                 onChange={e => {
                   this.setState({ phone: e.target.value });
@@ -70,6 +75,7 @@ export default class SearchUser extends Component {
 
             <div className="col-md-3 col-sm-12 col-xs-12">
               <input
+                autocomplete="off"
                 onChange={e => {
                   this.setState({ street: e.target.value });
                 }}
@@ -104,13 +110,33 @@ export default class SearchUser extends Component {
                 placement="bottom"
                 overlay={<Tooltip>Upload</Tooltip>}
               >
-                <button type="submit" className="btn btn-default">
+                <button
+                  type="submit"
+                  className="btn btn-default"
+                  onClick={() => {
+                    this.setState({ showUploadModal: true });
+                  }}
+                >
                   <i class="fa fa-upload" />
                 </button>
               </OverlayTrigger>
             </div>
           </div>
         </form>
+        <UploadModal
+          showModal={this.state.showUploadModal}
+          onCancel={() => {
+            this.setState({ showUploadModal: false });
+          }}
+          onUpload={file => {
+            console.log(file);
+            donorService.uploadDonor(file).then(() => {
+              this.setState({ showUploadModal: false });
+              toast.success("Donor Uploaded");
+            });
+            //this.fetchData();
+          }}
+        />
       </RightLayout>
     );
   }
