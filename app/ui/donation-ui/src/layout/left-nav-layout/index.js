@@ -36,8 +36,9 @@ class LeftNavLayout extends Component {
   }
 
   render() {
+    const menuClass = localStorage.getItem("menu");
     return (
-      <div id="root-container" className="nav-md">
+      <div id="root-container" className={menuClass ? menuClass : "nav-md"}>
         <div className="container body">
           <ToastContainer autoClose={8000} />
           <div className="main_container">
@@ -67,4 +68,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeftNavLayout);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LeftNavLayout);

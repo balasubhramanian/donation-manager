@@ -11,12 +11,14 @@ class TopNav extends Component {
 
     $MENU_TOGGLE.on("click", function() {
       if ($BODY.hasClass("nav-md")) {
+        localStorage.setItem("menu", "nav-sm");
         $SIDEBAR_MENU.find("li.active ul").hide();
         $SIDEBAR_MENU
           .find("li.active")
           .addClass("active-sm")
           .removeClass("active");
       } else {
+        localStorage.setItem("menu", "nav-md");
         $SIDEBAR_MENU.find("li.active-sm ul").show();
         $SIDEBAR_MENU
           .find("li.active-sm")
@@ -30,7 +32,6 @@ class TopNav extends Component {
   render() {
     console.log(this.props);
     return (
-      
       <div className="top_nav">
         <div className="nav_menu">
           <nav>
@@ -40,7 +41,12 @@ class TopNav extends Component {
               </a>
             </div>
             <ul className="nav navbar-nav navbar-right">
-              <NavDropdown id="user-dp" eventKey={3} title={this.props.isLoggedIn ? this.props.user.firstname : ""} className="">
+              <NavDropdown
+                id="user-dp"
+                eventKey={3}
+                title={this.props.isLoggedIn ? this.props.user.firstname : ""}
+                className=""
+              >
                 <MenuItem
                   eventKey={3.1}
                   onClick={() => {
@@ -64,4 +70,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch({ type: "LOGOUT" })
 });
-export default connect(mapStateToProps, mapDispatchToProps)(TopNav);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopNav);
