@@ -126,6 +126,11 @@ public class DonationService {
         notificationService.onDonationRecieved(donationEntity);
     }
 
+    @Transactional
+    public void saveDonation(List<DonationModel> donationModels) {
+        donationModels.forEach(this::saveDonation);
+    }
+
     public DonationModel getDonation(Long id) {
         DonationEntity donationEntity = donationRepo.getOne(id);
         if (donationEntity == null) {

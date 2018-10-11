@@ -3,6 +3,7 @@ package com.bala.donation.donor.controller;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import org.supercsv.prefs.CsvPreference;
 
 import com.bala.donation.common.exception.AppException;
 import com.bala.donation.common.exception.CSVError;
+import com.bala.donation.common.utils.AppUtils;
 import com.bala.donation.donor.model.DonorSearchModel;
 import com.bala.donation.donor.service.DonorService;
 import com.bala.donation.user.model.DonorModel;
@@ -97,6 +99,12 @@ public class DonorController {
         return ResponseEntity.noContent().build();
     }
 
+    @RequestMapping(path = "/donor/import/template", method = RequestMethod.GET)
+    public void importDonorTemplate(HttpServletResponse response) {
+        AppUtils.setCsvResponse(response, "donor-template",
+                "id,firstname,lastname,email,phone,doorno,street,area,city,state,country");
+    }
+
     @RequestMapping(path = "/donor/import", method = RequestMethod.POST)
     public void importDonor(@RequestParam("file") MultipartFile file) {
         String[] header = null;
@@ -105,10 +113,12 @@ public class DonorController {
 
             header = beanReader.getHeader(true);
             CellProcessor[] processors = getDonorCSVProcessor();
-            DonorModel donorModel;
+            List<DonorModel> donorModels = new ArrayList<DonorModel>();
+            DonorModel donorModel = null;
             while ((donorModel = beanReader.read(DonorModel.class, header, processors)) != null) {
-                donorService.saveDonor(donorModel);
+                donorModels.add(donorModel);
             }
+            donorService.saveDonor(donorModels);
         } catch (SuperCsvConstraintViolationException sccve) {
             String errorMsg = String.format("Invalid value for rownum: %s , column:%s",
                     sccve.getCsvContext().getRowNumber(), header[sccve.getCsvContext().getColumnNumber() - 1]);

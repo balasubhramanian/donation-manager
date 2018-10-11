@@ -35,6 +35,11 @@ public class DonorService {
         userDetailsRepo.save(userDetailsEntity);
     }
 
+    @Transactional
+    public void saveDonor(List<DonorModel> donorModels) {
+        donorModels.forEach(this::saveDonor);
+    }
+
     public DonorModel getDonor(Long donorId) {
         UserDetailsEntity donorEntity = userDetailsRepo.getOne(donorId);
         if (donorEntity == null) {

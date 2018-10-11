@@ -1,7 +1,7 @@
 package com.bala.donation.donation.controller;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -104,6 +104,12 @@ public class DonationController {
         return processors;
     }
 
+    @RequestMapping(path = "/donation/import/template", method = RequestMethod.GET)
+    public void importDonationTemplate(HttpServletResponse response) {
+        AppUtils.setCsvResponse(response, "donation-template", "id,date,amount,donorId,campaignId,createdAt");
+
+    }
+
     @RequestMapping(path = "/donation/import", method = RequestMethod.POST)
     public void importDonation(@RequestParam("file") MultipartFile file) {
         String[] header = null;
@@ -112,17 +118,21 @@ public class DonationController {
 
             header = beanReader.getHeader(true);
             CellProcessor[] processors = getDonationCSVProcessor();
+            List<DonationModel> donationModels = new ArrayList<>();
             DonationModel donationModel;
             while ((donationModel = beanReader.read(DonationModel.class, header, processors)) != null) {
-                donationService.saveDonation(donationModel);
+                donationModels.add(donationModel);
             }
+            donationService.saveDonation(donationModels);
         } catch (SuperCsvConstraintViolationException sccve) {
             String errorMsg = String.format("Invalid value for rownum: %s , column:%s",
                     sccve.getCsvContext().getRowNumber(), header[sccve.getCsvContext().getColumnNumber() - 1]);
             throw new AppException(CSVError.INVALID_DATA.withMessage(errorMsg));
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception iae) {
+            iae.printStackTrace();
+            throw new AppException(
+                    CSVError.INVALID_DATA.withMessage("Failed to process file, please check the data format"));
         }
 
     }
