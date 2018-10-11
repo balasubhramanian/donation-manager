@@ -125,16 +125,22 @@ export default class SearchUser extends Component {
         </form>
         <UploadModal
           showModal={this.state.showUploadModal}
+          templateLink={donorService.getDonorUploadTemplateUrl()}
           onCancel={() => {
             this.setState({ showUploadModal: false });
           }}
           onUpload={file => {
             console.log(file);
-            donorService.uploadDonor(file).then(() => {
-              this.setState({ showUploadModal: false });
-              toast.success("Donor Uploaded");
-            });
-            //this.fetchData();
+            donorService
+              .uploadDonor(file)
+              .then(() => {
+                this.setState({ showUploadModal: false });
+                toast.success("Donors Uploaded");
+              })
+              .catch(e => {
+                console.log("Error uploading donors", e.response);
+                toast.error(e.response.data.errors[0].message);
+              });
           }}
         />
       </RightLayout>

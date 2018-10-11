@@ -29,18 +29,27 @@ export default class UploadModal extends Component {
                 }}
               />
             </div>
-            <div class="col-md-12">
-              <button
-                onClick={() => {
-                  this.props.onUpload(this.state.file);
-                }}
-                className="btn btn-default"
-              >
-                Upload
-              </button>
-            </div>
           </div>
         </Modal.Body>
+        <Modal.Footer style={{ textAlign: "left" }}>
+          <button
+            onClick={() => {
+              this.props.onUpload(this.state.file);
+            }}
+            className="btn btn-success"
+          >
+            Upload
+          </button>
+          {this.props.templateLink && (
+            <a
+              class="pull-right"
+              href={this.props.templateLink}
+              target="_blank"
+            >
+              Download Template
+            </a>
+          )}
+        </Modal.Footer>
       </Modal>
     );
   }

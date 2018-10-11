@@ -25,6 +25,10 @@ class DonationService extends BaseService {
     formData.append("file", files[0]);
     return this.upload("/donation/import", formData);
   }
+
+  getDonationUploadTemplateUrl() {
+    return this.getDownloadUrl("/donation/import/template");
+  }
 }
 
 export default new DonationService();

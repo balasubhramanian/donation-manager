@@ -58,6 +58,7 @@ export default class ListDonor extends Component {
           data: data,
           isLoading: false
         });
+        toast.success("Donor Deleted");
       })
       .catch(err => {
         this.setState({ isLoading: false });

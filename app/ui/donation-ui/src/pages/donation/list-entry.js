@@ -320,12 +320,22 @@ export default class ListEntry extends Component {
         />
         <UploadModal
           showModal={this.state.showUploadModal}
+          templateLink={donationService.getDonationUploadTemplateUrl()}
           onCancel={() => {
             this.setState({ showUploadModal: false });
           }}
           onUpload={file => {
             console.log(file);
-            donationService.uploadDonation(file);
+            donationService
+              .uploadDonation(file)
+              .then(() => {
+                toast.success("Donations uploaded");
+                this.setState({ showUploadModal: false });
+              })
+              .catch(e => {
+                console.log("Error uploading donors", e.response);
+                toast.error(e.response.data.errors[0].message);
+              });
             //this.fetchData();
           }}
         />
