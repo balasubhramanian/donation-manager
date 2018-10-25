@@ -4,14 +4,15 @@ import { ActionSheet, Content } from "native-base";
 import AppContainer from "../components/app-container";
 import UserList from "../components/user-list";
 
-const BUTTONS = ["Collect Donation", "Edit", "Cancel"];
-const CANCEL_INDEX = 2;
+const BUTTONS = ["Collect Donation", "Cancel"];
+const CANCEL_INDEX = 1;
 
 export default class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchText: ""
+      searchText: "",
+      selectedUser: null
     };
   }
 
@@ -34,17 +35,23 @@ export default class User extends Component {
           <UserList
             searchText={this.state.searchText}
             onSelect={item => {
+              this.setState({ selectedUser: item });
               console.log(item.firstname);
               ActionSheet.show(
                 {
                   options: BUTTONS,
                   cancelButtonIndex: CANCEL_INDEX,
                   title: item.firstname
+                },
+                buttonIndex => {
+                  console.log(buttonIndex);
+                  if (buttonIndex === 0) {
+                    console.log(this.props.navigation);
+                    this.props.navigation.navigate("Collect Donation", {
+                      user: this.state.selectedUser
+                    });
+                  }
                 }
-                // ,
-                // buttonIndex => {
-                //  this.setState({ clicked: BUTTONS[buttonIndex] });
-                // }
               );
             }}
           />
