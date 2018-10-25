@@ -1,6 +1,14 @@
 import { AsyncStorage } from "react-native";
 
 class Config {
+  setDefaultSMS(value) {
+    return this.setJsonItem("defaultSMS", value);
+  }
+
+  getDefaultSMS() {
+    return this.getJsonItem("defaultSMS");
+  }
+
   getDefaultStreet() {
     return this.getJsonItem("defaultStreet");
   }
