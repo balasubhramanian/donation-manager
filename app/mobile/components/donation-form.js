@@ -47,6 +47,10 @@ export default class DonationForm extends Component {
     });
 
     this.getDefaultStreet();
+
+    const user = this.props.navigation.getParam("user", null);
+    this.setState({ selectedUser: user });
+    this.props.navigation.setParams({ user: null });
   }
 
   getDefaultStreet() {
@@ -118,7 +122,12 @@ export default class DonationForm extends Component {
       .then((...args) => {
         console.log("donation saved", args);
 
-        this.showSuccess();
+        setTimeout(() => {
+          this.showSuccess();
+        }, 0);
+
+        const oldState = Object.assign({}, this.state);
+
         const blankState = {
           selectedUser: null,
           date: new Date(),
@@ -127,13 +136,15 @@ export default class DonationForm extends Component {
 
         this.datePickerRef.current.state.chosenDate = blankState.date;
 
-        this.sendMessage(
-          this.state.selectedUser,
-          this.state.selectedCampaign,
-          this.state.amount
-        );
-
         this.setState(blankState);
+
+        setTimeout(() => {
+          this.sendMessage(
+            oldState.selectedUser,
+            oldState.selectedCampaign,
+            oldState.amount
+          );
+        }, 0);
       })
       .catch((...args) => {
         console.log("donation saved failed", args);
@@ -141,14 +152,17 @@ export default class DonationForm extends Component {
   }
 
   sendMessage(user, campaign, amount) {
-    SendSMS.send(
-      {
-        body: `Thanks for donating Rs.${amount}`,
-        recipients: [user.phone],
-        successTypes: ["sent", "queued"]
-      }
-      // (completed, cancelled, error) => {}
-    );
+    Config.getDefaultSMS().then(smsText => {
+      console.log(smsText);
+      SendSMS.send(
+        {
+          body: smsText.replace("{amount}", amount),
+          recipients: [user.phone],
+          successTypes: ["sent", "queued"]
+        }
+        // (completed, cancelled, error) => {}
+      );
+    });
   }
 
   render() {

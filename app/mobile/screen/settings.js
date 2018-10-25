@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, Modal } from "react-native";
 import {
   Text,
   Button,
@@ -9,7 +9,10 @@ import {
   ListItem,
   Body,
   Right,
-  Toast
+  Toast,
+  View,
+  Picker,
+  Input
 } from "native-base";
 import RNFetchBlob from "react-native-fetch-blob";
 import Share from "react-native-share";
@@ -34,7 +37,11 @@ export default class Settings extends Component {
     this.state = {
       selectedStreet: null,
       selectedCampaign: null,
-      hideDelete: true
+      hideDelete: true,
+      smsText:
+        Config.getDefaultSMS() && Config.getDefaultSMS().length
+          ? Config.getDefaultSMS()
+          : "Thanks for donating Rs. {amount}"
     };
   }
 
@@ -51,6 +58,7 @@ export default class Settings extends Component {
   importCampaign() {
     return this.readJson()
       .then(data => {
+        console.log(data);
         data.forEach(e => {
           campaignService.addCampaign(e);
         });
@@ -89,12 +97,30 @@ export default class Settings extends Component {
 
   exportDonation() {
     return donationService.getAllDonation().then(data => {
-      const jsonString = JSON.stringify(data);
-      return RNFS.writeFile(`${fs.dirs.DownloadDir}/donation.txt`, jsonString)
+      let csvData = data.map(d => {
+        const row = [
+          d.id,
+          d.date,
+          d.amount,
+          d.userId,
+          d.campaignId,
+          d.createdAt,
+          d.userName,
+          d.campaignName
+        ];
+        return row.join(",");
+      });
+
+      csvData = ["id,date,amount,donorId,campaignId,createdAt"].concat(csvData);
+      console.log("Download Dir", fs.dirs.DownloadDir, csvData.join("\n"));
+      return RNFS.writeFile(
+        `${fs.dirs.DownloadDir}/donation.txt`,
+        csvData.join("\n")
+      )
         .then(d => {
           Toast.show({ text: "File written to downloads " });
           Share.open({
-            url: `file://${fs.dirs.DownloadDir}/donation.txt`
+            url: `file://${fs.dirs.DownloadDir}/donation.csv`
           });
           console.log(d, "log writter");
         })
@@ -114,7 +140,7 @@ export default class Settings extends Component {
             return RNFS.readFile(res.uri, "utf8")
               .then(d => {
                 if (res.uri.indexOf(".csv") >= 0) {
-                  console.log(Csv2Json)
+                  console.log(Csv2Json);
                   Csv2Json()
                     .fromString(d)
                     .then(jsonObj => {
@@ -124,8 +150,9 @@ export default class Settings extends Component {
                   const data = JSON.parse(d);
                   resolve(data);
                 }
-              }).catch((...args)=>{
-                console.log('csvtojson err',args)
+              })
+              .catch((...args) => {
+                console.log("csvtojson err", args);
               })
               .catch(err => {
                 console.log(err);
@@ -327,6 +354,20 @@ export default class Settings extends Component {
                 </TouchableOpacity>
               </Body>
               <Right />
+            </ListItem>
+            <ListHeader text="SMS TEXT" />
+            <ListItem>
+              <Input
+                style={{
+                  fontSize: 16,
+                  color: "#000"
+                }}
+                onChangeText={smsText => {
+                  Config.setDefaultSMS(smsText);
+                  this.setState({ smsText });
+                }}
+                value={this.state.smsText}
+              />
             </ListItem>
           </List>
         </Content>
