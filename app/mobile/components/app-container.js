@@ -61,6 +61,8 @@ export default class AppContainer extends Component {
         </Body>
 
         <Right>
+          {this.props.headerActions ? this.props.headerActions : null}
+
           {this.state.showSettings && (
             <Icon
               style={{ color: "#fff", marginRight: 20 }}
