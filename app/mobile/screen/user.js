@@ -26,6 +26,10 @@ export default class User extends Component {
         key="2"
         title="User"
         showSearch
+        showFab
+        onFabPress={() => {
+          this.props.navigation.push("Add User");
+        }}
         onSearchTextChange={text => {
           this.onSearch(text);
         }}

@@ -231,7 +231,15 @@ export default class Donation extends Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <AppContainer key="3" title="Donation" {...this.props}>
+        <AppContainer
+          key="3"
+          title="Donation"
+          showFab
+          onFabPress={() => {
+            this.props.navigation.navigate("Collect Donation");
+          }}
+          {...this.props}
+        >
           <Content>
             <View style={{ flex: 1, alignContent: "flex-start" }}>
               <Spinner color="blue" />
@@ -259,6 +267,10 @@ export default class Donation extends Component {
         title="Donation"
         {...this.props}
         headerActions={this.renderHeaderIcons()}
+        showFab
+        onFabPress={() => {
+          this.props.navigation.navigate("Collect Donation");
+        }}
       >
         <Content>
           <List noIndent style={{ padding: 0 }}>

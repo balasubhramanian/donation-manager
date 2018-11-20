@@ -7,7 +7,14 @@ import CampaignList from "../components/campaign-list";
 export default class Campaign extends Component {
   render() {
     return (
-      <AppContainer title="Campaign" {...this.props}>
+      <AppContainer
+        title="Campaign"
+        {...this.props}
+        showFab
+        onFabPress={() => {
+          this.props.navigation.push("Add Campaign");
+        }}
+      >
         <Content>
           <CampaignList />
         </Content>
