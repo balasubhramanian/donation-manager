@@ -21,8 +21,7 @@ export default class AppContainer extends Component {
       showDrawer:
         this.props.showDrawer !== undefined ? this.props.showDrawer : true,
       showSearch: this.props.showSearch,
-      // showFab: this.props.showFab != undefined ? this.props.showFab : true,
-      showFab: false,
+      showFab: this.props.showFab != undefined ? this.props.showFab : false,
       showSettings:
         this.props.showSettings !== undefined ? this.props.showSettings : false
     };
@@ -131,7 +130,7 @@ export default class AppContainer extends Component {
             }}
             position="bottomRight"
             onPress={() => {
-              this.props.navigation.navigate("Collect Donation");
+              this.props.onFabPress();
             }}
           >
             <Icon name="add" style={{ fontSize: 14 }} />
