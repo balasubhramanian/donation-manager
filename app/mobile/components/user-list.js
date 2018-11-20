@@ -30,8 +30,11 @@ export default class UserList extends Component {
   onSearch(text) {
     const filteredDonors = this.state.data.filter(d => {
       console.log(d);
+
       return (
-        (d.firstname && d.firstname.indexOf(text) >= 0) ||
+        (d.firstname &&
+          text &&
+          d.firstname.toLowerCase().indexOf(text.toLowerCase()) >= 0) ||
         (d.phone && d.phone.indexOf(text) >= 0)
       );
     });
