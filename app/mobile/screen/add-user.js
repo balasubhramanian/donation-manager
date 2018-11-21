@@ -59,12 +59,50 @@ export default class AddUser extends Component {
   }
 
   isFormInvalid() {
-    // const { amount, selectedCampaign, selectedUser, date } = this.state;
+    const {
+      firstname,
+      phone,
+      doorno,
+      street,
+      city,
+      state,
+      country
+    } = this.state;
 
-    // if (amount <= 0) {
-    //   this.showErrorMsg("Amount should be greater than 0");
-    //   return true;
-    // }
+    if (!firstname || firstname.length < 2) {
+      this.showErrorMsg("Please enter firstname");
+      return true;
+    }
+
+    if (!phone || phone.length < 2) {
+      this.showErrorMsg("Please enter phone");
+      return true;
+    }
+
+    if (!doorno || doorno.length < 1) {
+      this.showErrorMsg("Please enter Door No");
+      return true;
+    }
+
+    if (!street || street.length < 1) {
+      this.showErrorMsg("Please enter street");
+      return true;
+    }
+
+    if (!city || city.length < 1) {
+      this.showErrorMsg("Please enter city");
+      return true;
+    }
+
+    if (!state || state.length < 1) {
+      this.showErrorMsg("Please enter state");
+      return true;
+    }
+
+    if (!country || country.length < 1) {
+      this.showErrorMsg("Please enter country");
+      return true;
+    }
 
     return false;
   }

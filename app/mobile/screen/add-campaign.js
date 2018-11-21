@@ -62,12 +62,22 @@ export default class AddCampaign extends Component {
   }
 
   isFormInvalid() {
-    // const { amount, selectedCampaign, selectedUser, date } = this.state;
+    const { name, description, type } = this.state;
 
-    // if (amount <= 0) {
-    //   this.showErrorMsg("Amount should be greater than 0");
-    //   return true;
-    // }
+    if (!name || name.length < 1) {
+      this.showErrorMsg("Please enter Name");
+      return true;
+    }
+
+    if (!description || description.length < 1) {
+      this.showErrorMsg("Please enter Description");
+      return true;
+    }
+
+    if (!type || type.length < 1) {
+      this.showErrorMsg("Please enter Description");
+      return true;
+    }
 
     return false;
   }
