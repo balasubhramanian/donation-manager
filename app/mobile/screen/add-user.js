@@ -98,7 +98,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>First Name</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={firstname => {
                 this.setState({ firstname });
               }}
@@ -110,7 +109,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>Last Name</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={lastname => {
                 this.setState({ lastname });
               }}
@@ -122,7 +120,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>Phone</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={phone => {
                 this.setState({ phone });
               }}
@@ -134,7 +131,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>Email</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={email => {
                 this.setState({ email });
               }}
@@ -146,7 +142,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>Door No</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={doorno => {
                 this.setState({ doorno });
               }}
@@ -158,7 +153,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>Street</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={street => {
                 this.setState({ street });
               }}
@@ -170,7 +164,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>City</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={city => {
                 this.setState({ city });
               }}
@@ -182,7 +175,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>State</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={state => {
                 this.setState({ state });
               }}
@@ -194,7 +186,6 @@ export default class AddUser extends Component {
             <Label style={styles.label}>Country</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={country => {
                 this.setState({ country });
               }}

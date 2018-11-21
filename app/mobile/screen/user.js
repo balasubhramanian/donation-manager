@@ -14,6 +14,15 @@ export default class User extends Component {
       searchText: "",
       selectedUser: null
     };
+    this.userListRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.props.navigation.addListener("willFocus", () => {
+      if (this.userListRef && this.userListRef.current) {
+        this.userListRef.current.componentDidMount();
+      }
+    });
   }
 
   onSearch(text) {
@@ -37,6 +46,7 @@ export default class User extends Component {
       >
         <Content style={{ padding: 0 }}>
           <UserList
+            ref={this.userListRef}
             searchText={this.state.searchText}
             onSelect={item => {
               this.setState({ selectedUser: item });

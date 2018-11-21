@@ -101,7 +101,6 @@ export default class AddCampaign extends Component {
             <Label style={styles.label}>Name</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={name => {
                 this.setState({ name });
               }}
@@ -113,7 +112,6 @@ export default class AddCampaign extends Component {
             <Label style={styles.label}>Description</Label>
             <Input
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={description => {
                 this.setState({ description });
               }}
