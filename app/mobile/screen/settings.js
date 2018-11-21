@@ -114,7 +114,7 @@ export default class Settings extends Component {
       csvData = ["id,date,amount,donorId,campaignId,createdAt"].concat(csvData);
       console.log("Download Dir", fs.dirs.DownloadDir, csvData.join("\n"));
       return RNFS.writeFile(
-        `${fs.dirs.DownloadDir}/donation.txt`,
+        `${fs.dirs.DownloadDir}/donation.csv`,
         csvData.join("\n")
       )
         .then(d => {
@@ -123,6 +123,66 @@ export default class Settings extends Component {
             url: `file://${fs.dirs.DownloadDir}/donation.csv`
           });
           console.log(d, "log writter");
+        })
+        .catch(err => console.log(err));
+    });
+  }
+
+  exportCampaign() {
+    return campaignService.getAllCampaign().then(data => {
+      let csvData = data.map(campaign => {
+        const row = [
+          campaign.id,
+          campaign.name,
+          campaign.description,
+          campaign.status,
+          campaign.type
+        ];
+        return row.join(",");
+      });
+
+      csvData = ["id,name,description,status,type"].concat(csvData);
+      console.log("Download Dir", fs.dirs.DownloadDir, csvData.join("\n"));
+      return RNFS.writeFile(
+        `${fs.dirs.DownloadDir}/app-campaign.csv`,
+        csvData.join("\n")
+      )
+        .then(d => {
+          Toast.show({ text: "File written to downloads " });
+        })
+        .catch(err => console.log(err));
+    });
+  }
+
+  exportUser() {
+    return donorService.getAllDonors().then(data => {
+      let csvData = data.map(d => {
+        const row = [
+          d.id,
+          d.firstname,
+          d.lastname,
+          d.email,
+          d.phone,
+          d.doorno,
+          d.street,
+          d.area,
+          d.city,
+          d.state,
+          d.country
+        ];
+        return row.join(",");
+      });
+
+      csvData = [
+        "id,firstname,lastname,email,phone,doorno,street,area,city,state,country"
+      ].concat(csvData);
+      console.log("Download Dir", fs.dirs.DownloadDir, csvData.join("\n"));
+      return RNFS.writeFile(
+        `${fs.dirs.DownloadDir}/app-donors.csv`,
+        csvData.join("\n")
+      )
+        .then(d => {
+          Toast.show({ text: "File written to downloads " });
         })
         .catch(err => console.log(err));
     });
@@ -271,6 +331,13 @@ export default class Settings extends Component {
                   }}
                 />
                 <IconButton
+                  hide={this.state.hideDelete}
+                  icon="cloud-download"
+                  onPress={() => {
+                    this.exportUser();
+                  }}
+                />
+                <IconButton
                   icon="cloud-upload"
                   onPress={() => {
                     this.importUser();
@@ -290,6 +357,13 @@ export default class Settings extends Component {
                   icon="trash"
                   onPress={() => {
                     this.deleteAllCampaign();
+                  }}
+                />
+                <IconButton
+                  hide={this.state.hideDelete}
+                  icon="cloud-download"
+                  onPress={() => {
+                    this.exportCampaign();
                   }}
                 />
                 <IconButton
