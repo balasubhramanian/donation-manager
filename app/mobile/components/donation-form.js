@@ -152,17 +152,32 @@ export default class DonationForm extends Component {
   }
 
   sendMessage(user, campaign, amount) {
-    Config.getDefaultSMS().then(smsText => {
-      console.log(smsText);
-      SendSMS.send(
-        {
-          body: smsText.replace("{amount}", amount),
-          recipients: [user.phone],
-          successTypes: ["sent", "queued"]
-        }
-        // (completed, cancelled, error) => {}
-      );
-    });
+    Config.getDefaultSMS()
+      .then(smsText => {
+        const msg = smsText ? smsText : "Thanks for donating Rs. {amount}";
+
+        console.log("sedning msg with text", msg);
+        SendSMS.send(
+          {
+            body: msg.replace("{amount}", amount),
+            recipients: [user.phone],
+            successTypes: ["sent", "queued"],
+            allowAndroidSendWithoutReadPermission: true
+          },
+          (completed, cancelled, error) => {
+            console.log(
+              "failed to send sms",
+              arguments,
+              cancelled,
+              error,
+              completed
+            );
+          }
+        );
+      })
+      .catch(() => {
+        console.log("failed to send sms");
+      });
   }
 
   render() {

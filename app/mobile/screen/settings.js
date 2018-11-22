@@ -38,10 +38,7 @@ export default class Settings extends Component {
       selectedStreet: null,
       selectedCampaign: null,
       hideDelete: true,
-      smsText:
-        Config.getDefaultSMS() && Config.getDefaultSMS().length
-          ? Config.getDefaultSMS()
-          : "Thanks for donating Rs. {amount}"
+      smsText: null
     };
   }
 
@@ -53,6 +50,17 @@ export default class Settings extends Component {
     Config.getDefaultCampaign().then(campaign => {
       this.setState({ selectedCampaign: campaign });
     });
+
+    Config.getDefaultSMS()
+      .then(sms => {
+        const msg = sms ? sms : "Thanks for donating Rs. {amount}";
+        this.setState({
+          smsText: msg
+        });
+      })
+      .catch(() => {
+        console.log("error getting default sms", arguments);
+      });
   }
 
   importCampaign() {

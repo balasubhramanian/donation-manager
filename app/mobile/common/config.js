@@ -2,11 +2,11 @@ import { AsyncStorage } from "react-native";
 
 class Config {
   setDefaultSMS(value) {
-    return this.setJsonItem("defaultSMS", value);
+    return this.setStringItem("defaultSMS", value);
   }
 
   getDefaultSMS() {
-    return this.getJsonItem("defaultSMS");
+    return this.getStringItem("defaultSMS");
   }
 
   getDefaultStreet() {
@@ -31,6 +31,14 @@ class Config {
 
   setJsonItem(key, value) {
     return AsyncStorage.setItem(key, JSON.stringify(value));
+  }
+
+  getStringItem(key) {
+    return AsyncStorage.getItem(key);
+  }
+
+  setStringItem(key, value) {
+    return AsyncStorage.setItem(key, value);
   }
 }
 
