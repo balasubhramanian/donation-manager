@@ -17,16 +17,21 @@ export default class User extends Component {
     this.userListRef = React.createRef();
   }
 
-  componentDidMount() {
-    this.props.navigation.addListener("willFocus", () => {
-      if (this.userListRef && this.userListRef.current) {
-        this.userListRef.current.componentDidMount();
-      }
-    });
-  }
-
   onSearch(text) {
     this.setState({ searchText: text });
+  }
+
+  addListener() {
+    if (!this.willFoucsListener) {
+      this.willFoucsListener = this.props.navigation.addListener(
+        "willFocus",
+        () => {
+          if (this.userListRef && this.userListRef.current) {
+            this.userListRef.current.componentDidMount();
+          }
+        }
+      );
+    }
   }
 
   render() {
@@ -37,6 +42,7 @@ export default class User extends Component {
         showSearch
         showFab
         onFabPress={() => {
+          this.addListener();
           this.props.navigation.push("Add User");
         }}
         onSearchTextChange={text => {

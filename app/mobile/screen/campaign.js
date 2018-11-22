@@ -11,12 +11,17 @@ export default class Campaign extends Component {
     this.campaignListRef = React.createRef();
   }
 
-  componentDidMount() {
-    this.props.navigation.addListener("willFocus", () => {
-      if (this.campaignListRef && this.campaignListRef.current) {
-        this.campaignListRef.current.componentDidMount();
-      }
-    });
+  addListner() {
+    if (!this.willFoucsListener) {
+      this.willFoucsListener = this.props.navigation.addListener(
+        "willFocus",
+        () => {
+          if (this.campaignListRef && this.campaignListRef.current) {
+            this.campaignListRef.current.componentDidMount();
+          }
+        }
+      );
+    }
   }
 
   render() {
@@ -26,6 +31,7 @@ export default class Campaign extends Component {
         {...this.props}
         showFab
         onFabPress={() => {
+          this.addListner();
           this.props.navigation.push("Add Campaign");
         }}
       >
