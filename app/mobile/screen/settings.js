@@ -12,7 +12,10 @@ import {
   Toast,
   View,
   Picker,
-  Input
+  Input,
+  Item,
+  Label,
+  Switch
 } from "native-base";
 import RNFetchBlob from "react-native-fetch-blob";
 import Share from "react-native-share";
@@ -61,6 +64,20 @@ export default class Settings extends Component {
       .catch(() => {
         console.log("error getting default sms", arguments);
       });
+
+    Config.getSendSms().then(sendSms => {
+      console.log(sendSms);
+      if (sendSms && sendSms === "true") {
+        this.setState({ sendSms: true });
+      } else if (!sendSms) {
+        Config.setSendSms("true").then(() => {
+          console.log("seeting smss", arguments);
+        });
+        this.setState({ sendSms: true });
+      } else {
+        this.setState({ sendSms: false });
+      }
+    });
   }
 
   importCampaign() {
@@ -301,14 +318,19 @@ export default class Settings extends Component {
   render() {
     return (
       <AppContainer title="Settings" {...this.props}>
-        <Content style={{ padding: 0 }}>
+        <Content>
           <List>
-            <ListHeader text="EXPORT" />
-            <ListItem icon stackedLabel>
+            <ListItem style={{ marginLeft: 0 }}>
               <Body>
                 <Text style={styles.listItemText}>Donation</Text>
               </Body>
-              <Right>
+              <Right
+                style={{
+                  flexDirection: "row",
+                  flex: 3,
+                  justifyContent: "flex-end"
+                }}
+              >
                 <IconButton
                   hide={this.state.hideDelete}
                   icon="trash"
@@ -325,12 +347,17 @@ export default class Settings extends Component {
               </Right>
             </ListItem>
 
-            <ListHeader text="IMPORT" />
-            <ListItem icon stackedLabel>
+            <ListItem style={{ marginLeft: 0 }}>
               <Body>
                 <Text style={styles.listItemText}> User</Text>
               </Body>
-              <Right>
+              <Right
+                style={{
+                  flexDirection: "row",
+                  flex: 3,
+                  justifyContent: "flex-end"
+                }}
+              >
                 <IconButton
                   hide={this.state.hideDelete}
                   icon="trash"
@@ -354,12 +381,18 @@ export default class Settings extends Component {
               </Right>
             </ListItem>
 
-            <ListItem icon stackedLabel>
+            <ListItem style={{ marginLeft: 0 }}>
               <Body>
                 <Text style={styles.listItemText}> Campaign</Text>
               </Body>
 
-              <Right>
+              <Right
+                style={{
+                  flexDirection: "row",
+                  flex: 3,
+                  justifyContent: "flex-end"
+                }}
+              >
                 <IconButton
                   hide={this.state.hideDelete}
                   icon="trash"
@@ -384,7 +417,7 @@ export default class Settings extends Component {
             </ListItem>
 
             <ListHeader text="DEFAULT" />
-            <ListItem icon stackedLabel style={styles.listItem}>
+            <ListItem style={{ marginLeft: 0 }}>
               <Body>
                 <TouchableOpacity
                   first
@@ -399,9 +432,8 @@ export default class Settings extends Component {
                   </Text>
                 </TouchableOpacity>
               </Body>
-              <Right />
             </ListItem>
-            <ListItem icon stackedLabel style={styles.listItem}>
+            <ListItem style={{ marginLeft: 0 }}>
               <Body>
                 <TouchableOpacity
                   first
@@ -420,36 +452,59 @@ export default class Settings extends Component {
               </Body>
               <Right />
             </ListItem>
-            <ListItem icon stackedLabel>
+
+            <ListHeader text="SMS" />
+            <ListItem style={{ marginLeft: 0 }}>
+              <Body style={{ marginLeft: 1 }}>
+                <Text style={styles.listItemText}>Send SMS</Text>
+              </Body>
+              <Right>
+                <Switch
+                  onTintColor="#4553b3"
+                  thumbTintColor="#4553b3"
+                  onValueChange={value => {
+                    Config.setSendSms(value + "");
+                    this.setState(prevState => ({
+                      sendSms: !prevState.sendSms
+                    }));
+                  }}
+                  value={this.state.sendSms}
+                />
+              </Right>
+            </ListItem>
+            <ListItem style={{ marginLeft: 0 }}>
+              <Body style={{ marginLeft: 15 }}>
+                <Label style={{ fontSize: 14, color: "#000" }}>Message</Label>
+
+                <Input
+                  style={{
+                    fontSize: 14,
+                    color: "grey"
+                  }}
+                  onChangeText={smsText => {
+                    Config.setDefaultSMS(smsText);
+                    this.setState({ smsText });
+                  }}
+                  value={this.state.smsText}
+                />
+              </Body>
+            </ListItem>
+            <ListItem style={{ marginLeft: 0 }}>
               <Body>
-                <TouchableOpacity
-                  first
-                  onPress={() => {
+                <Text style={styles.listItemText}>Show Advanced</Text>
+              </Body>
+              <Right>
+                <Switch
+                  onTintColor="#4553b3"
+                  thumbTintColor="#4553b3"
+                  onValueChange={() => {
                     this.setState(prevState => ({
                       hideDelete: !prevState.hideDelete
                     }));
                   }}
-                >
-                  <Text style={styles.listItemText}>
-                    {this.state.hideDelete ? "Show Advanced" : "Hide Advanced"}
-                  </Text>
-                </TouchableOpacity>
-              </Body>
-              <Right />
-            </ListItem>
-            <ListHeader text="SMS TEXT" />
-            <ListItem>
-              <Input
-                style={{
-                  fontSize: 16,
-                  color: "#000"
-                }}
-                onChangeText={smsText => {
-                  Config.setDefaultSMS(smsText);
-                  this.setState({ smsText });
-                }}
-                value={this.state.smsText}
-              />
+                  value={!this.state.hideDelete}
+                />
+              </Right>
             </ListItem>
           </List>
         </Content>
@@ -459,7 +514,7 @@ export default class Settings extends Component {
 }
 
 const ListHeader = props => (
-  <ListItem noIndent itemHeader style={styles.listHeader}>
+  <ListItem itemHeader style={styles.listHeader}>
     <Text>{props.text}</Text>
   </ListItem>
 );
@@ -478,7 +533,8 @@ const IconButton = props => {
 const styles = StyleSheet.create({
   listHeader: {
     paddingBottom: 0,
-    marginBottom: 0
+    marginBottom: 0,
+    paddingLeft: 10
   },
   listItem: {
     marginBottom: 15,
@@ -493,7 +549,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   listItemIcon: {
-    fontSize: 22,
+    fontSize: 25,
     marginRight: 15
   }
 });

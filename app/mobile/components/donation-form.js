@@ -51,6 +51,10 @@ export default class DonationForm extends Component {
     const user = this.props.navigation.getParam("user", null);
     this.setState({ selectedUser: user });
     this.props.navigation.setParams({ user: null });
+
+    Config.getSendSms().then(sendSms => {
+      this.setState({ sendSms: sendSms === "true" || !sendSms });
+    });
   }
 
   getDefaultStreet() {
@@ -152,6 +156,8 @@ export default class DonationForm extends Component {
   }
 
   sendMessage(user, campaign, amount) {
+    if (!this.state.sendSms) return;
+
     Config.getDefaultSMS()
       .then(smsText => {
         const msg = smsText ? smsText : "Thanks for donating Rs. {amount}";

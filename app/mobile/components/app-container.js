@@ -110,10 +110,7 @@ export default class AppContainer extends Component {
 
   render() {
     return (
-      <Container
-        key="3"
-        style={{ paddingBottom: 40, backgroundColor: "white" }}
-      >
+      <Container style={{ paddingBottom: 40, backgroundColor: "white" }}>
         {this.state.showSearchBar
           ? this.renderSearchBar()
           : this.renderHeader()}

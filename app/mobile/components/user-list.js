@@ -80,7 +80,7 @@ export default class UserList extends Component {
       return <Spinner color="blue" />;
     }
     return (
-      <List noIndent style={{ padding: 0 }}>
+      <List style={{ padding: 0 }}>
         <FlatList
           data={this.state.donors}
           renderItem={row => {

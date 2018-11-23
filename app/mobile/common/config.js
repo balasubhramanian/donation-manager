@@ -9,6 +9,14 @@ class Config {
     return this.getStringItem("defaultSMS");
   }
 
+  getSendSms() {
+    return this.getStringItem("sendSms");
+  }
+
+  setSendSms(value) {
+    return this.setStringItem("sendSms", value);
+  }
+
   getDefaultStreet() {
     return this.getJsonItem("defaultStreet");
   }
