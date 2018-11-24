@@ -42,7 +42,8 @@ export default class CampaignList extends Component {
                 style={{
                   flex: 4,
                   flexDirection: "row",
-                  alignItems: "flex-start"
+                  alignItems: "flex-start",
+                  marginLeft: 0
                 }}
                 onPress={() => {
                   if (this.props.onClick) {
@@ -50,7 +51,7 @@ export default class CampaignList extends Component {
                   }
                 }}
               >
-                <View style={{ flex: 3 }}>
+                <View style={{ flex: 3, marginLeft: 17 }}>
                   <View>
                     <Text style={{ textAlign: "left", alignSelf: "stretch" }}>
                       {item.name}

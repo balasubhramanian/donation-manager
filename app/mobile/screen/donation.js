@@ -276,7 +276,7 @@ export default class Donation extends Component {
           <List noIndent style={{ padding: 0 }}>
             {Object.keys(groupByDate).map(e => (
               <List key={e}>
-                <ListItem itemDivider>
+                <ListItem itemDivider style={{ marginLeft: 0 }}>
                   <Left>
                     <Text>
                       {moment(e, "YYYY-MM-DD", true).isValid()
@@ -312,11 +312,12 @@ const DonationList = props => {
             key={item.id}
             style={{
               flex: 4,
+              marginLeft: 0,
               flexDirection: "row",
               alignItems: "flex-start"
             }}
           >
-            <View style={{ flex: 3 }}>
+            <View style={{ flex: 3, marginLeft: 17 }}>
               <View>
                 <Text style={{ textAlign: "left", alignSelf: "stretch" }}>
                   {item.userName}

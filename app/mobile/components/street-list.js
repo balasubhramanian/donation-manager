@@ -54,11 +54,12 @@ export default class StreetList extends Component {
             return (
               <ListItem
                 key={item.street}
+                style={{ marginLeft: 0 }}
                 onPress={() => {
                   this.props.onSelect(item);
                 }}
               >
-                <View>
+                <View style={{ marginLeft: 17 }}>
                   <View>
                     <Text style={{ textAlign: "left", alignSelf: "stretch" }}>
                       {item.street}

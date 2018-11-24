@@ -65,12 +65,13 @@ export default class UserList extends Component {
   }
 
   fetchDonor(props) {
-    console.log("userlist-fetch donor", props);
     this.setState({ isLoading: true });
-    DonorService.getAllDonors(props.filter).then(donors => {
-      console.log("fetch donors", donors);
-      this.setState({ donors, data: donors, isLoading: false });
-    });
+    setTimeout(() => {
+      DonorService.getAllDonors(props.filter).then(donors => {
+        console.log("fetch donors", donors);
+        this.setState({ donors, data: donors, isLoading: false });
+      });
+    }, 0);
   }
 
   render() {
@@ -89,11 +90,12 @@ export default class UserList extends Component {
             return (
               <ListItem
                 key={item.id}
+                style={{ marginLeft: 0 }}
                 onPress={() => {
                   this.props.onSelect(item);
                 }}
               >
-                <View>
+                <View style={{ marginLeft: 17 }}>
                   <View>
                     <Text style={{ textAlign: "left", alignSelf: "stretch" }}>
                       {item.firstname}
